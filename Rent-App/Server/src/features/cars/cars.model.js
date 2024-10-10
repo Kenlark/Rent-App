@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { model, Schema } from "mongoose";
 
 import { CARS_STATUS } from "../../utils/constants.js";
 
@@ -67,7 +67,7 @@ const CarsSchema = new Schema(
     },
     createdBy: {
       type: mongoose.Types.ObjectId,
-      ref: "Admin",
+      ref: "User",
       required: [true, "Veuillez fournir un administrateur"],
     },
   },
