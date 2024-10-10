@@ -25,6 +25,20 @@ const RentSchema = new mongoose.Schema(
       ],
       default: RENT_STATUS.AVAILABLE,
     },
+    idCar: {
+      type: mongoose.Types.ObjectId,
+      ref: "Cars",
+      required: [true, "Veuillez fournir l'ID de la voiture"],
+    },
+    carImageUrl: {
+      type: String,
+      required: [true, "Veuillez fournir l'URL de l'image de la voiture"],
+    },
+    userID: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+      required: [true, "Veuillez fournir un administrateur"],
+    },
   },
   { timestamps: true }
 );
