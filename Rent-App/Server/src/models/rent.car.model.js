@@ -1,6 +1,6 @@
 import mongoose, { Schema, model } from "mongoose";
 
-import { RENT_STATUS } from "../../../utils/constants.js";
+import { RENT_STATUS } from "../utils/constants.js";
 
 const RentSchema = new mongoose.Schema(
   {
@@ -28,16 +28,12 @@ const RentSchema = new mongoose.Schema(
     idCar: {
       type: mongoose.Types.ObjectId,
       ref: "Cars",
-      required: [true, "Veuillez fournir l'ID de la voiture"],
-    },
-    carImageUrl: {
-      type: String,
-      required: [true, "Veuillez fournir l'URL de l'image de la voiture"],
+      // required: [true, "Veuillez fournir l'ID de la voiture"],
     },
     userID: {
       type: mongoose.Types.ObjectId,
       ref: "User",
-      required: [true, "Veuillez fournir un administrateur"],
+      // required: [true, "Veuillez fournir un administrateur"],
     },
   },
   { timestamps: true }

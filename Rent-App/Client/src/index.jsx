@@ -11,6 +11,7 @@ import ErrorPage from "./pages/ErrorPage.jsx";
 import SharedLayout from "./layout/SharedLayout.jsx";
 import Cars from "./pages/Cars.jsx";
 import { loader as CarsLoader } from "./pages/Cars.jsx";
+import { useEffect } from "react";
 
 function ReactRouter() {
   const router = createBrowserRouter([
@@ -22,7 +23,7 @@ function ReactRouter() {
         {
           index: true,
           element: <Cars />,
-          loader: CarsLoader,
+          // loader: CarsLoader,
         },
       ],
     },
