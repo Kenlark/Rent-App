@@ -4,4 +4,10 @@ const CARS_STATUS = {
   COMPLETED: "terminé",
 };
 
-export { CARS_STATUS };
+const RENT_STATUS = {
+  AVAILABLE: "en stock",
+  IN_PROGRESS: "loué",
+  UNAVAILABLE: "non disponible à la location",
+};
+
+export { CARS_STATUS, RENT_STATUS };

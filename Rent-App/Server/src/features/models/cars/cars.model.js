@@ -1,6 +1,6 @@
 import mongoose, { model, Schema } from "mongoose";
 
-import { CARS_STATUS } from "../../utils/constants.js";
+import { CARS_STATUS } from "../../../utils/constants.js";
 
 const CarsSchema = new Schema(
   {
