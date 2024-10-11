@@ -17,9 +17,17 @@ function Footer() {
         <div className="flex-contact">
           <p>Contact</p>
           <div className="flex-logo">
-            <img src={facebook} alt="Logo Facebook" className="logo" />
-            <img src={twitter} alt="Logo Twitter" className="logo" />
-            <img src={instagram} alt="Logo Instagram" className="logo" />
+            <a href="https://facebook.com" target="blank">
+              {" "}
+              <img src={facebook} alt="Logo Facebook" className="logo" />
+            </a>
+            <a href="https://twitter.com" target="blank">
+              {" "}
+              <img src={twitter} alt="Logo Twitter" className="logo" />
+            </a>
+            <a href="https://instagram.com" target="blank">
+              <img src={instagram} alt="Logo Instagram" className="logo" />
+            </a>
           </div>
         </div>
       </section>
