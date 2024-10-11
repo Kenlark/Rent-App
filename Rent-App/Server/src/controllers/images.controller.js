@@ -15,38 +15,26 @@ const create = async (req, res) => {
 
   const maxSize = 1024 * 1024;
 
-  rentImages.forEach((file) => {
-    if (file.size > maxSize) {
-      throw new Error("Veuillez fournir une image de taille inférieure à 1 Mo");
-    }
-  });
+  const imageUrls = []; // Pour stocker les URL des images
 
   try {
-    const imageUrls = []; // Pour stocker les URL des images
+    rentImages.forEach(async (file) => {
+      if (file.size > maxSize) {
+        throw new Error(
+          "Veuillez fournir une image de taille inférieure à 1 Mo"
+        );
+      }
 
-    // Traitez chaque fichier
-    for (const file of rentImages) {
-      const formattedImage = formatImage(file);
-      const response = await cloudinary.uploader.upload(formattedImage, {
+      // Upload dans le folder cloudfinary defini
+      const response = await cloudinary.uploader.upload(file, {
         folder: "Rent-Images",
       });
 
+      // Stocker l'URL de l'image uploadée
       imageUrls.push(response.secure_url);
-    }
-
-    const newRentImage = {
-      ...req.body,
-      images: imageUrls,
-    };
-
-    const newImage = await rentService.create(newRentImage);
-
-    res.status(StatusCodes.CREATED).json(newImage);
+    });
   } catch (error) {
-    console.error("Erreur dans la création de la location :", error);
-    res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: "Erreur lors du traitement de la demande" });
+    console.error(error.message);
   }
 };
 
