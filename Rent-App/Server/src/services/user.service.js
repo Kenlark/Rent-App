@@ -1,4 +1,4 @@
-import rentCarModel from "../models/images.cars.model.js";
+import rentCarModel from "../models/users.model.js";
 
 const getAll = async () => {
   return await rentCarModel.find();

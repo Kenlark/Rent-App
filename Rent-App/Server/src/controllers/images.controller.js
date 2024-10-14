@@ -2,14 +2,13 @@ import mongoose from "mongoose";
 
 import { formatImage } from "../middlewares/multer.middleware.js";
 import { v2 as cloudinary } from "cloudinary";
-import * as rentService from "../services/rent.service.js";
+import * as rentService from "../services/images.service.js";
 import { BadRequestError, NotFoundError } from "../errors/index.js";
 import { StatusCodes } from "http-status-codes";
 import imagesCarsModel from "../models/images.cars.model.js";
 
 const create = async (req, res) => {
   const rentImages = req.files;
-  const { idCar } = req.body; // On suppose que l'ID de la voiture est dans le body
 
   if (!rentImages || rentImages.length === 0) {
     return res.status(400).json({ message: "Aucun fichier fourni" });
@@ -65,6 +64,18 @@ const getAll = async (req, res) => {
   }
 };
 
+const getSingleImage = async (req, res) => {
+  try {
+    const allImages = await rentService.getAll();
+    res.status(StatusCodes.OK).json({ allImages });
+  } catch (error) {
+    console.error("Erreur lors de la récupération des images :", error);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: "Erreur lors de la récupération des images" });
+  }
+};
+
 const remove = async (req, res) => {
   const { id } = req.params;
 
@@ -83,4 +94,4 @@ const remove = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "Image supprimée avec succès" });
 };
 
-export { create, getAll, remove };
+export { create, getAll, remove, getSingleImage };

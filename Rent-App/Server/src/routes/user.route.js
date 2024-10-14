@@ -1,7 +1,12 @@
 import express from "express";
-import * as rentController from "../controllers/rents.controller.js";
-import upload from "../middlewares/multer.middleware.js";
+import * as userController from "../controllers/user.controller.js";
+import { LoginUserSchema, RegisterUserSchema } from "../auth/users.schema.js";
+import validate from "../middlewares/validation.middleware.js";
 
 const router = express.Router();
+
+router.post("/register", validate(RegisterUserSchema), userController.register);
+router.post("/login", validate(LoginUserSchema), userController.login);
+router.get("/", userController.getAll);
 
 export default router;

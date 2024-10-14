@@ -16,4 +16,12 @@ class NotFoundError extends Error {
   }
 }
 
-export { BadRequestError, NotFoundError };
+class UnauthenticatedError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "UnauthenticatedError";
+    this.statusCode = StatusCodes.UNAUTHORIZED;
+  }
+}
+
+export { BadRequestError, NotFoundError, UnauthenticatedError };
