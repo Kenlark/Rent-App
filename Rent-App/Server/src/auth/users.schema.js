@@ -1,21 +1,19 @@
 import { z } from "zod";
 
 const RegisterUserSchema = z.object({
-  firstName: z
+  firstName: z.string().min(1, { message: "Le prénom est requis." }),
+  lastName: z.string().min(1, { message: "Le nom est requis." }),
+  birthMonth: z
+    .number()
+    .min(1)
+    .max(12, { message: "Mois de naissance invalide." }),
+  birthYear: z.number().min(1900, { message: "Année invalide." }),
+  address: z.string().min(1, { message: "L'adresse est requise." }),
+  postalCode: z.string().min(1, { message: "Le code postal est requis." }),
+  city: z.string().min(1, { message: "La ville est requise." }),
+  phoneNumber: z
     .string()
-    .trim()
-    .min(3, { message: "Doit avoir au minimum 3 caractères" })
-    .max(20, "Doit avoir au maximum 20 caractères"),
-  lastName: z
-    .string()
-    .trim()
-    .min(3, { message: "Doit avoir au minimum 3 caractères" })
-    .max(30, "Doit avoir au maximum 30 caractères"),
-  email: z.string().email({ message: "Email invalide" }),
-  password: z
-    .string()
-    .trim()
-    .min(6, { message: "Doit avoir au minimum 6 caractères" }),
+    .min(1, { message: "Le numéro de téléphone est requis." }),
 });
 
 const LoginUserSchema = z.object({

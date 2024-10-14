@@ -30,7 +30,18 @@ const Login = () => {
       setPassword("");
     } catch (error) {
       console.log(error);
-      toast.error("Erreur lors de la connexion");
+      const errorMessage =
+        error.response.data.message || "Erreur lors de la connexion";
+
+      if (error.response.status === 401) {
+        toast.error(
+          "Identifiants invalides. Veuillez vérifier votre e-mail et votre mot de passe."
+        );
+      } else {
+        toast.error(errorMessage);
+      }
+
+      setError(errorMessage);
     }
   };
 

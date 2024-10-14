@@ -1,33 +1,46 @@
 import { StatusCodes } from "http-status-codes";
 import * as userService from "../services/user.service.js";
 import { UnauthenticatedError } from "../errors/index.js";
-import usersModel from "../models/users.model.js";
+import z from "zod";
 
 const register = async (req, res) => {
-  const { email } = req.body;
+  try {
+    const userData = RegisterUserSchema.parse(req.body);
 
-  const existingUser = await userService.get({ email });
-  if (existingUser) {
-    throw new UnauthenticatedError("L'email est déjà associé à un compte");
+    const existingUser = await userService.get({ email: userData.email });
+    if (existingUser) {
+      throw new UnauthenticatedError("L'email est déjà associé à un compte");
+    }
+
+    const user = await userService.create(userData);
+    const token = user.createAccessToken();
+    res.status(StatusCodes.CREATED).json({ user, token });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(StatusCodes.BAD_REQUEST).json({ errors: error.errors });
+    }
+
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ message: "Erreur lors de l'inscription." });
   }
-
-  // Créez un nouvel utilisateur
-  const user = await userService.create(req.body);
-  const token = user.createAccessToken();
-  res.status(StatusCodes.CREATED).json({ user, token });
 };
 
 const login = async (req, res) => {
   const user = await userService.get({ email: req.body.email });
 
   if (!user) {
-    throw new UnauthenticatedError("Identifiants invalides");
+    return res
+      .status(StatusCodes.UNAUTHORIZED)
+      .json({ message: "Votre Email ou votre mot de passe ne correspond pas" });
   }
 
   const isPasswordCorrect = await user.comparePasswords(req.body.password);
 
   if (!isPasswordCorrect) {
-    throw new UnauthenticatedError("Identifiants invalides");
+    return res
+      .status(StatusCodes.UNAUTHORIZED)
+      .json({ message: "Votre Email ou votre mot de passe ne correspond pas" });
   }
 
   const token = user.createAccessToken();
