@@ -38,21 +38,32 @@
 
 .form {
   display: flex;
-  align-items: center;
   flex-direction: column;
   gap: 1rem;
+  width: 20rem;
+  margin: 0 auto;
 }
 
-.btn-submit {
-  border: transparent;
-  color: var(--white);
-  padding: 0.2rem 0.5rem;
-  border-radius: var(--borderRadius);
+.form input {
+  height: 1.4rem;
+}
+
+.form label {
+  display: block;
+  text-align: left;
+}
+
+.form button {
+  padding: 0.5rem;
   background-color: #1473e6;
+  color: white;
+  border: none;
   cursor: pointer;
+  width: 10rem;
+  margin: 0 auto;
 }
 
-.btn-submit:hover {
+.form button:hover {
   background-color: #005dce;
   transition: var(--transition);
 }
