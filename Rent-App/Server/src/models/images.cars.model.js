@@ -7,7 +7,7 @@ const ImagesCars = new mongoose.Schema({
     // required: [true, "Veuillez fournir l'ID de la voiture"],
   },
   url: {
-    type: [String],
+    type: String,
     required: [true, "Veuillez fournir l'URL de l'image de la voiture"],
   },
 });

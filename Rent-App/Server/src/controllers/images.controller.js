@@ -5,36 +5,51 @@ import { v2 as cloudinary } from "cloudinary";
 import * as rentService from "../services/rent.service.js";
 import { BadRequestError, NotFoundError } from "../errors/index.js";
 import { StatusCodes } from "http-status-codes";
+import imagesCarsModel from "../models/images.cars.model.js";
 
 const create = async (req, res) => {
   const rentImages = req.files;
+  const { idCar } = req.body; // On suppose que l'ID de la voiture est dans le body
 
   if (!rentImages || rentImages.length === 0) {
-    throw new Error("Aucun fichier fourni");
+    return res.status(400).json({ message: "Aucun fichier fourni" });
   }
 
-  const maxSize = 1024 * 1024;
-
-  const imageUrls = []; // Pour stocker les URL des images
+  const maxSize = 1024 * 1024; // Taille max : 1 Mo
+  const imageUrls = [];
 
   try {
-    rentImages.forEach(async (file) => {
+    for (const file of rentImages) {
       if (file.size > maxSize) {
-        throw new Error(
-          "Veuillez fournir une image de taille inférieure à 1 Mo"
-        );
+        return res
+          .status(400)
+          .json({ message: "Image trop volumineuse (max 1 Mo)" });
       }
 
-      // Upload dans le folder cloudfinary defini
-      const response = await cloudinary.uploader.upload(file, {
+      // Formater l'image pour l'upload vers Cloudinary
+      const formattedFile = formatImage(file); // Convertir en DataURI
+      const response = await cloudinary.uploader.upload(formattedFile, {
         folder: "Rent-Images",
       });
 
-      // Stocker l'URL de l'image uploadée
+      // Stocker l'URL de l'image uploadée dans MongoDB avec l'ID de la voiture
+      const imageData = {
+        url: response.secure_url,
+      };
+
+      // Sauvegarder dans MongoDB
+      await imagesCarsModel.create(imageData);
+
+      // Ajouter l'URL à la réponse
       imageUrls.push(response.secure_url);
-    });
+    }
+
+    return res.status(201).json({ imageUrls });
   } catch (error) {
     console.error(error.message);
+    return res
+      .status(500)
+      .json({ message: "Erreur lors de l'upload des images" });
   }
 };
 

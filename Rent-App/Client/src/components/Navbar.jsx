@@ -28,7 +28,7 @@ function Navbar() {
               </li>
               <li>
                 <NavLink
-                  to="about"
+                  to="cars"
                   className={({ isActive }) =>
                     isActive ? "active-btn" : "inactive-btn"
                   }

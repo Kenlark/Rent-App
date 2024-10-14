@@ -1,15 +1,15 @@
 import rentCarModel from "../models/images.cars.model.js";
 
 const getAll = async () => {
-  return await rentCarModel.find(); // Assure-toi que cela retourne une promesse
+  return await rentCarModel.find();
 };
 
 const create = async (data) => {
-  return await rentCarModel(data).save(); // Assure-toi que cela retourne une promesse
+  return await rentCarModel(data).save();
 };
 
 const remove = async (id) => {
-  return await rentCarModel.findByIdAndDelete(id); // Assure-toi que cela retourne une promesse
+  return await rentCarModel.findByIdAndDelete(id);
 };
 
 // Si tu as une fonction update, assure-toi qu'elle est aussi asynchrone
