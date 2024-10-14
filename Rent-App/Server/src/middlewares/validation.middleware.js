@@ -8,7 +8,7 @@ const validate = (schema) => (req, res, next) => {
     next();
   } catch (error) {
     if (error instanceof z.ZodError) {
-      res.status(StatusCodes.BAD_REQUEST).json({ errors: error.errors });
+      return res.status(StatusCodes.BAD_REQUEST).json({ errors: error.errors });
     }
 
     next(error);

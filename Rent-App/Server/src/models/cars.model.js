@@ -70,6 +70,7 @@ const CarsSchema = new Schema(
       ref: "User",
       required: [true, "Veuillez fournir un administrateur"],
     },
+    images: { type: [String], required: true },
   },
   { timestamps: true }
 );

@@ -1,12 +1,17 @@
 import { StatusCodes } from "http-status-codes";
 import * as userService from "../services/user.service.js";
 import { UnauthenticatedError } from "../errors/index.js";
-import usersModel from "../models/users.model.js";
 
 const register = async (req, res) => {
+  const { email } = req.body;
+
+  const existingUser = await userService.get({ email });
+  if (existingUser) {
+    throw new UnauthenticatedError("L'email est déjà associé à un compte");
+  }
+
   const user = await userService.create(req.body);
   const token = user.createAccessToken();
-  await usersModel.create(imageData);
   res.status(StatusCodes.CREATED).json({ user, token });
 };
 
@@ -33,7 +38,8 @@ const getAll = async (req, res) => {
     const allUsers = await userService.getAll();
     res.status(StatusCodes.OK).json({ allUsers });
   } catch (error) {
-    console.error(StatusCodes.INTERNAL_SERVER_ERROR).json({
+    console.error(error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       error: "Erreur lors de la récupération de tous les utilisateurs",
     });
   }

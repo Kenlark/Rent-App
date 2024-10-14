@@ -33,6 +33,7 @@ const UserSchema = new mongoose.Schema(
     role: {
       type: String,
       required: [true, "Veuillez fournir un rôle"],
+      default: "user",
       minLength: 3,
     },
   },
