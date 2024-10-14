@@ -7,6 +7,7 @@ import "./styles/navbar.css";
 import "./styles/error-page.css";
 import "./styles/footer.css";
 import "./styles/cars.page.css";
+import "./styles/login.page.css";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

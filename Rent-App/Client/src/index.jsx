@@ -13,6 +13,7 @@ import SharedLayout from "./layout/SharedLayout.jsx";
 import Cars from "./pages/Cars.jsx";
 import { loader as CarsLoader } from "./pages/Cars.jsx";
 import Home from "./pages/Home.jsx";
+import Login from "./pages/Login.jsx";
 
 function ReactRouter() {
   const router = createBrowserRouter([
@@ -30,6 +31,10 @@ function ReactRouter() {
           element: <Cars />,
           loader: CarsLoader,
         },
+        {
+          path: "login",
+          element: <Login />,
+        },
       ],
     },
   ]);
@@ -37,6 +42,7 @@ function ReactRouter() {
   return (
     <>
       <RouterProvider router={router} />
+      <ToastContainer position="top-center" />
     </>
   );
 }

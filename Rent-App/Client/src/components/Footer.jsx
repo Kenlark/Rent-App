@@ -10,9 +10,18 @@ function Footer() {
       <section className="footer">
         <div className="flex-footer">
           <p className="copyright">&copy; 2024 Rent-App</p>
-          <p>Conditions d'utilisation</p>
-          <p>Politique de confidentialité</p>
-          <p>Gestion des cookies</p>
+          <a href="#" className="color-link">
+            {" "}
+            <p>Conditions d'utilisation</p>
+          </a>
+          <a href="#" className="color-link">
+            {" "}
+            <p>Politique de confidentialité</p>
+          </a>
+          <a href="#" className="color-link">
+            {" "}
+            <p>Gestion des cookies</p>
+          </a>
         </div>
         <div className="flex-contact">
           <p>Contact</p>

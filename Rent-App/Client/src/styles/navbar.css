@@ -92,13 +92,20 @@ a {
   padding: 0.5rem 0.5rem;
 }
 
-.logo-home {
-  width: 20px;
-  color: black;
-}
-
+.logo-home,
 .logo-car {
   width: 20px;
+}
+
+.inactive-btn1 {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.5rem 0.5rem;
+  color: var(--white);
+}
+
+.cars-active .logo-car {
+  filter: invert(1);
 }
 
 .flex-login {

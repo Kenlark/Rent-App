@@ -1,6 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import * as userService from "../services/user.service.js";
 import { UnauthenticatedError } from "../errors/index.js";
+import usersModel from "../models/users.model.js";
 
 const register = async (req, res) => {
   const { email } = req.body;
@@ -10,6 +11,7 @@ const register = async (req, res) => {
     throw new UnauthenticatedError("L'email est déjà associé à un compte");
   }
 
+  // Créez un nouvel utilisateur
   const user = await userService.create(req.body);
   const token = user.createAccessToken();
   res.status(StatusCodes.CREATED).json({ user, token });

@@ -5,7 +5,7 @@ import validate from "../middlewares/validation.middleware.js";
 
 const router = express.Router();
 
-router.post("/register", userController.register);
+router.post("/register", validate(RegisterUserSchema), userController.register);
 router.post("/login", validate(LoginUserSchema), userController.login);
 router.get("/", userController.getAll);
 
