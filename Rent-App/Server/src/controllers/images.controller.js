@@ -80,7 +80,7 @@ const remove = async (req, res) => {
     throw new NotFoundError(`Pas de tâche avec l'id : ${id}`);
   }
 
-  res.status(StatusCodes.OK).json({ image });
+  res.status(StatusCodes.OK).json({ msg: "Image supprimée avec succès" });
 };
 
 export { create, getAll, remove };

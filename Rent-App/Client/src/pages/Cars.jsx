@@ -9,7 +9,7 @@ import {
 
 import axios from "axios";
 
-const allCars = "http://localhost:5000/api/v1/images"; // Remplacez ceci par l'URL correcte pour récupérer les voitures
+const allCars = "http://localhost:5000/api/v1/images";
 
 export const loader = async () => {
   try {
@@ -42,7 +42,7 @@ function Cars() {
           <img
             src={car.url}
             alt={`${car.brand} ${car.model}`}
-            className="cars-width"
+            className="cars-card"
           />
         </div>
       ))}

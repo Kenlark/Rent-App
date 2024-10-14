@@ -36,6 +36,7 @@
   border-width: 0;
 }
 
-.cars-width {
-  color: #fafbff;
+.cars-card {
+  background-color: #fafbff;
+  width: 500px;
 }
