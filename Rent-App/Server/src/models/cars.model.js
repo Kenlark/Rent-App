@@ -18,8 +18,10 @@ const CarsSchema = new Schema(
       type: Number,
       required: [true, "Veuillez fournir l'année du véhicule"],
       validate: {
-        validator: Number.isInteger,
-        message: "La donnée entrée n'est pas un nombre",
+        validator: function (value) {
+          return Number.isInteger(value);
+        },
+        message: "La donnée entrée n'est pas un nombre entier",
       },
     },
     transmission: {
@@ -35,26 +37,32 @@ const CarsSchema = new Schema(
       type: Number,
       required: [
         true,
-        "Veuillez fournir le nombres de places que dispose le véhicule",
+        "Veuillez fournir le nombre de places que dispose le véhicule",
       ],
       validate: {
-        validator: Number.isInteger,
-        message: "La donnée entrée n'est pas un nombre",
+        validator: function (value) {
+          return Number.isInteger(value);
+        },
+        message: "La donnée entrée n'est pas un nombre entier",
       },
     },
     pricePerHour: {
       type: Number,
-    },
-    validate: {
-      validator: Number.isInteger,
-      message: "La donnée entrée n'est pas un nombre",
+      validate: {
+        validator: function (value) {
+          return Number.isInteger(value);
+        },
+        message: "La donnée entrée n'est pas un nombre entier",
+      },
     },
     pricePerDay: {
       type: Number,
-    },
-    validate: {
-      validator: Number.isInteger,
-      message: "La donnée entrée n'est pas un nombre",
+      validate: {
+        validator: function (value) {
+          return Number.isInteger(value);
+        },
+        message: "La donnée entrée n'est pas un nombre entier",
+      },
     },
     status: {
       type: String,
