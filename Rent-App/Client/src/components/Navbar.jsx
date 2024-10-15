@@ -14,7 +14,7 @@ function Navbar() {
               <NavLink
                 to="/"
                 className={({ isActive }) =>
-                  isActive ? "active-btn home-active" : "inactive-btn1"
+                  isActive ? "active-btn home-active" : "inactive-btn"
                 }
               >
                 <img src={house} alt="Logo Accueil" className="logo-home" />

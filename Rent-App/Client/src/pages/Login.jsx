@@ -23,7 +23,6 @@ const Login = () => {
         }
       );
 
-      console.log(response.data);
       toast.success("Connexion réussie !");
       setIsLoggedIn(true);
       setEmail("");

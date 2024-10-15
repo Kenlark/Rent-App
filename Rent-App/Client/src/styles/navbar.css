@@ -92,16 +92,13 @@ a {
   padding: 0.5rem 0.5rem;
 }
 
+.home-active > .logo-home {
+  filter: invert(1);
+}
+
 .logo-home,
 .logo-car {
   width: 20px;
-}
-
-.inactive-btn1 {
-  display: flex;
-  gap: 0.25rem;
-  padding: 0.5rem 0.5rem;
-  color: var(--white);
 }
 
 .cars-active .logo-car {
