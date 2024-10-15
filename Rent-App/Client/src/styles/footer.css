@@ -80,3 +80,7 @@
 .color-link {
   color: var(--primary-color-footer);
 }
+
+.flex-footer a {
+  text-decoration: none;
+}

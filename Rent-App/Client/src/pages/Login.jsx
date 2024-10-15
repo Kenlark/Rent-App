@@ -3,6 +3,9 @@ import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+import logoGoogle from "../assets/images/icons8-google.svg";
+import logoApple from "../assets/images/icons8-apple.svg";
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -49,9 +52,14 @@ const Login = () => {
   return (
     <>
       <ToastContainer />
-      <section>
+      <section className="test">
         <div className="form-card">
           <form onSubmit={handleSubmit} className="form">
+            <h1>Se connecter</h1>
+            <p className="new-user">
+              Vous êtes un nouvel utilisateur ?{" "}
+              <a href="/register">Créez un compte</a>
+            </p>
             <label htmlFor="email" className="label-mail">
               Adresse e-mail
             </label>
@@ -74,10 +82,33 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <a href="#">Mot de passe oublié ?</a>
-            <button type="submit" className="btn-submit">
-              Continuer
-            </button>
+            <div className="forgot-password">
+              <a href="#">Mot de passe oublié ?</a>
+              <button type="submit" className="btn-submit">
+                Continuer
+              </button>
+            </div>
+            <div className="flex-underline">
+              <div className="underline-login1"></div>
+              <p>ou</p>
+              <div className="underline-login2"></div>
+            </div>
+            <div className="flex-btn-oauth">
+              <button className="btn-oauth-google">
+                {" "}
+                <img
+                  src={logoGoogle}
+                  alt="logo google"
+                  className="logo-google"
+                />
+                Continuer avec Google
+              </button>
+              <button className="btn-oauth-apple">
+                {" "}
+                <img src={logoApple} alt="logo apple" className="logo-apple" />
+                Continuer avec Apple
+              </button>
+            </div>
           </form>
         </div>
       </section>

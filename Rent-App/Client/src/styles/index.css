@@ -10,7 +10,7 @@
   --navbar-color: #060b20;
   --white: #fff;
   --ff-primary: "Montserrat";
-  --bcg-body: #fafbff;
+  --bcg-body: #f4f7fa;
   --borderRadius: 0.25rem;
   --letterSpacing: 0.1em;
   --transition: 0.3s ease-in-out all;
@@ -40,7 +40,7 @@
 
 body {
   font-family: var(--ff-primary), "Roboto", system-ui, sans-serif;
-  background-color: var(--bcg-body);
+  background-color: #f4f7fa;
   scroll-behavior: smooth;
 }
 
