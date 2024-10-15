@@ -64,18 +64,6 @@ const getAll = async (req, res) => {
   }
 };
 
-const getSingleImage = async (req, res) => {
-  try {
-    const allImages = await rentService.getAll();
-    res.status(StatusCodes.OK).json({ allImages });
-  } catch (error) {
-    console.error("Erreur lors de la récupération des images :", error);
-    res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: "Erreur lors de la récupération des images" });
-  }
-};
-
 const remove = async (req, res) => {
   const { id } = req.params;
 
@@ -94,4 +82,4 @@ const remove = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "Image supprimée avec succès" });
 };
 
-export { create, getAll, remove, getSingleImage };
+export { create, getAll, remove };

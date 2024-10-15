@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 import logoGoogle from "../assets/images/icons8-google.svg";
 import logoApple from "../assets/images/icons8-apple.svg";
@@ -24,6 +25,10 @@ const Login = () => {
         }
       );
 
+      const { token } = response.data;
+
+      Cookies.set("token", token, { expires: 7, path: "/" });
+
       toast.success("Connexion réussie !");
       setIsLoggedIn(true);
       setEmail("");
@@ -31,9 +36,9 @@ const Login = () => {
     } catch (error) {
       console.log(error);
       const errorMessage =
-        error.response.data.message || "Erreur lors de la connexion";
+        error.response?.data?.message || "Erreur lors de la connexion";
 
-      if (error.response.status === 401) {
+      if (error.response?.status === 401) {
         toast.error(
           "Identifiants invalides. Veuillez vérifier votre e-mail et votre mot de passe."
         );
@@ -45,7 +50,9 @@ const Login = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      navigate("/");
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
     }
   }, [isLoggedIn, navigate]);
 

@@ -52,9 +52,13 @@ UserSchema.methods.toJSON = function () {
 };
 
 UserSchema.methods.createAccessToken = function () {
-  return jwt.sign({ userID: this._id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_LIFETIME,
-  });
+  return jwt.sign(
+    { userID: this._id, role: this.role },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: process.env.JWT_LIFETIME,
+    }
+  );
 };
 
 UserSchema.methods.comparePasswords = async function (userPassword) {

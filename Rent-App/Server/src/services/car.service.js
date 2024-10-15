@@ -1,19 +1,23 @@
-import rentCarModel from "../models/images.cars.model.js";
+import carsModel from "../models/cars.model.js";
 
 const getAll = async () => {
-  return await rentCarModel.find();
+  return await carsModel.find();
+};
+
+const get = (id) => {
+  return carsModel.findById(id);
 };
 
 const create = async (data) => {
-  return await rentCarModel(data).save();
+  return await carsModel(data).save();
 };
 
 const remove = async (id) => {
-  return await rentCarModel.findByIdAndDelete(id);
+  return await carsModel.findByIdAndDelete(id);
 };
 
 const update = async (id, data) => {
-  return await rentCarModel.findByIdAndUpdate(id, data, { new: true });
+  return await carsModel.findByIdAndUpdate(id, data, { new: true });
 };
 
-export { getAll, create, remove, update };
+export { getAll, create, remove, update, get };
