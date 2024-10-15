@@ -6,13 +6,11 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
 
     try {
       const response = await axios.post(
@@ -39,8 +37,6 @@ const Login = () => {
       } else {
         toast.error(errorMessage);
       }
-
-      setError(errorMessage);
     }
   };
 
@@ -54,7 +50,7 @@ const Login = () => {
     <>
       <ToastContainer />
       <section>
-        <div>
+        <div className="form-card">
           <form onSubmit={handleSubmit} className="form">
             <label htmlFor="email" className="label-mail">
               Adresse e-mail
@@ -82,7 +78,6 @@ const Login = () => {
             <button type="submit" className="btn-submit">
               Continuer
             </button>
-            {error && <p>{error}</p>}
           </form>
         </div>
       </section>

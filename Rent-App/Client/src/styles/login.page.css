@@ -36,6 +36,12 @@
   border-width: 0;
 }
 
+.form-card {
+  display: grid;
+  place-items: center;
+  height: calc(100vh - 10.7rem);
+}
+
 .form {
   display: flex;
   flex-direction: column;

@@ -36,7 +36,15 @@
   border-width: 0;
 }
 
-a {
+.login a,
+.register a {
+  text-decoration: none;
+  color: var(--white);
+  cursor: pointer;
+}
+
+.car a,
+.home a {
   text-decoration: none;
   color: var(--white);
   cursor: pointer;
@@ -80,7 +88,7 @@ a {
   display: flex;
   gap: 0.25rem;
   background-color: var(--white);
-  color: black;
+  color: black !important;
   font-weight: 500;
   border-radius: var(--borderRadius);
   padding: 0.5rem 0.5rem;
@@ -90,6 +98,7 @@ a {
   display: flex;
   gap: 0.25rem;
   padding: 0.5rem 0.5rem;
+  color: var(--white);
 }
 
 .home-active > .logo-home {
