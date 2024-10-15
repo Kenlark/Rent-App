@@ -10,11 +10,12 @@ import "react-toastify/dist/ReactToastify.css";
 
 import ErrorPage from "./pages/ErrorPage.jsx";
 import SharedLayout from "./layout/SharedLayout.jsx";
-import Cars from "./pages/Cars.jsx";
-import { loader as CarsLoader } from "./pages/Cars.jsx";
+import SubmitCars from "./pages/SubmitFormAdmin.jsx";
+import { loader as AllCarsLoader } from "./pages/AllCars.jsx";
 import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/register.jsx";
+import AllCars from "./pages/AllCars.jsx";
 
 function ReactRouter() {
   const router = createBrowserRouter([
@@ -29,8 +30,8 @@ function ReactRouter() {
         },
         {
           path: "cars",
-          element: <Cars />,
-          loader: CarsLoader,
+          element: <AllCars />,
+          loader: AllCarsLoader,
         },
         {
           path: "login",
@@ -39,6 +40,10 @@ function ReactRouter() {
         {
           path: "register",
           element: <Register />,
+        },
+        {
+          path: "submit-form-admin",
+          element: <SubmitCars />,
         },
       ],
     },
