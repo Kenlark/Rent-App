@@ -3,6 +3,7 @@ import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { useAuth } from "../authContext.jsx"; // Importer le contexte
 
 import logoGoogle from "../assets/images/icons8-google.svg";
 import logoApple from "../assets/images/icons8-apple.svg";
@@ -10,7 +11,7 @@ import logoApple from "../assets/images/icons8-apple.svg";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { setIsLoggedIn } = useAuth(); // Utiliser le contexte
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -33,9 +34,10 @@ const Login = () => {
       Cookies.set("token", token, { expires: 7, path: "/" });
 
       toast.success("Connexion réussie !");
-      setIsLoggedIn(true);
+      setIsLoggedIn(true); // Met à jour l'état de connexion
       setEmail("");
       setPassword("");
+      navigate("/"); // Rediriger vers la page d'accueil après connexion
     } catch (error) {
       console.log(error);
       const errorMessage =
@@ -51,17 +53,9 @@ const Login = () => {
     }
   };
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      setTimeout(() => {
-        navigate("/");
-      }, 1500);
-    }
-  }, [isLoggedIn, navigate]);
-
   return (
     <>
-      <ToastContainer />
+      <ToastContainer position="top-center" />
       <section className="test">
         <div className="form-card">
           <form onSubmit={handleSubmit} className="form">
@@ -105,7 +99,6 @@ const Login = () => {
             </div>
             <div className="flex-btn-oauth">
               <button className="btn-oauth-google">
-                {" "}
                 <img
                   src={logoGoogle}
                   alt="logo google"
@@ -114,7 +107,6 @@ const Login = () => {
                 Continuer avec Google
               </button>
               <button className="btn-oauth-apple">
-                {" "}
                 <img src={logoApple} alt="logo apple" className="logo-apple" />
                 Continuer avec Apple
               </button>

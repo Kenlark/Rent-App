@@ -2,23 +2,21 @@ import { UnauthenticatedError } from "../errors/index.js";
 import { verifyJWT } from "../utils/token.utils.js";
 
 const authenticateUser = async (req, res, next) => {
-  const authHeader = req.headers.authorization;
+  const token = req.cookies.token; // Récupère le token du cookie
 
-  if (!authHeader || !authHeader.startsWith("Bearer")) {
+  if (!token) {
     throw new UnauthenticatedError("Authentification invalide");
   }
 
-  const token = authHeader.split(" ")[1];
-
   try {
-    const decoded = verifyJWT(token);
+    const decoded = verifyJWT(token); // Vérifie le token
 
     req.user = {
       userId: decoded.userID,
       role: decoded.role,
     };
 
-    next();
+    next(); // Passe au middleware suivant
   } catch (error) {
     throw new UnauthenticatedError("Authentification invalide");
   }

@@ -2,7 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import * as userService from "../services/user.service.js";
 import { UnauthenticatedError } from "../errors/index.js";
 import z from "zod";
-import cookie from "cookie-parser";
+import jwt from "jsonwebtoken";
 
 const register = async (req, res) => {
   try {
@@ -76,4 +76,32 @@ const getAll = async (req, res) => {
   }
 };
 
-export { login, register, getAll };
+const getMe = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+
+    const user = await userService.getSingleUser(userId); // Assure-toi que tu as le modèle User importé et configuré
+
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur non trouvé" });
+    }
+
+    res.status(200).json({
+      userId: user._id,
+      username: user.username, // Ajoute d'autres informations utilisateur si nécessaire
+      email: user.email,
+    });
+  } catch (error) {
+    console.error("Erreur lors de la récupération de l'utilisateur", error);
+    res
+      .status(500)
+      .json({ message: "Erreur du serveur", error: error.message });
+  }
+};
+
+const logout = (req, res) => {
+  res.clearCookie("token"); // Supprime le cookie
+  res.status(StatusCodes.OK).json({ msg: "Deconnexion reussie" }); // Renvoie un statut 200 pour la déconnexion réussie
+};
+
+export { login, register, getAll, getMe, logout };

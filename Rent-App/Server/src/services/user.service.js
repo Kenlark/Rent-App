@@ -24,4 +24,8 @@ const update = async (id, data) => {
   return await userCarModel.findByIdAndUpdate(id, data, { new: true });
 };
 
-export { getAll, create, remove, update, get };
+const getSingleUser = async (id) => {
+  return await userCarModel.findById(id);
+};
+
+export { getAll, create, remove, update, get, getSingleUser };
