@@ -2,6 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import * as userService from "../services/user.service.js";
 import { UnauthenticatedError } from "../errors/index.js";
 import z from "zod";
+import cookie from "cookie-parser";
 
 const register = async (req, res) => {
   try {
@@ -14,6 +15,14 @@ const register = async (req, res) => {
 
     const user = await userService.create(userData);
     const token = user.createAccessToken();
+
+    res.cookie("token", token, {
+      httpOnly: true, // Sécurise le cookie (non accessible via JavaScript)
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 jours
+      sameSite: "strict", // Protection contre les attaques CSRF
+    });
+
     res.status(StatusCodes.CREATED).json({ user, token });
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -44,6 +53,13 @@ const login = async (req, res) => {
   }
 
   const token = user.createAccessToken();
+
+  res.cookie("token", token, {
+    httpOnly: true, // Sécurise le cookie (non accessible via JavaScript)
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 jours
+    sameSite: "strict", // Protection contre les attaques CSRF
+  });
 
   res.status(StatusCodes.OK).json({ user: { UserId: user._id }, token });
 };

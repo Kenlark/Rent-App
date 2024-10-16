@@ -76,6 +76,15 @@ const CarsSchema = new Schema(
         message: "La donnée entrée n'est pas un nombre entier",
       },
     },
+    horsePower: {
+      type: Number,
+      validate: {
+        validator: function (value) {
+          return Number.isInteger(value);
+        },
+        message: "La donnée entrée n'est pas un nombre entier",
+      },
+    },
     status: {
       type: String,
       enum: [

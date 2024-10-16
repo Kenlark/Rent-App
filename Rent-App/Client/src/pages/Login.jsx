@@ -22,6 +22,9 @@ const Login = () => {
         {
           email,
           password,
+        },
+        {
+          withCredentials: true, // Permet à Axios d'envoyer les cookies avec la requête
         }
       );
 

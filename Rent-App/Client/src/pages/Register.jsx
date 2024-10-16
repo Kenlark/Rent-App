@@ -34,6 +34,9 @@ const Register = () => {
           postalCode,
           city,
           phoneNumber,
+        },
+        {
+          withCredentials: true, // Permet à Axios d'envoyer les cookies avec la requête
         }
       );
 

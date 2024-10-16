@@ -1,6 +1,5 @@
 import { useLoaderData } from "react-router-dom";
 import axios from "axios";
-import Cars from "./SubmitFormAdmin.jsx";
 
 const allCars = "http://localhost:5000/api/v1/cars";
 
@@ -21,28 +20,36 @@ function AllCars() {
   const { allCars } = useLoaderData();
 
   return (
-    <>
-      <h1>Voitures</h1>
-      {allCars.map((car) => (
-        <div key={car._id}>
-          {car.images && car.images.length > 0 ? (
-            <img src={car.images[0].url} alt={`${car.brand} ${car.model}`} />
-          ) : (
-            <p>Aucune image disponible</p>
-          )}
-          <h2>
-            {car.brand} {car.model}
-          </h2>
-          <p>Année : {car.year}</p>
-          <p>Transmission : {car.transmission}</p>
-          <p>Type de carburant : {car.fuelType}</p>
-          <p>Nombre de places : {car.seats}</p>
-          <p>Prix par heure : {car.pricePerHour}€</p>
-          <p>Prix par jour : {car.pricePerDay}€</p>
-          <p>Status : {car.status}</p>
-        </div>
-      ))}
-    </>
+    <section className="container-car-page">
+      <h1 className="h1-car">Découvrez nos véhicules</h1>
+      <div className="cars-container">
+        {allCars.map((car) => (
+          <section key={car._id} className="cars-card">
+            <div className="individual-card">
+              {car.images && car.images.length > 0 ? (
+                <img
+                  src={car.images[0].url}
+                  alt={`${car.brand} ${car.model}`}
+                  className="card-img"
+                />
+              ) : (
+                <p>Aucune image disponible</p>
+              )}
+              <h2 className="car-name">
+                {car.brand} {car.model}
+              </h2>
+              <div className="car-info">
+                <p>{car.transmission}</p>
+                <p>{car.seats} places</p>
+                <p>{car.fuelType}</p>
+                <p>{car.horsePower}Cv</p>
+                <p>{car.pricePerDay}€/jour</p>
+              </div>
+            </div>
+          </section>
+        ))}
+      </div>
+    </section>
   );
 }
 

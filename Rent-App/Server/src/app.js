@@ -3,6 +3,7 @@ import "dotenv/config";
 import express from "express";
 import { v2 as cloudinary } from "cloudinary";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
@@ -15,7 +16,14 @@ import rentRouter from "./routes/rent.route.js";
 import userRouter from "./routes/user.route.js";
 import carRouter from "./routes/car.route.js";
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true, // Permet d'envoyer des cookies entre front-end et back-end
+  })
+);
+
+app.use(cookieParser());
 
 app.use(express.json());
 
