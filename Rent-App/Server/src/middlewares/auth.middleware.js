@@ -1,6 +1,5 @@
 import { UnauthenticatedError } from "../errors/index.js";
 import { verifyJWT } from "../utils/token.utils.js";
-import User from "../models/users.model.js";
 
 const authenticateUser = async (req, res, next) => {
   const authHeader = req.headers.authorization;

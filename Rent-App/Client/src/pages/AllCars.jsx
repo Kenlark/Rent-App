@@ -1,18 +1,14 @@
 import { useLoaderData } from "react-router-dom";
 import axios from "axios";
+import Cars from "./SubmitFormAdmin.jsx";
 
-const allImages = "http://localhost:5000/api/v1/images";
 const allCars = "http://localhost:5000/api/v1/cars";
 
 export const loader = async () => {
   try {
     const carsResponse = await axios.get(allCars);
-    const imagesResponse = await axios.get(allImages);
 
-    return {
-      allCars: carsResponse.data,
-      allImages: imagesResponse.data,
-    };
+    return carsResponse.data;
   } catch (error) {
     console.error("Erreur dans le loader :", error);
     throw new Error(
@@ -22,34 +18,15 @@ export const loader = async () => {
 };
 
 function AllCars() {
-  const { allCars, allImages } = useLoaderData();
-
-  console.log(allCars);
-  console.log(allImages);
-
-  console.log(Array.isArray(allCars));
-
-  const carsWithImages = allCars.map((car) => {
-    const carImages = allImages.filter(
-      (image) => image.idCar.toString() === car._id.toString()
-    );
-    return {
-      ...car,
-      images: carImages,
-    };
-  });
+  const { allCars } = useLoaderData();
 
   return (
     <>
       <h1>Voitures</h1>
-      {carsWithImages.map((car) => (
-        <div key={car._id} className="car-card">
-          {car.images.length > 0 ? (
-            <img
-              src={car.images[0].url}
-              alt={`${car.brand} ${car.model}`}
-              className="cars-card"
-            />
+      {allCars.map((car) => (
+        <div key={car._id}>
+          {car.images && car.images.length > 0 ? (
+            <img src={car.images[0].url} alt={`${car.brand} ${car.model}`} />
           ) : (
             <p>Aucune image disponible</p>
           )}
