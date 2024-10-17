@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import { useAuth } from "../authContext.jsx"; // Importer le contexte
+import { useAuth } from "../authContext.jsx"; // Assurez-vous que le chemin est correct
 
 import logoGoogle from "../assets/images/icons8-google.svg";
 import logoApple from "../assets/images/icons8-apple.svg";
@@ -11,7 +11,7 @@ import logoApple from "../assets/images/icons8-apple.svg";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { setIsLoggedIn } = useAuth(); // Utiliser le contexte
+  const { setIsLoggedIn, setUser, loginUser } = useAuth(); // Utiliser le contexte
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -29,21 +29,26 @@ const Login = () => {
         }
       );
 
-      const { token } = response.data;
+      const { token, user: loggedUser } = response.data;
+
+      if (!loggedUser) {
+        throw new Error("L'utilisateur n'est pas défini dans la réponse.");
+      }
 
       Cookies.set("token", token, { expires: 7, path: "/" });
 
-      setIsLoggedIn(true); // Met à jour l'état de connexion
+      loginUser(loggedUser);
+      setIsLoggedIn(true);
+      setUser(loggedUser);
       setEmail("");
-      setPassword(""); // Rediriger vers la page d'accueil après connexion
+      setPassword("");
 
       toast.success("Connexion réussie !");
-
       setTimeout(() => {
-        navigate("/");
+        navigate("/"); // Redirection après une connexion réussie
       }, 1500);
     } catch (error) {
-      console.log(error);
+      console.log("Erreur lors de la connexion :", error); // Ajouté pour déboguer
       const errorMessage =
         error.response?.data?.message || "Erreur lors de la connexion";
 

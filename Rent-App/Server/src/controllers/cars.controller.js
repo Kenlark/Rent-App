@@ -1,9 +1,4 @@
-import mongoose from "mongoose";
-
-import { formatImage } from "../middlewares/multer.middleware.js";
-import { v2 as cloudinary } from "cloudinary";
 import * as carsService from "../services/car.service.js";
-import { BadRequestError, NotFoundError } from "../errors/index.js";
 import { StatusCodes } from "http-status-codes";
 import checkAdmin from "../middlewares/checkAdmin.middleware.js";
 

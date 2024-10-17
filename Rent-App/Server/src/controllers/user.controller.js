@@ -64,7 +64,14 @@ const login = async (req, res) => {
     sameSite: "strict", // Protection contre les attaques CSRF
   });
 
-  res.status(StatusCodes.OK).json({ user: { UserId: user._id } });
+  res.status(StatusCodes.OK).json({
+    user: {
+      UserId: user._id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+    },
+  });
 };
 
 const getAll = async (req, res) => {
@@ -94,6 +101,8 @@ const getMe = async (req, res) => {
     res.status(StatusCodes.OK).json({
       userId: user._id,
       email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
     });
   } catch (error) {
     console.error("Erreur lors de la récupération de l'utilisateur", error);

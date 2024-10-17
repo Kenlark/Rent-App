@@ -9,7 +9,7 @@ import SubmitCars from "./pages/SubmitFormAdmin.jsx";
 import { loader as AllCarsLoader } from "./pages/AllCars.jsx";
 import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
-import Register from "./pages/register.jsx";
+import Register from "./pages/Register.jsx";
 import AllCars from "./pages/AllCars.jsx";
 
 function ReactRouter() {

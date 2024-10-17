@@ -5,6 +5,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null); // Ajout de l'état pour l'utilisateur
 
   useEffect(() => {
     const checkUserStatus = async () => {
@@ -15,6 +16,7 @@ export const AuthProvider = ({ children }) => {
         );
         if (response.data) {
           setIsLoggedIn(true);
+          setUser(response.data);
         }
       } catch (error) {
         console.error(
@@ -28,8 +30,15 @@ export const AuthProvider = ({ children }) => {
     checkUserStatus();
   }, []);
 
+  const loginUser = (userData) => {
+    setUser(userData);
+    setIsLoggedIn(true); // Met à jour l'état d'authentification
+  };
+
   return (
-    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn, setIsLoggedIn, user, setUser, loginUser }}
+    >
       {children}
     </AuthContext.Provider>
   );
