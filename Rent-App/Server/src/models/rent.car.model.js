@@ -28,12 +28,12 @@ const RentSchema = new mongoose.Schema(
     idCar: {
       type: mongoose.Types.ObjectId,
       ref: "Cars",
-      // required: [true, "Veuillez fournir l'ID de la voiture"],
+      required: [true, "Veuillez fournir l'ID de la voiture"],
     },
     userID: {
       type: mongoose.Types.ObjectId,
       ref: "User",
-      // required: [true, "Veuillez fournir un administrateur"],
+      required: [true, "Veuillez fournir un administrateur"],
     },
   },
   { timestamps: true }

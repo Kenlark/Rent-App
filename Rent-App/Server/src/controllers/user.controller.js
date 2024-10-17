@@ -61,7 +61,7 @@ const login = async (req, res) => {
     sameSite: "strict", // Protection contre les attaques CSRF
   });
 
-  res.status(StatusCodes.OK).json({ user: { UserId: user._id }, token });
+  res.status(StatusCodes.OK).json({ user: { UserId: user._id } });
 };
 
 const getAll = async (req, res) => {
@@ -80,28 +80,29 @@ const getMe = async (req, res) => {
   try {
     const userId = req.user.userId;
 
-    const user = await userService.getSingleUser(userId); // Assure-toi que tu as le modèle User importé et configuré
+    const user = await userService.getSingleUser(userId);
 
     if (!user) {
-      return res.status(404).json({ message: "Utilisateur non trouvé" });
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ message: "Utilisateur non trouvé" });
     }
 
-    res.status(200).json({
+    res.status(StatusCodes.OK).json({
       userId: user._id,
-      username: user.username, // Ajoute d'autres informations utilisateur si nécessaire
       email: user.email,
     });
   } catch (error) {
     console.error("Erreur lors de la récupération de l'utilisateur", error);
     res
-      .status(500)
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ message: "Erreur du serveur", error: error.message });
   }
 };
 
 const logout = (req, res) => {
   res.clearCookie("token"); // Supprime le cookie
-  res.status(StatusCodes.OK).json({ msg: "Deconnexion reussie" }); // Renvoie un statut 200 pour la déconnexion réussie
+  res.status(StatusCodes.OK).json({ msg: "Deconnexion reussie" });
 };
 
 export { login, register, getAll, getMe, logout };

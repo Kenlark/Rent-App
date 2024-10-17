@@ -33,11 +33,15 @@ const Login = () => {
 
       Cookies.set("token", token, { expires: 7, path: "/" });
 
-      toast.success("Connexion réussie !");
       setIsLoggedIn(true); // Met à jour l'état de connexion
       setEmail("");
-      setPassword("");
-      navigate("/"); // Rediriger vers la page d'accueil après connexion
+      setPassword(""); // Rediriger vers la page d'accueil après connexion
+
+      toast.success("Connexion réussie !");
+
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
     } catch (error) {
       console.log(error);
       const errorMessage =

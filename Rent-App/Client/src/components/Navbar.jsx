@@ -1,5 +1,6 @@
 // src/components/Navbar.jsx
 import { NavLink, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { useAuth } from "../authContext.jsx"; // Importer le contexte
 import axios from "axios";
 
@@ -8,6 +9,7 @@ import car from "../assets/images/car-solid.svg";
 
 function Navbar() {
   const { isLoggedIn, setIsLoggedIn } = useAuth(); // Utiliser le contexte
+  const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -66,12 +68,25 @@ function Navbar() {
           <ul className="flex-login">
             {isLoggedIn ? (
               <>
-                <li>
-                  <NavLink to="/profile">Mon Profil</NavLink>
-                </li>
-                <li>
-                  <button onClick={handleLogout}>Se déconnecter</button>
-                </li>
+                <nav className={isOpen ? "menu-open" : "menu"}>
+                  <ul>
+                    <li className="flex-burger-li">
+                      <a href="#">Profil</a>
+                      <a href="#">Historique</a>
+                      <a href="#">Transactions</a>
+                      <a href="#">Paramètres</a>
+                      <a href="#">Sécurité</a>
+                      <button onClick={handleLogout} className="logout-btn">
+                        Se déconnecter
+                      </button>
+                    </li>
+                  </ul>
+                </nav>
+                <div className="burger-menu">
+                  <button onClick={() => setIsOpen(!isOpen)} className="avatar">
+                    <i class="fa-solid fa-chevron-down"></i>
+                  </button>
+                </div>
               </>
             ) : (
               <>

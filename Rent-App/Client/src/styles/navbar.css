@@ -124,3 +124,57 @@
 .wrap {
   text-wrap: nowrap;
 }
+
+.burger-menu {
+  position: relative;
+}
+
+.menu {
+  display: none;
+  position: absolute;
+  top: 3rem;
+  padding: 2rem;
+}
+
+.menu-open ul {
+  list-style: none;
+}
+
+.menu-open ul li a {
+  text-decoration: none;
+  color: black;
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.menu-open {
+  display: block;
+  margin-inline-end: 2rem;
+}
+
+.flex-burger-li {
+  position: absolute;
+  display: flex;
+  gap: 0.2rem;
+  flex-direction: column;
+  margin-block-start: 3rem;
+  animation: slideIn 0.3s forwards;
+}
+
+.logout-btn {
+  border: transparent;
+  background-color: transparent;
+  font-size: 16px;
+  font-family: "Montserrat";
+  text-wrap: nowrap;
+  cursor: pointer;
+}

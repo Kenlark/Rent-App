@@ -1,11 +1,13 @@
-import { UnauthenticatedError } from "../errors/index.js";
+import { StatusCodes } from "http-status-codes";
 import { verifyJWT } from "../utils/token.utils.js";
 
 const authenticateUser = async (req, res, next) => {
   const token = req.cookies.token; // Récupère le token du cookie
 
   if (!token) {
-    throw new UnauthenticatedError("Authentification invalide");
+    return res
+      .status(StatusCodes.UNAUTHORIZED)
+      .json({ message: "Authentification invalide" });
   }
 
   try {
@@ -16,9 +18,13 @@ const authenticateUser = async (req, res, next) => {
       role: decoded.role,
     };
 
+    req.isLoggedIn = true;
+
     next(); // Passe au middleware suivant
   } catch (error) {
-    throw new UnauthenticatedError("Authentification invalide");
+    return res
+      .status(StatusCodes.UNAUTHORIZED)
+      .json({ message: "Authentification invalide" });
   }
 };
 

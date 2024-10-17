@@ -2,7 +2,7 @@ import express from "express";
 import * as userController from "../controllers/user.controller.js";
 import { LoginUserSchema, RegisterUserSchema } from "../auth/users.schema.js";
 import validate from "../middlewares/validation.middleware.js";
-import authenticateUser from "../middlewares/auth.middleware.js"; // Assure-toi d'importer le middleware
+import authenticateUser from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
