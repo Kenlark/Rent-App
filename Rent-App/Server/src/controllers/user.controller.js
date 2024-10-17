@@ -1,11 +1,13 @@
 import { StatusCodes } from "http-status-codes";
 import * as userService from "../services/user.service.js";
 import { UnauthenticatedError } from "../errors/index.js";
+import { RegisterUserSchema } from "../auth/users.schema.js";
 import z from "zod";
-import jwt from "jsonwebtoken";
 
 const register = async (req, res) => {
   try {
+    console.log("Données reçues pour l'inscription :", req.body); // Log des données reçues
+
     const userData = RegisterUserSchema.parse(req.body);
 
     const existingUser = await userService.get({ email: userData.email });
@@ -17,21 +19,22 @@ const register = async (req, res) => {
     const token = user.createAccessToken();
 
     res.cookie("token", token, {
-      httpOnly: true, // Sécurise le cookie (non accessible via JavaScript)
+      httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 jours
-      sameSite: "strict", // Protection contre les attaques CSRF
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7d
+      sameSite: "strict",
     });
 
     res.status(StatusCodes.CREATED).json({ user, token });
   } catch (error) {
+    console.error("Erreur lors de l'inscription :", error); // Log de l'erreur
     if (error instanceof z.ZodError) {
       return res.status(StatusCodes.BAD_REQUEST).json({ errors: error.errors });
     }
 
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ message: "Erreur lors de l'inscription." });
+      .json({ message: "Erreur lors de l'inscription.", error: error.message });
   }
 };
 
