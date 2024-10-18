@@ -102,12 +102,12 @@ function Navbar() {
             ) : (
               <>
                 <li className="wrap login">
-                  <NavLink to="login" className={"login"}>
+                  <NavLink to="login" className="login">
                     Se connecter
                   </NavLink>
                 </li>
                 <li className="register">
-                  <NavLink to="register" className={"register"}>
+                  <NavLink to="register" className="register">
                     S'inscrire
                   </NavLink>
                 </li>

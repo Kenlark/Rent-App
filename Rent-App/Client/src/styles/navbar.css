@@ -41,6 +41,13 @@
   text-decoration: none;
   color: var(--white);
   cursor: pointer;
+  padding: 0.3rem;
+  border: 1px solid var(--white);
+  border-radius: var(--borderRadius);
+}
+
+ul {
+  list-style: none;
 }
 
 .car a,
@@ -119,6 +126,18 @@
   align-items: center;
   margin-inline-end: 5rem;
   gap: 1rem;
+}
+
+.login:hover {
+  background-color: var(--white);
+  transition: var(--transition);
+  color: black;
+}
+
+.register:hover {
+  background-color: var(--white);
+  transition: var(--transition);
+  color: black;
 }
 
 .wrap {
