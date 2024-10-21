@@ -5,13 +5,14 @@ import axios from "axios";
 
 import house from "../assets/images/iconmonstr-home-6.svg";
 import car from "../assets/images/car-solid.svg";
+import profile from "../assets/images/profile-avatar.svg";
+import chevronDown from "../assets/images/chevron-down.svg";
+import chevronUp from "../assets/images/chevron-up.svg";
 
 function Navbar() {
-  const { isLoggedIn, setIsLoggedIn, user, loginUser } = useAuth(); // Utiliser le contexte
+  const { isLoggedIn, setIsLoggedIn, user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
-
-  console.log(user);
 
   const handleLogout = async () => {
     try {
@@ -20,7 +21,7 @@ function Navbar() {
         {},
         { withCredentials: true }
       );
-      setIsLoggedIn(false); // Met à jour l'état local
+      setIsLoggedIn(false);
       navigate("/"); // Redirige vers la page d'accueil après déconnexion
     } catch (error) {
       console.error("Erreur lors de la déconnexion", error);
@@ -78,13 +79,23 @@ function Navbar() {
                       <span>{user.email}</span>
                       <li className="underline-edit">
                         <button className="edit-user-profile">
-                          Modifier le Profil
+                          <a href="#" className="edit-user-profile-link">
+                            Modifier le Profil
+                          </a>
                         </button>
                       </li>
-                      <a href="#">Profil</a>
-                      <a href="#">Historique</a>
-                      <a href="#">Paramètres</a>
-                      <a href="#">Contact</a>
+                      <a href="#" className="link-burger">
+                        Profil
+                      </a>
+                      <a href="#" className="link-burger">
+                        Historique
+                      </a>
+                      <a href="#" className="link-burger">
+                        Paramètres
+                      </a>
+                      <a href="#" className="link-burger">
+                        Contact
+                      </a>
                       <li className="underline-logout">
                         <button onClick={handleLogout} className="logout-btn">
                           Se déconnecter
@@ -94,8 +105,21 @@ function Navbar() {
                   </ul>
                 </nav>
                 <div className="burger-menu">
-                  <button onClick={() => setIsOpen(!isOpen)} className="avatar">
-                    <i class="fa-solid fa-chevron-down"></i>
+                  <button
+                    onClick={() => setIsOpen(!isOpen)}
+                    className="flex-avatar"
+                  >
+                    <span className="avatar">
+                      <span className="color-avatar">
+                        <img src={profile} alt="Profile" />
+                      </span>
+                    </span>
+                    <span className="btn-chevron">
+                      <img
+                        src={isOpen ? chevronUp : chevronDown}
+                        alt="Chevron"
+                      />
+                    </span>
                   </button>
                 </div>
               </>

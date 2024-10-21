@@ -38,6 +38,12 @@
   border-width: 0;
 }
 
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
 body {
   font-family: var(--ff-primary), "Roboto", system-ui, sans-serif;
   background-color: #f4f7fa;
@@ -57,4 +63,8 @@ body {
   display: grid;
   place-items: center;
   height: 100vh;
+}
+
+.container-car-page {
+  min-height: calc(100vh - 10rem);
 }

@@ -33,7 +33,7 @@ function AllCars() {
                   className="card-img"
                 />
               ) : (
-                <p>Aucune image disponible</p>
+                <p>Aucun véhicules disponible</p>
               )}
               <h2 className="car-name">
                 {car.brand} {car.model}

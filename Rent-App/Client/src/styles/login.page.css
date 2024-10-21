@@ -45,7 +45,6 @@
 .form-card {
   display: grid;
   place-content: center;
-  height: calc(100vh - 10.7rem);
   width: 50rem;
   height: 30rem;
   margin-inline: auto;
@@ -87,7 +86,7 @@
   align-self: flex-end;
   padding: 0.2rem 1rem;
   background-color: #1473e6;
-  color: white;
+  color: var(--white);
   border: none;
   cursor: pointer;
   border-radius: 0.6rem;

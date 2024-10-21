@@ -15,11 +15,13 @@ function SharedLayout() {
   }
 
   return (
-    <main>
+    <div className="layout">
       <Navbar />
-      <Outlet />
+      <main className="main-content">
+        <Outlet />
+      </main>
       <Footer />
-    </main>
+    </div>
   );
 }
 

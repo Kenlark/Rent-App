@@ -9,6 +9,8 @@ import "./styles/error-page.css";
 import "./styles/footer.css";
 import "./styles/all-cars.page.css";
 import "./styles/login.page.css";
+import "./styles/layout.css";
+import "./styles/register.css";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

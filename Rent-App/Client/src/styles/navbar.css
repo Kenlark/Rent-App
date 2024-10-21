@@ -159,7 +159,7 @@ ul {
   list-style: none;
 }
 
-.menu-open ul li a {
+.link-burger {
   text-decoration: none;
   color: black;
 }
@@ -217,6 +217,11 @@ ul {
   margin-block-end: 1rem;
 }
 
+.edit-user-profile-link {
+  text-decoration: none;
+  color: var(--white);
+}
+
 .user-mail {
   margin-block-end: 0.3rem;
 }
@@ -253,4 +258,39 @@ ul {
 
 .flex-burger-li > a:first-of-type {
   margin-block-start: 0.3rem;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #25b867;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  border: transparent;
+  cursor: pointer;
+}
+
+.color-avatar {
+  position: absolute;
+  margin-block-start: 0.2rem;
+  filter: invert(1);
+}
+
+.flex-avatar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  background-color: var(--navbar-color);
+  border: transparent;
+}
+
+.btn-chevron {
+  cursor: pointer;
+  transition: var(--transition);
+  filter: invert(1);
 }
