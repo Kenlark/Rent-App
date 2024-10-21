@@ -68,6 +68,7 @@
   width: 23.5rem;
   border-radius: var(--borderRadius);
   border: 1px solid #4d4d4d;
+  padding: 5px;
 }
 
 .form-register label {

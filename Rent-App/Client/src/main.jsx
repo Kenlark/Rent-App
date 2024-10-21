@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 import { AuthProvider } from "./authContext.jsx";
+import { ToastContainer } from "react-toastify";
 
 import "./styles/index.css";
 import "./styles/navbar.css";
@@ -16,6 +17,7 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AuthProvider>
       <App />
+      <ToastContainer position="top-center" />
     </AuthProvider>
   </StrictMode>
 );

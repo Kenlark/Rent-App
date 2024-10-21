@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../authContext.jsx";
 
 import logoGoogle from "../assets/images/icons8-google.svg";
 import logoApple from "../assets/images/icons8-apple.svg";
@@ -17,12 +19,14 @@ const Register = () => {
   const [lastName, setLastName] = useState("");
   const [birthDate, setBirthDate] = useState("");
   const [address, setAddress] = useState("");
+  const [address2, setAddress2] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [city, setCity] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [showMessageBirthday, setShowMessageBirthday] = useState(false);
   const [showMessageAddress, setShowMessageAddress] = useState(false);
 
+  const { loginUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -48,10 +52,19 @@ const Register = () => {
       );
 
       toast.success("Inscription réussie !");
-      navigate("/");
+
+      const userResponse = await axios.get(
+        "http://localhost:5000/api/v1/users/me",
+        { withCredentials: true }
+      );
+
+      loginUser(userResponse.data); // Met à jour l'utilisateur dans le contexte
+
+      setTimeout(() => {
+        navigate("/"); // Redirige après une courte pause
+      }, 2000);
     } catch (error) {
       console.log(error);
-
       const errorMessage =
         error.response?.data?.message || "Erreur lors de l'inscription";
       toast.error(errorMessage);
@@ -254,14 +267,17 @@ const Register = () => {
                       <a href="#">Politique de confidentialité</a>.
                     </p>
                   ) : null}
+                  <label htmlFor="address2" className="sr-only">
+                    Adresse
+                  </label>
                   <input
                     type="text"
-                    name="address"
-                    id="address"
+                    name="address2"
+                    id="address2"
                     required
                     placeholder="ex : Bâtiment, Appartement, Étage"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
+                    value={address2}
+                    onChange={(e) => setAddress2(e.target.value)}
                   />
                 </div>
                 <div className="flex-postalcode">
