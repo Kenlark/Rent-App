@@ -7,11 +7,13 @@ const RegisterUserSchema = z.object({
   password: z.string().min(6, {
     message: "Le mot de passe doit comporter au moins 6 caractères.",
   }),
-  birthMonth: z
-    .number()
-    .min(1)
-    .max(12, { message: "Mois de naissance invalide." }),
-  birthYear: z.number().min(1900, { message: "Année invalide." }),
+  birthDate: z.string().refine(
+    (date) => {
+      const parsedDate = new Date(date);
+      return !isNaN(parsedDate.getTime());
+    },
+    { message: "Date de naissance invalide." }
+  ),
   address: z.string().min(1, { message: "L'adresse est requise." }),
   postalCode: z.string().min(1, { message: "Le code postal est requis." }),
   city: z.string().min(1, { message: "La ville est requise." }),

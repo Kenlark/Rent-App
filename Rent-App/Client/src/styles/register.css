@@ -169,3 +169,127 @@
   text-decoration: none;
   color: #1473e6;
 }
+
+.flex-identity {
+  display: flex;
+  gap: 3.5rem;
+}
+
+.flex-name {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.flex-name input {
+  width: 10rem;
+  padding: 5px;
+}
+
+.form-register-step2 {
+  width: 40rem;
+  height: 43rem;
+}
+
+.flex-birthday {
+  display: flex;
+  flex-direction: column;
+  align-items: unset;
+  gap: 1rem;
+}
+
+.flex-birthday input {
+  width: 15rem;
+}
+
+.form-register .flex-birthday,
+.form-register .flex-postalcode,
+.form-register .flex-city,
+.form-register .flex-phone,
+.form-register .step-register-step2 {
+  align-items: flex-start;
+  width: 65%;
+}
+
+.flex-address {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.flex-address input {
+  padding: 5px;
+}
+
+.logo-info {
+  margin-inline-start: 1rem;
+  width: 15px;
+  cursor: pointer;
+}
+
+.pop-up-info-1 {
+  position: absolute;
+  max-width: 30ch;
+  border: 1px solid #787878;
+  border-radius: var(--borderRadius);
+  margin-inline-start: 0.75rem;
+  background-color: var(--white);
+  margin-inline-start: 12rem;
+  padding: 1rem;
+  z-index: 999;
+}
+
+.pop-up-info-2 {
+  position: absolute;
+  max-width: 30ch;
+  border: 1px solid #787878;
+  border-radius: var(--borderRadius);
+  margin-inline-start: 0.75rem;
+  background-color: var(--white);
+  margin-inline-start: -16rem;
+  padding: 1rem;
+  z-index: 999;
+}
+
+.flex-postalcode {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.flex-postalcode input {
+  text-align: center;
+  width: 5rem;
+  padding: 5px;
+}
+
+.flex-city {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.flex-city input {
+  width: 10rem;
+  padding: 5px;
+}
+
+.flex-phone {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.flex-phone input {
+  width: 10rem;
+  padding: 5px;
+}
+
+.politics {
+  text-align: center;
+}
+
+.step-register-step2 {
+  margin-block-end: 1rem;
+  color: #787878;
+}

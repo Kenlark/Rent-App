@@ -39,14 +39,14 @@
 .test {
   display: flex;
   align-items: center;
-  height: calc(100vh - 10.7rem);
+  height: calc(100vh - 12.7rem);
 }
 
 .form-card {
   display: grid;
   place-content: center;
-  width: 50rem;
-  height: 30rem;
+  width: 40rem;
+  height: 32rem;
   margin-inline: auto;
   background-color: var(--white);
   border-radius: var(--borderRadius);
