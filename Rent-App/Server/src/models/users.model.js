@@ -65,10 +65,14 @@ const UserSchema = new mongoose.Schema(
 );
 
 // Middleware pour hacher le mot de passe avant de sauvegarder
-UserSchema.pre("save", async function () {
-  if (this.isModified("password")) {
+UserSchema.pre("save", async function (next) {
+  if (this.isModified("password")) return next();
+  try {
     const salt = await bcrypt.genSalt();
     this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (error) {
+    return next(error);
   }
 });
 

@@ -6,7 +6,6 @@ import { StatusCodes } from "http-status-codes";
 
 const requestReset = async (req, res) => {
   try {
-    console.log("Demande de réinitialisation reçue:", req.body);
     await requestPasswordReset(req, res);
   } catch (error) {
     console.error(
@@ -22,7 +21,6 @@ const requestReset = async (req, res) => {
 
 const resetPassword = async (req, res) => {
   const { token, newPassword } = req.body;
-  console.log("Réinitialisation du mot de passe pour le token:", token);
 
   try {
     const message = await resetPasswordService(token, newPassword);

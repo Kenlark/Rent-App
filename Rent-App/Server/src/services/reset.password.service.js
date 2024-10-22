@@ -9,12 +9,9 @@ const resend = new Resend(process.env.API_KEY_RESEND);
 const requestPasswordReset = async (req, res) => {
   const { email } = req.body;
 
-  console.log("Tentative d'envoi d'e-mail à:", email);
-
   const user = await User.findOne({ email });
 
   if (!user) {
-    console.log("Utilisateur non trouvé pour l'e-mail:", email);
     return res
       .status(StatusCodes.NOT_FOUND)
       .json({ msg: "Utilisateur non trouvé" });
@@ -27,12 +24,9 @@ const requestPasswordReset = async (req, res) => {
   console.log("Token de réinitialisation généré:", token);
 
   user.resetPasswordToken = token;
-  console.log("Assignation du token:", token);
   await user.save();
-  console.log("Token après sauvegarde:", user.resetPasswordToken);
 
   const resetLink = `http://localhost:5173/reset-password?token=${token}`;
-  console.log("Lien de réinitialisation envoyé:", resetLink);
 
   try {
     await resend.emails.send({
@@ -42,7 +36,6 @@ const requestPasswordReset = async (req, res) => {
       html: `<p>Cliquez sur ce lien pour réinitialiser votre mot de passe: </p><a href="${resetLink}">Réinitiliser mon mot de passe</a>`,
     });
 
-    console.log("E-mail de réinitialisation envoyé avec succès à:", email);
     res.status(StatusCodes.OK).json({
       msg: "E-mail de réinitialisation de l'e-mail",
     });
@@ -63,35 +56,27 @@ const resetPassword = async (token, newPassword) => {
   let decoded;
   try {
     decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("Token décodé:", decoded);
   } catch (error) {
     throw new Error("Token invalide ou expiré");
   }
 
   const user = await User.findById(decoded.userID);
-  console.log("Utilisateur trouvé pour la réinitialisation:", user);
-  console.log("Token de l'utilisateur:", user.resetPasswordToken); // Pour débogage
 
   if (!user || user.resetPasswordToken !== token) {
     throw new Error("Token invalide ou expiré");
   }
 
-  // Ajoute un log pour voir le mot de passe avant le hachage
-  console.log("Mot de passe avant le hachage:", newPassword);
-
-  const salt = await bcrypt.genSalt(10);
+  // Hachez le nouveau mot de passe
+  const salt = await bcrypt.genSalt();
   const hashedPassword = await bcrypt.hash(newPassword, salt);
-  console.log("Mot de passe haché:", hashedPassword);
 
-  user.password = hashedPassword; // Assurez-vous d'utiliser le bon mot de passe
+  // Mettez à jour le mot de passe de l'utilisateur
+  user.password = hashedPassword;
+
   user.resetPasswordToken = undefined; // Réinitialiser le token
   await user.save();
 
-  console.log(
-    "Mot de passe réinitialisé avec succès pour l'utilisateur:",
-    user.email
-  );
-  return "Mot de passe réinitialisé avec succès";
+  return "Mot de passe réinitialiser avec succès";
 };
 
 export { requestPasswordReset, resetPassword };

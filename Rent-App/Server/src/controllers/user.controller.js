@@ -62,11 +62,6 @@ const login = async (req, res) => {
 
     const isPasswordCorrect = await user.comparePasswords(req.body.password);
 
-    // Logs pour le débogage
-    console.log("Mot de passe saisi:", req.body.password);
-    console.log("Mot de passe haché:", user.password);
-    console.log("Correspondance des mots de passe:", isPasswordCorrect);
-
     if (!isPasswordCorrect) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
         message: "Votre Email ou votre mot de passe ne correspond pas",
