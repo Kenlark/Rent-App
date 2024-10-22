@@ -36,6 +36,26 @@ const UserSchema = new mongoose.Schema(
       default: "user",
       minLength: 3,
     },
+    birthDate: {
+      type: Date,
+      required: [true, "Veuillez fournir une date de naissance"],
+    },
+    address: {
+      type: String,
+      required: [true, "Veuillez fournir une adresse"],
+    },
+    postalCode: {
+      type: String,
+      required: [true, "Veuillez fournir un code postal"],
+    },
+    city: {
+      type: String,
+      required: [true, "Veuillez fournir une ville"],
+    },
+    phoneNumber: {
+      type: String,
+      required: [true, "Veuillez fournir un numéro de téléphone"],
+    },
   },
   { timestamps: true }
 );

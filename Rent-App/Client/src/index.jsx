@@ -11,6 +11,7 @@ import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import AllCars from "./pages/AllCars.jsx";
+import ContactForm from "./pages/ContactForm.jsx";
 
 function ReactRouter() {
   const router = createBrowserRouter([
@@ -39,6 +40,10 @@ function ReactRouter() {
         {
           path: "submit-form-admin",
           element: <SubmitCars />,
+        },
+        {
+          path: "contact",
+          element: <ContactForm />,
         },
       ],
     },

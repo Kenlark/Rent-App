@@ -24,7 +24,11 @@ function Footer() {
           </a>
         </div>
         <div className="flex-contact">
-          <p>Contact</p>
+          <div>
+            <a href="/contact" className="a-contact">
+              Contact
+            </a>{" "}
+          </div>
           <div className="flex-logo">
             <a href="https://facebook.com" target="blank">
               {" "}

@@ -14,7 +14,7 @@ const authenticateUser = async (req, res, next) => {
     const decoded = verifyJWT(token); // Vérifie le token
 
     req.user = {
-      userId: decoded.userID,
+      userID: decoded.userID,
       role: decoded.role,
     };
 

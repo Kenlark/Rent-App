@@ -6,8 +6,6 @@ import z from "zod";
 
 const register = async (req, res) => {
   try {
-    console.log("Données reçues pour l'inscription :", req.body); // Log des données reçues
-
     const userData = RegisterUserSchema.parse(req.body);
 
     const existingUser = await userService.get({ email: userData.email });
@@ -16,6 +14,7 @@ const register = async (req, res) => {
     }
 
     const user = await userService.create(userData);
+
     const token = user.createAccessToken();
 
     res.cookie("token", token, {
@@ -25,9 +24,22 @@ const register = async (req, res) => {
       sameSite: "strict",
     });
 
-    res.status(StatusCodes.CREATED).json({ user, token });
+    res.status(StatusCodes.CREATED).json({
+      user: {
+        UserId: user._id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        role: user.role,
+        birthDate: user.birthDate,
+        address: user.address,
+        postalCode: user.postalCode,
+        city: user.city,
+        phoneNumber: user.phoneNumber,
+      },
+    });
   } catch (error) {
-    console.error("Erreur lors de l'inscription :", error); // Log de l'erreur
+    console.error("Erreur lors de l'inscription :", error);
     if (error instanceof z.ZodError) {
       return res.status(StatusCodes.BAD_REQUEST).json({ errors: error.errors });
     }
