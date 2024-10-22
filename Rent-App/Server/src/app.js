@@ -14,6 +14,7 @@ import errorHandler from "../src/middlewares/error-handler.middleware.js";
 import rentRouter from "./routes/rent.route.js";
 import userRouter from "./routes/user.route.js";
 import carRouter from "./routes/car.route.js";
+import emailsRouter from "./routes/email.route.js";
 
 app.use(
   cors({
@@ -37,6 +38,7 @@ connectDB();
 app.use("/api/v1/cars", carRouter);
 app.use("/api/v1/rent", rentRouter);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/emails", emailsRouter);
 
 app.use(notFound);
 app.use(errorHandler);
