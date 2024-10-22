@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.API_KEY_EMAIL);
+const resend = new Resend(process.env.API_KEY_RESEND);
 
 const sendEmail = async (req, res) => {
   const { from, to, subject, html } = req.body;
@@ -12,18 +12,20 @@ const sendEmail = async (req, res) => {
       .json({ msg: "Tous les champs sont requis" });
   }
 
-  const { data, error } = await resend.emails.send({
-    from,
-    to: [to],
-    subject,
-    html,
-  });
+  try {
+    const data = await resend.emails.send({
+      from,
+      to: [to],
+      subject,
+      html,
+    });
 
-  if (error) {
-    return res.status(StatusCodes.BAD_REQUEST).json({ error });
+    return res.status(StatusCodes.OK).json({ data });
+  } catch (error) {
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Erreur lors de l'envoi de l'email", error: error.message });
   }
-
-  res.status(StatusCodes.OK).json({ data });
 };
 
 export default sendEmail;

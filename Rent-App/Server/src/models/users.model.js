@@ -56,18 +56,26 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: [true, "Veuillez fournir un numéro de téléphone"],
     },
+    resetPasswordToken: {
+      type: String,
+      default: null,
+    },
   },
   { timestamps: true }
 );
 
+// Middleware pour hacher le mot de passe avant de sauvegarder
 UserSchema.pre("save", async function () {
-  const salt = await bcrypt.genSalt();
-  this.password = await bcrypt.hash(this.password, salt);
+  if (this.isModified("password")) {
+    const salt = await bcrypt.genSalt();
+    this.password = await bcrypt.hash(this.password, salt);
+  }
 });
 
+// Méthodes pour l'utilisateur
 UserSchema.methods.toJSON = function () {
   let userObject = this.toObject();
-  delete userObject.password;
+  delete userObject.password; // Ne pas retourner le mot de passe
   return userObject;
 };
 
@@ -84,6 +92,14 @@ UserSchema.methods.createAccessToken = function () {
 UserSchema.methods.comparePasswords = async function (userPassword) {
   const isMatch = await bcrypt.compare(userPassword, this.password);
   return isMatch;
+};
+
+UserSchema.methods.createResetToken = function () {
+  const resetToken = jwt.sign({ userID: this._id }, process.env.JWT_SECRET, {
+    expiresIn: "1h",
+  });
+
+  return resetToken;
 };
 
 export default model("User", UserSchema);

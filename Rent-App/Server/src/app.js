@@ -15,6 +15,7 @@ import rentRouter from "./routes/rent.route.js";
 import userRouter from "./routes/user.route.js";
 import carRouter from "./routes/car.route.js";
 import emailsRouter from "./routes/email.route.js";
+import resetPassword from "./routes/reset.password.route.js";
 
 app.use(
   cors({
@@ -39,6 +40,7 @@ app.use("/api/v1/cars", carRouter);
 app.use("/api/v1/rent", rentRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/emails", emailsRouter);
+app.use("/api/v1/reset-password", resetPassword);
 
 app.use(notFound);
 app.use(errorHandler);
