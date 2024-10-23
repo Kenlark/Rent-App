@@ -1,0 +1,31 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  padding: 1rem;
+}
+
+footer {
+  background-color: var(--footer-color);
+  color: var(--primary-color-footer);
+  height: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

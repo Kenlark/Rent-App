@@ -1,0 +1,89 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --navbar-color: #060b20;
+  --footer-color: #060b20;
+  --primary-color-footer: #b3b3b3;
+  --white: #fff;
+  --ff-primary: "Montserrat";
+  --bcg-body: #fafbff;
+  --borderRadius: 0.25rem;
+  --letterSpacing: 0.1em;
+  --transition: 0.3s ease-in-out all;
+  --max-width: 1180px;
+  --fixed-width: 600px;
+  --view-width: 90vw;
+  --shadow-1: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-2: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-3: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-4: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.footer {
+  background-color: var(--footer-color);
+  color: var(--primary-color-footer);
+  inline-size: 100%;
+  height: 5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.copyright {
+  margin-inline-start: 5rem;
+}
+
+.flex-footer {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.flex-contact {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.flex-logo {
+  display: flex;
+  align-items: center;
+  margin-inline-end: 5rem;
+  gap: 0.5rem;
+}
+
+.flex-logo img {
+  width: 20px;
+}
+
+.color-link {
+  color: var(--primary-color-footer);
+}
+
+.flex-footer a {
+  text-decoration: none;
+}
+
+.a-contact {
+  text-decoration: none;
+  color: var(--primary-color-footer);
+}

@@ -1,0 +1,88 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --navbar-color: #060b20;
+  --white: #fff;
+  --ff-primary: "Montserrat";
+  --bcg-body: #fafbff;
+  --borderRadius: 0.25rem;
+  --letterSpacing: 0.1em;
+  --transition: 0.3s ease-in-out all;
+  --max-width: 1180px;
+  --fixed-width: 600px;
+  --view-width: 90vw;
+  --shadow-1: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-2: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-3: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-4: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.email-form {
+  width: 400px;
+  margin: 50px auto;
+  background-color: var(--white);
+  padding: 20px;
+  border-radius: var(--borderRadius);
+  box-shadow: var(--shadow-2);
+}
+
+.email-form h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: var(--borderRadius);
+}
+
+textarea {
+  height: 100px;
+}
+
+.btn-submit-contact {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #1473e6;
+  color: var(--white);
+  border: none;
+  border-radius: var(--borderRadius);
+  cursor: pointer;
+}
+
+.btn-submit-contact:hover {
+  background-color: #005dce;
+  transition: var(--transition);
+}

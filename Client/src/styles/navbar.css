@@ -1,0 +1,296 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --navbar-color: #060b20;
+  --white: #fff;
+  --ff-primary: "Montserrat";
+  --bcg-body: #fafbff;
+  --borderRadius: 0.25rem;
+  --letterSpacing: 0.1em;
+  --transition: 0.3s ease-in-out all;
+  --max-width: 1180px;
+  --fixed-width: 600px;
+  --view-width: 90vw;
+  --shadow-1: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-2: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-3: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-4: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.login a,
+.register a {
+  text-decoration: none;
+  color: var(--white);
+  cursor: pointer;
+  padding: 0.3rem;
+  border: 1px solid var(--white);
+  border-radius: var(--borderRadius);
+}
+
+ul {
+  list-style: none;
+}
+
+.car a,
+.home a {
+  text-decoration: none;
+  color: var(--white);
+  cursor: pointer;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--navbar-color);
+  height: 5.7rem;
+}
+
+.flex-navbar {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  inline-size: 100vw;
+  margin-inline-start: 5rem;
+  gap: 5rem;
+}
+
+.navlink ul {
+  display: flex;
+  flex-direction: row;
+  gap: 0.75rem;
+}
+
+.navlink ul li {
+  list-style: none;
+}
+
+.logo-navbar {
+  font-size: 1.5rem;
+  color: var(--white);
+  font-weight: 700;
+  letter-spacing: var(--letterSpacing);
+}
+
+.active-btn {
+  display: flex;
+  gap: 0.25rem;
+  background-color: var(--white);
+  color: black !important;
+  font-weight: 500;
+  border-radius: var(--borderRadius);
+  padding: 0.5rem 0.5rem;
+}
+
+.inactive-btn {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.5rem 0.5rem;
+  color: var(--white);
+}
+
+.home-active > .logo-home {
+  filter: invert(1);
+}
+
+.logo-home,
+.logo-car {
+  width: 20px;
+}
+
+.cars-active .logo-car {
+  filter: invert(1);
+}
+
+.flex-login {
+  display: flex;
+  align-items: center;
+  margin-inline-end: 5rem;
+  gap: 1rem;
+}
+
+.login:hover {
+  background-color: var(--white);
+  transition: var(--transition);
+  color: black;
+}
+
+.register:hover {
+  background-color: var(--white);
+  transition: var(--transition);
+  color: black;
+}
+
+.wrap {
+  text-wrap: nowrap;
+}
+
+.burger-menu {
+  position: relative;
+}
+
+.menu {
+  display: none;
+  position: absolute;
+  top: 3rem;
+  padding: 2rem;
+}
+
+.menu-open ul {
+  list-style: none;
+}
+
+.link-burger {
+  text-decoration: none;
+  color: black;
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.menu-open {
+  display: block;
+  margin-inline-end: 10rem;
+}
+
+.flex-burger-li {
+  background-color: var(--white);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  position: absolute;
+  display: flex;
+  gap: 0.75rem;
+  flex-direction: column;
+  margin-block-start: 3rem;
+  animation: slideIn 0.3s forwards;
+}
+
+.logout-btn {
+  border: transparent;
+  background-color: transparent;
+  font-size: 16px;
+  font-family: "Montserrat";
+  text-wrap: nowrap;
+  cursor: pointer;
+  margin-block-start: 1rem;
+}
+
+.edit-user-profile {
+  border: transparent;
+  background-color: transparent;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 0.3rem 0.4rem;
+  font-family: "Montserrat";
+  text-wrap: nowrap;
+  cursor: pointer;
+  background-color: #43a06d;
+  color: var(--white);
+  border-radius: var(--borderRadius);
+  margin-block-end: 1rem;
+}
+
+.edit-user-profile-link {
+  text-decoration: none;
+  color: var(--white);
+}
+
+.user-mail {
+  margin-block-end: 0.3rem;
+}
+
+.underline-edit {
+  position: relative;
+}
+
+.underline-edit::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 117%;
+  height: 1px;
+  background-color: #d8d8d8;
+  margin-inline-start: -1.05rem;
+}
+
+.underline-logout {
+  position: relative;
+}
+
+.underline-logout::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 117%;
+  height: 1px;
+  background-color: #d8d8d8;
+  margin-inline-start: -1.05rem;
+}
+
+.flex-burger-li > a:first-of-type {
+  margin-block-start: 0.3rem;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #25b867;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  border: transparent;
+  cursor: pointer;
+}
+
+.color-avatar {
+  position: absolute;
+  margin-block-start: 0.2rem;
+  filter: invert(1);
+}
+
+.flex-avatar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  background-color: var(--navbar-color);
+  border: transparent;
+}
+
+.btn-chevron {
+  cursor: pointer;
+  transition: var(--transition);
+  filter: invert(1);
+}

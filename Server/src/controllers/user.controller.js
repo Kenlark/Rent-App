@@ -51,46 +51,39 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  try {
-    const user = await userService.get({ email: req.body.email });
+  const user = await userService.get({ email: req.body.email });
 
-    if (!user) {
-      return res.status(StatusCodes.UNAUTHORIZED).json({
-        message: "Votre Email ou votre mot de passe ne correspond pas",
-      });
-    }
-
-    const isPasswordCorrect = await user.comparePasswords(req.body.password);
-
-    if (!isPasswordCorrect) {
-      return res.status(StatusCodes.UNAUTHORIZED).json({
-        message: "Votre Email ou votre mot de passe ne correspond pas",
-      });
-    }
-
-    const token = user.createAccessToken();
-
-    res.cookie("token", token, {
-      httpOnly: true, // Sécurise le cookie (non accessible via JavaScript)
-      secure: process.env.NODE_ENV === "production", // Utilise le cookie sécurisé en production
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 jours
-      sameSite: "strict", // Protection contre les attaques CSRF
-    });
-
-    res.status(StatusCodes.OK).json({
-      user: {
-        UserId: user._id,
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-      },
-    });
-  } catch (error) {
-    console.error("Erreur lors de la connexion:", error);
-    res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ message: "Erreur interne du serveur" });
+  if (!user) {
+    return res
+      .status(StatusCodes.UNAUTHORIZED)
+      .json({ message: "Votre Email ou votre mot de passe ne correspond pas" });
   }
+
+  const isPasswordCorrect = await user.comparePasswords(req.body.password);
+
+  if (!isPasswordCorrect) {
+    return res
+      .status(StatusCodes.UNAUTHORIZED)
+      .json({ message: "Votre Email ou votre mot de passe ne correspond pas" });
+  }
+
+  const token = user.createAccessToken();
+
+  res.cookie("token", token, {
+    httpOnly: true, // Sécurise le cookie (non accessible via JavaScript)
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 jours
+    sameSite: "strict", // Protection contre les attaques CSRF
+  });
+
+  res.status(StatusCodes.OK).json({
+    user: {
+      UserId: user._id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+    },
+  });
 };
 
 const getAll = async (req, res) => {
@@ -132,7 +125,7 @@ const getMe = async (req, res) => {
 };
 
 const logout = (req, res) => {
-  res.clearCookie("token"); // Supprime le cookie
+  res.clearCookie("token");
   res.status(StatusCodes.OK).json({ msg: "Deconnexion reussie" });
 };
 
