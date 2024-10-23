@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Cookies from "js-cookie";
-import { useAuth } from "../authContext.jsx"; // Assurez-vous que le chemin est correct
+import { useAuth } from "../authContext.jsx";
 
 import logoGoogle from "../assets/images/icons8-google.svg";
 import logoApple from "../assets/images/icons8-apple.svg";
@@ -12,8 +12,17 @@ import logoApple from "../assets/images/icons8-apple.svg";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { setIsLoggedIn, setUser, loginUser } = useAuth(); // Utiliser le contexte
+  const [formType, setFormType] = useState("login");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const { token } = useParams();
+  const { setIsLoggedIn, setUser, loginUser } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token) {
+      setFormType("resetPassword"); // Basculer directement sur le formulaire de réinitialisation si un token est présent
+    }
+  }, [token]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -63,65 +72,165 @@ const Login = () => {
     }
   };
 
+  const handleForgotPasswordSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(
+        "http://localhost:5000/api/v1/reset-password/request-reset",
+        {
+          email,
+        }
+      );
+      toast.success(
+        "Si cet e-mail est enregistré, un lien de réinitialisation a été envoyé"
+      );
+      setEmail("");
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message || "Erreur lors de l'envoi de l'email";
+      toast.error(errorMessage);
+    }
+  };
+
+  const handleResetPasswordSubmit = async (e) => {
+    e.preventDefault();
+
+    if (password !== confirmPassword) {
+      toast.error("Les mots de passe ne correspondent pas");
+      return;
+    }
+
+    try {
+      await axios.post(
+        `http://localhost:5000/api/v1/reset-password/reset${token}`,
+        {
+          password,
+        }
+      );
+      toast.success("Mot de passe réinitialisé avec succès");
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+    } catch (error) {
+      toast.error("Erreur lors de la réinitialisation du mot de passe");
+    }
+  };
+
   return (
     <>
-      <ToastContainer position="top-center" />
       <section className="test">
         <div className="form-card">
-          <form onSubmit={handleSubmit} className="form">
-            <h1>Se connecter</h1>
-            <p className="new-user">
-              Vous êtes un nouvel utilisateur ?{" "}
-              <a href="/register">Créez un compte</a>
-            </p>
-            <label htmlFor="email" className="label-mail">
-              Adresse e-mail
-            </label>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <label htmlFor="password" className="label-password">
-              Mot de passe
-            </label>
-            <input
-              type="password"
-              name="password"
-              id="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <div className="forgot-password">
-              <a href="#">Mot de passe oublié ?</a>
+          {formType === "login" ? (
+            <form onSubmit={handleSubmit} className="form">
+              <h1>Se connecter</h1>
+              <p className="new-user">
+                Vous êtes un nouvel utilisateur ?{" "}
+                <a href="/register">Créez un compte</a>
+              </p>
+              <label htmlFor="email" className="label-mail">
+                Adresse e-mail
+              </label>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <label htmlFor="password" className="label-password">
+                Mot de passe
+              </label>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <div className="forgot-password">
+                <a href="#" onClick={() => setFormType("forgotPassword")}>
+                  Mot de passe oublié ?
+                </a>
+                <button type="submit" className="btn-submit">
+                  Continuer
+                </button>
+              </div>
+              <div className="flex-underline">
+                <div className="underline-login1"></div>
+                <p>ou</p>
+                <div className="underline-login2"></div>
+              </div>
+              <div className="flex-btn-oauth">
+                <button className="btn-oauth-google">
+                  <img
+                    src={logoGoogle}
+                    alt="logo google"
+                    className="logo-google"
+                  />
+                  Continuer avec Google
+                </button>
+                <button className="btn-oauth-apple">
+                  <img
+                    src={logoApple}
+                    alt="logo apple"
+                    className="logo-apple"
+                  />
+                  Continuer avec Apple
+                </button>
+              </div>
+            </form>
+          ) : formType === "forgotPassword" ? (
+            <form onSubmit={handleForgotPasswordSubmit} className="form">
+              <h1>Réinitialiser le mot de passe</h1>
+              <p>
+                Veuillez entrer votre adresse e-mail pour recevoir un lien de
+                réinitialisation.
+              </p>
+              <label htmlFor="email">Adresse e-mail</label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
               <button type="submit" className="btn-submit">
-                Continuer
+                Envoyer
               </button>
-            </div>
-            <div className="flex-underline">
-              <div className="underline-login1"></div>
-              <p>ou</p>
-              <div className="underline-login2"></div>
-            </div>
-            <div className="flex-btn-oauth">
-              <button className="btn-oauth-google">
-                <img
-                  src={logoGoogle}
-                  alt="logo google"
-                  className="logo-google"
-                />
-                Continuer avec Google
+              <button
+                type="button"
+                className="btn-back"
+                onClick={() => setFormType("login")}
+              >
+                Retour à la connexion
               </button>
-              <button className="btn-oauth-apple">
-                <img src={logoApple} alt="logo apple" className="logo-apple" />
-                Continuer avec Apple
+            </form>
+          ) : (
+            <form onSubmit={handleResetPasswordSubmit} className="form">
+              <h1>Réinitialiser le mot de passe</h1>
+              <label htmlFor="password">Nouveau mot de passe</label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <label htmlFor="confirmPassword">Confirmer le mot de passe</label>
+              <input
+                type="password"
+                id="confirmPassword"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+              <button type="submit" className="btn-submit">
+                Réinitialiser
               </button>
-            </div>
-          </form>
+            </form>
+          )}
         </div>
       </section>
     </>

@@ -2,6 +2,7 @@ import * as carsService from "../services/car.service.js";
 import { StatusCodes } from "http-status-codes";
 import checkAdmin from "../middlewares/checkAdmin.middleware.js";
 import cloudinary from "cloudinary";
+import mongoose from "mongoose";
 import { formatImage } from "../middlewares/multer.middleware.js";
 
 const create = async (req, res) => {
@@ -62,6 +63,66 @@ const getAll = async (req, res) => {
       .json({ error: "Erreur lors de la récupération des voitures" });
   }
 };
+
+// const update = async (req, res) => {
+//   checkAdmin(req, res, async () => {
+//     const { id } = req.params;
+//     const carImages = req.files;
+
+//     const isMongoId = mongoose.isValidObjectId(id);
+//     if (!isMongoId) {
+//       return res
+//         .status(StatusCodes.BAD_REQUEST)
+//         .json({ message: "ID invalide" });
+//     }
+
+//     try {
+//       console.log("Recherche de la voiture avec ID:", id); // Log de l'ID
+//       const existingCar = await carsService.get(id);
+//       if (!existingCar) {
+//         console.log("Voiture non trouvée."); // Log si la voiture n'est pas trouvée
+//         return res
+//           .status(StatusCodes.NOT_FOUND)
+//           .json({ message: "Voiture non trouvée" });
+//       }
+
+//       const updatedCarData = {
+//         ...req.body,
+//         createdBy: req.user.userID,
+//       };
+
+//       if (carImages && carImages.length > 0) {
+//         const imageUrls = [];
+//         console.log("Téléchargement d'images..."); // Log avant le téléchargement des images
+
+//         for (const file of carImages) {
+//           const formattedFile = formatImage(file);
+//           const response = await cloudinary.uploader.upload(formattedFile, {
+//             folder: "Car-Images",
+//           });
+//           imageUrls.push({ url: response.secure_url });
+//         }
+
+//         updatedCarData.images = imageUrls;
+//       }
+
+//       console.log(
+//         "Mise à jour de la voiture avec les données:",
+//         updatedCarData
+//       ); // Log des données de mise à jour
+//       const updatedCar = await carsService.update(id, updatedCarData);
+//       res.status(StatusCodes.OK).json({ car: updatedCar });
+//     } catch (error) {
+//       console.error(
+//         "Erreur lors de la mise à jour de la voiture :",
+//         error.message
+//       );
+//       return res
+//         .status(StatusCodes.INTERNAL_SERVER_ERROR)
+//         .json({ message: "Erreur lors de la mise à jour de la voiture" });
+//     }
+//   });
+// };
 
 const remove = async (req, res) => {
   checkAdmin(req, res, async () => {
