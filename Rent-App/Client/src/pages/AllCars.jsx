@@ -8,6 +8,7 @@ import gear from "../assets/images/gear-solid.svg";
 import carSeat from "../assets/images/car-seat-_2_.png";
 import fuelType from "../assets/images/gas-pump-solid.svg";
 import horsePower from "../assets/images/motor-svgrepo-com.png";
+import { useAuth } from "../authContext.jsx";
 
 const allCarsUrl = "http://localhost:5000/api/v1/cars";
 
@@ -40,6 +41,9 @@ function AllCars() {
   });
 
   const [cars, setCars] = useState(allCars || []);
+  const { user } = useAuth();
+
+  console.log(user);
 
   useEffect(() => {
     if (currentCar) {
@@ -137,7 +141,9 @@ function AllCars() {
                   </p>
                   <p className="align-info-img">{car.pricePerDay} €/jour</p>
                 </div>
-                <button onClick={() => handleEditClick(car)}>Modifier</button>
+                {user && user.role === "admin" ? (
+                  <button onClick={() => handleEditClick(car)}>Modifier</button>
+                ) : null}
               </div>
             </div>
           </section>

@@ -5,7 +5,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState(null); // Ajout de l'état pour l'utilisateur
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const checkUserStatus = async () => {
@@ -19,25 +19,52 @@ export const AuthProvider = ({ children }) => {
           setUser(response.data);
         }
       } catch (error) {
+        if (error.response && error.response.status === 401) {
+          setIsLoggedIn(false);
+          setUser(null);
+        }
         console.error(
           "Erreur lors de la vérification du statut de l'utilisateur",
           error
         );
-        setIsLoggedIn(false);
       }
     };
 
     checkUserStatus();
   }, []);
 
+  const logoutUser = async () => {
+    try {
+      await axios.post(
+        "http://localhost:5000/api/v1/users/logout",
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+
+      setIsLoggedIn(false);
+      setUser(null);
+    } catch (error) {
+      console.error("Erreur lors de la déconnexion", error);
+    }
+  };
+
   const loginUser = (userData) => {
     setUser(userData);
-    setIsLoggedIn(true); // Met à jour l'état d'authentification
+    setIsLoggedIn(true);
   };
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, setIsLoggedIn, user, setUser, loginUser }}
+      value={{
+        isLoggedIn,
+        setIsLoggedIn,
+        user,
+        setUser,
+        loginUser,
+        logoutUser,
+      }}
     >
       {children}
     </AuthContext.Provider>

@@ -12,7 +12,7 @@ import chevronDown from "../assets/images/chevron-down.svg";
 import chevronUp from "../assets/images/chevron-up.svg";
 
 function Navbar() {
-  const { isLoggedIn, setIsLoggedIn, user } = useAuth();
+  const { isLoggedIn, setIsLoggedIn, user, setUser } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -27,6 +27,7 @@ function Navbar() {
       toast.success("Déconnexion réussie");
 
       setIsLoggedIn(false);
+      setUser(null);
 
       setTimeout(() => {
         navigate("/");

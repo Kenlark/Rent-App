@@ -2,7 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import { verifyJWT } from "../utils/token.utils.js";
 
 const authenticateUser = async (req, res, next) => {
-  const token = req.cookies.token; // Récupère le token du cookie
+  const token = req.cookies.token;
 
   if (!token) {
     return res
@@ -11,7 +11,9 @@ const authenticateUser = async (req, res, next) => {
   }
 
   try {
-    const decoded = verifyJWT(token); // Vérifie le token
+    const decoded = verifyJWT(token);
+
+    console.log(verifyJWT(token));
 
     req.user = {
       userID: decoded.userID,
@@ -19,9 +21,9 @@ const authenticateUser = async (req, res, next) => {
     };
 
     req.isLoggedIn = true;
-    next(); // Passe au middleware suivant
+    next();
   } catch (error) {
-    console.error("Erreur de vérification du token :", error); // Ajout d'un log
+    console.error("Erreur de vérification du token :", error);
     return res
       .status(StatusCodes.UNAUTHORIZED)
       .json({ message: "Authentification invalide" });

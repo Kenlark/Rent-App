@@ -1,8 +1,7 @@
 import userCarModel from "../models/users.model.js";
 
 const get = async (options) => {
-  const user = await userCarModel.findOne(options);
-  return user;
+  return await userCarModel.findOne(options);
 };
 
 const getAll = async () => {
