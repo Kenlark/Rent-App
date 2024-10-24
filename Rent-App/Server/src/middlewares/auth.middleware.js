@@ -19,9 +19,9 @@ const authenticateUser = async (req, res, next) => {
     };
 
     req.isLoggedIn = true;
-
     next(); // Passe au middleware suivant
   } catch (error) {
+    console.error("Erreur de vérification du token :", error); // Ajout d'un log
     return res
       .status(StatusCodes.UNAUTHORIZED)
       .json({ message: "Authentification invalide" });

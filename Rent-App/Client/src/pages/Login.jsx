@@ -55,10 +55,9 @@ const Login = () => {
 
       toast.success("Connexion réussie !");
       setTimeout(() => {
-        navigate("/"); // Redirection après une connexion réussie
-      }, 1500);
+        navigate("/");
+      }, 500);
     } catch (error) {
-      console.log("Erreur lors de la connexion :", error); // Ajouté pour déboguer
       const errorMessage =
         error.response?.data?.message || "Erreur lors de la connexion";
 
@@ -79,6 +78,9 @@ const Login = () => {
         "http://localhost:5000/api/v1/reset-password/request-reset",
         {
           email,
+        },
+        {
+          withCredentials: true,
         }
       );
       toast.success(

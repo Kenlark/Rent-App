@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import axios from "axios";
 import Modal from "react-modal";
-import Cookies from "js-cookie";
+import { toast } from "react-toastify";
 
 import gear from "../assets/images/gear-solid.svg";
 import carSeat from "../assets/images/car-seat-_2_.png";
 import fuelType from "../assets/images/gas-pump-solid.svg";
-import horsePorwer from "../assets/images/motor-svgrepo-com.png";
+import horsePower from "../assets/images/motor-svgrepo-com.png";
 
 const allCarsUrl = "http://localhost:5000/api/v1/cars";
 
@@ -39,6 +39,8 @@ function AllCars() {
     pricePerDay: "",
   });
 
+  const [cars, setCars] = useState(allCars || []);
+
   useEffect(() => {
     if (currentCar) {
       setUpdatedCarData({
@@ -65,24 +67,26 @@ function AllCars() {
 
   const handleSave = async () => {
     try {
-      const token = Cookies.get("token"); // Récupérer le token des cookies
-
       const response = await axios.put(
         `http://localhost:5000/api/v1/cars/${currentCar._id}`,
-        updatedCarData, // Utilisez l'état mis à jour
+        updatedCarData,
         {
-          headers: {
-            Authorization: `Bearer ${token}`, // Utilisez le token récupéré
-          },
+          withCredentials: true,
         }
       );
 
-      console.log("Voiture mise à jour:", response.data);
-    } catch (error) {
-      console.error(
-        "Erreur lors de la mise à jour de la voiture:",
-        error.response ? error.response.data : error.message // Ajoutez un log plus précis
+      const updatedCars = cars.map((car) =>
+        car._id === currentCar._id ? response.data.car : car
       );
+
+      setCars(updatedCars);
+
+      handleModalClose();
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour de la voiture:", error);
+      if (error.response) {
+        toast.error("Vous n'avez pas les droits administrateurs");
+      }
     }
   };
 
@@ -98,7 +102,7 @@ function AllCars() {
     <section className="container-car-page">
       <h1 className="h1-car">Découvrez nos véhicules</h1>
       <div className="cars-container">
-        {allCars.map((car) => (
+        {cars.map((car) => (
           <section key={car._id} className="cars-card">
             <div className="individual-card">
               {car.images && car.images.length > 0 ? (
@@ -108,7 +112,7 @@ function AllCars() {
                   className="card-img"
                 />
               ) : (
-                <p>Aucun véhicules disponible</p>
+                <p>Aucun véhicule disponible</p>
               )}
               <div>
                 <h2 className="car-name">
@@ -128,7 +132,7 @@ function AllCars() {
                     {car.fuelType}
                   </p>
                   <p className="align-info-img">
-                    <img src={horsePorwer} className="horse-power" />
+                    <img src={horsePower} className="horse-power" />
                     {car.horsePower} Cv
                   </p>
                   <p className="align-info-img">{car.pricePerDay} €/jour</p>
@@ -148,7 +152,12 @@ function AllCars() {
         overlayClassName="overlay"
       >
         <h2>Modifier le véhicule</h2>
-        <form onSubmit={handleSave}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSave();
+          }}
+        >
           <label>Marque :</label>
           <input
             type="text"

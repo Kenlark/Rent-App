@@ -30,7 +30,7 @@ function Navbar() {
 
       setTimeout(() => {
         navigate("/");
-      }, 2000);
+      }, 500);
     } catch (error) {
       console.error("Erreur lors de la déconnexion", error);
     }
