@@ -52,6 +52,23 @@ const create = async (req, res) => {
   });
 };
 
+const getById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const car = await carsService.get(id);
+    if (!car) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: "Voiture introuvable" });
+    }
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Erreur lors de la récupération du véhicule" });
+  }
+};
+
 const getAll = async (req, res) => {
   try {
     const allCars = await carsService.getAll();
@@ -157,4 +174,4 @@ const remove = async (req, res) => {
   });
 };
 
-export { create, getAll, remove, update };
+export { create, getAll, remove, update, getById };

@@ -13,6 +13,7 @@ import "./styles/login.page.css";
 import "./styles/layout.css";
 import "./styles/register.css";
 import "./styles/contact-form.css";
+import "./styles/single-car.css";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

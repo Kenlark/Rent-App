@@ -6,15 +6,16 @@ import upload from "../middlewares/multer.middleware.js";
 
 const router = express.Router();
 
-router
-  .route("/")
-  .post(
-    authenticateUser,
-    checkAdmin,
-    upload.array("images"),
-    carsController.create
-  )
-  .get(carsController.getAll);
+router.post(
+  "./",
+  authenticateUser,
+  checkAdmin,
+  upload.array("images"),
+  carsController.create
+);
+
+router.get("/", carsController.getAll);
+router.get("/:id", carsController.getById);
 
 router.put("/:id", authenticateUser, checkAdmin, carsController.update);
 router.delete("/:id", authenticateUser, checkAdmin, carsController.remove);

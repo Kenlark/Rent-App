@@ -24,7 +24,6 @@ const update = async (id, data) => {
     return updatedCar;
   } catch (error) {
     console.error("Erreur lors de la mise à jour de la voiture :", error);
-    throw error; // ou gérer l'erreur comme tu le souhaites
   }
 };
 
