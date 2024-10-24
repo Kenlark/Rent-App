@@ -94,9 +94,9 @@ function Navbar() {
                     <ul>
                       <li className="flex-burger-li">
                         <span className="user-mail">
-                          {user.firstName + " " + user.lastName}
+                          {user?.firstName + " " + user?.lastName}
                         </span>
-                        <span>{user.email}</span>
+                        <span>{user?.email}</span>
                         <li className="underline-edit">
                           <button className="edit-user-profile">
                             <a href="#" className="edit-user-profile-link">
