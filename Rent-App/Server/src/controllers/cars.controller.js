@@ -61,6 +61,8 @@ const getById = async (req, res) => {
         .status(StatusCodes.NOT_FOUND)
         .json({ msg: "Voiture introuvable" });
     }
+
+    res.status(StatusCodes.OK).json(car);
   } catch (error) {
     console.log(error);
     return res
@@ -146,20 +148,18 @@ const remove = async (req, res) => {
       throw new BadRequestError(`Format de l'id invalide : ${id}`);
     }
 
-    // Trouver la voiture à supprimer
     const car = await carsService.get(id);
     if (!car) {
       throw new NotFoundError(`Pas de voiture avec l'id : ${id}`);
     }
 
     try {
-      const images = car.images; // Récupère les images de la voiture
+      const images = car.images;
       for (const image of images) {
         const publicId = image.url.split("/").pop().split(".")[0];
         await cloudinary.uploader.destroy(`Rent-Images/${publicId}`);
       }
 
-      // Supprimer la voiture de MongoDB
       await carsService.remove(id);
 
       res

@@ -97,13 +97,13 @@ function Navbar() {
                           {user?.firstName + " " + user?.lastName}
                         </span>
                         <span>{user?.email}</span>
-                        <li className="underline-edit">
+                        <span className="underline-edit">
                           <button className="edit-user-profile">
                             <a href="#" className="edit-user-profile-link">
                               Modifier le Profil
                             </a>
                           </button>
-                        </li>
+                        </span>
                         <a href="#" className="link-burger">
                           Profil
                         </a>
@@ -116,11 +116,11 @@ function Navbar() {
                         <a href="#" className="link-burger">
                           Contact
                         </a>
-                        <li className="underline-logout">
+                        <span className="underline-logout">
                           <button onClick={handleLogout} className="logout-btn">
                             Se déconnecter
                           </button>
-                        </li>
+                        </span>
                       </li>
                     </ul>
                   </nav>

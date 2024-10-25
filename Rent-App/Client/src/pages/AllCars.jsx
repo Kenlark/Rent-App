@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, Link } from "react-router-dom";
 import axios from "axios";
 import Modal from "react-modal";
 import { toast } from "react-toastify";
@@ -42,8 +42,6 @@ function AllCars() {
 
   const [cars, setCars] = useState(allCars || []);
   const { user } = useAuth();
-
-  console.log(user);
 
   useEffect(() => {
     if (currentCar) {
@@ -102,6 +100,26 @@ function AllCars() {
     }));
   };
 
+  const handleDelete = async (carId) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/v1/cars/${carId}`, {
+        withCredentials: true,
+      });
+
+      const updatedCars = cars.filter((car) => car._id !== carId);
+      setCars(updatedCars);
+
+      toast.success("Voiture supprimée avec succès");
+    } catch (error) {
+      console.error("Erreur lors de la suppression de la voiture:", error);
+      if (error.response) {
+        toast.error(
+          "Vous n'avez pas les droits administrateurs ou erreur serveur"
+        );
+      }
+    }
+  };
+
   return (
     <section className="container-car-page">
       <h1 className="h1-car">Découvrez nos véhicules</h1>
@@ -124,32 +142,47 @@ function AllCars() {
                 </h2>
                 <div className="car-info">
                   <p className="align-info-img">
-                    <img src={gear} className="gear" />
+                    <img src={gear} className="gear" alt="Transmission" />
                     {car.transmission}
                   </p>
                   <p className="align-info-img">
-                    <img src={carSeat} className="car-seat" />
+                    <img src={carSeat} className="car-seat" alt="Places" />
                     {car.seats} places
                   </p>
                   <p className="align-info-img">
-                    <img src={fuelType} className="fuel" />
+                    <img src={fuelType} className="fuel" alt="Carburant" />
                     {car.fuelType}
                   </p>
                   <p className="align-info-img">
-                    <img src={horsePower} className="horse-power" />
+                    <img
+                      src={horsePower}
+                      className="horse-power"
+                      alt="Puissance"
+                    />
                     {car.horsePower} Cv
                   </p>
                   <p className="align-info-img">{car.pricePerDay} €/jour</p>
                 </div>
-                {user && user.role === "admin" ? (
-                  <button onClick={() => handleEditClick(car)}>Modifier</button>
-                ) : null}
+                <Link to={`/cars/${car._id}`}>
+                  <button className="details-button">Voir les détails</button>
+                </Link>
+                {user && user.role === "admin" && (
+                  <>
+                    <button onClick={() => handleEditClick(car)}>
+                      Modifier
+                    </button>
+                    <button onClick={() => handleDelete(car._id)}>
+                      Supprimer
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </section>
         ))}
       </div>
 
+      {/* Modal pour modification du véhicule */}
       <Modal
         isOpen={isModalOpen}
         onRequestClose={handleModalClose}

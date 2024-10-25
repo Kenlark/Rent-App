@@ -12,6 +12,8 @@ import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import AllCars from "./pages/AllCars.jsx";
 import ContactForm from "./pages/ContactForm.jsx";
+import SingleCar from "./pages/SingleCar.jsx";
+import { loader as SingleCarLoader } from "./pages/SingleCar.jsx";
 
 function ReactRouter() {
   const router = createBrowserRouter([
@@ -44,6 +46,11 @@ function ReactRouter() {
         {
           path: "contact",
           element: <ContactForm />,
+        },
+        {
+          path: "cars/:id",
+          element: <SingleCar />,
+          loader: SingleCarLoader,
         },
       ],
     },

@@ -18,6 +18,7 @@ router.get("/", carsController.getAll);
 router.get("/:id", carsController.getById);
 
 router.put("/:id", authenticateUser, checkAdmin, carsController.update);
+
 router.delete("/:id", authenticateUser, checkAdmin, carsController.remove);
 
 export default router;

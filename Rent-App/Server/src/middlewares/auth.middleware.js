@@ -13,8 +13,6 @@ const authenticateUser = async (req, res, next) => {
   try {
     const decoded = verifyJWT(token);
 
-    console.log(verifyJWT(token));
-
     req.user = {
       userID: decoded.userID,
       role: decoded.role,
