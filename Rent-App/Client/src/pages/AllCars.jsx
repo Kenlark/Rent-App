@@ -29,7 +29,9 @@ export const loader = async () => {
 function AllCars() {
   const { allCars } = useLoaderData();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [currentCar, setCurrentCar] = useState(null);
+  const [carToDelete, setCarToDelete] = useState(null);
   const [updatedCarData, setUpdatedCarData] = useState({
     brand: "",
     model: "",
@@ -82,7 +84,6 @@ function AllCars() {
       );
 
       setCars(updatedCars);
-
       handleModalClose();
     } catch (error) {
       console.error("Erreur lors de la mise à jour de la voiture:", error);
@@ -100,15 +101,15 @@ function AllCars() {
     }));
   };
 
-  const handleDelete = async (carId) => {
+  const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:5000/api/v1/cars/${carId}`, {
+      await axios.delete(`http://localhost:5000/api/v1/cars/${carToDelete}`, {
         withCredentials: true,
       });
 
-      const updatedCars = cars.filter((car) => car._id !== carId);
+      const updatedCars = cars.filter((car) => car._id !== carToDelete);
       setCars(updatedCars);
-
+      setIsDeleteModalOpen(false);
       toast.success("Voiture supprimée avec succès");
     } catch (error) {
       console.error("Erreur lors de la suppression de la voiture:", error);
@@ -118,6 +119,11 @@ function AllCars() {
         );
       }
     }
+  };
+
+  const confirmDelete = (carId) => {
+    setCarToDelete(carId);
+    setIsDeleteModalOpen(true);
   };
 
   return (
@@ -163,26 +169,33 @@ function AllCars() {
                   </p>
                   <p className="align-info-img">{car.pricePerDay} €/jour</p>
                 </div>
-                <Link to={`/cars/${car._id}`}>
-                  <button className="details-button">Voir les détails</button>
-                </Link>
-                {user && user.role === "admin" && (
-                  <>
-                    <button onClick={() => handleEditClick(car)}>
-                      Modifier
-                    </button>
-                    <button onClick={() => handleDelete(car._id)}>
-                      Supprimer
-                    </button>
-                  </>
-                )}
+                <div className="flex-btn-admin">
+                  <Link to={`/cars/${car._id}`}>
+                    <button className="details-button">Voir les détails</button>
+                  </Link>
+                  {user && user.role === "admin" && (
+                    <>
+                      <button
+                        className="edit-button"
+                        onClick={() => handleEditClick(car)}
+                      >
+                        Modifier
+                      </button>
+                      <button
+                        className="delete-button"
+                        onClick={() => confirmDelete(car._id)}
+                      >
+                        Supprimer
+                      </button>
+                    </>
+                  )}
+                </div>
               </div>
             </div>
           </section>
         ))}
       </div>
 
-      {/* Modal pour modification du véhicule */}
       <Modal
         isOpen={isModalOpen}
         onRequestClose={handleModalClose}
@@ -190,6 +203,7 @@ function AllCars() {
         className="modal"
         overlayClassName="overlay"
       >
+        {/* Modal de modification */}
         <h2>Modifier le véhicule</h2>
         <form
           onSubmit={(e) => {
@@ -253,11 +267,39 @@ function AllCars() {
             onChange={handleInputChange}
             required
           />
-          <button type="submit">Sauvegarder</button>
-          <button type="button" onClick={handleModalClose}>
+          <button className="save-btn" type="submit">
+            Sauvegarder
+          </button>
+          <button
+            className="cancel-btn"
+            type="button"
+            onClick={handleModalClose}
+          >
             Annuler
           </button>
         </form>
+      </Modal>
+
+      <Modal
+        isOpen={isDeleteModalOpen}
+        onRequestClose={() => setIsDeleteModalOpen(false)}
+        contentLabel="Confirmer la suppression"
+        className="delete-modal"
+        overlayClassName="overlay"
+      >
+        <h2>Confirmer la suppression</h2>
+        <p>Êtes-vous sûr de vouloir supprimer ce véhicule ?</p>
+        <div className="flex-btn-modal">
+          <button className="confirm-btn" onClick={handleDelete}>
+            Confirmer
+          </button>
+          <button
+            className="cancel-btn"
+            onClick={() => setIsDeleteModalOpen(false)}
+          >
+            Annuler
+          </button>
+        </div>
       </Modal>
     </section>
   );

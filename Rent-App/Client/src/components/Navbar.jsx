@@ -78,7 +78,7 @@ function Navbar() {
                     className="logo-car"
                     width={20}
                   />
-                  Voitures
+                  Nos Véhicules
                 </NavLink>
               </li>
             </ul>

@@ -18,14 +18,4 @@ body {
 
 .main-content {
   flex: 1;
-  padding: 1rem;
-}
-
-footer {
-  background-color: var(--footer-color);
-  color: var(--primary-color-footer);
-  height: 5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }

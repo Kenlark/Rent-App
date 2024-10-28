@@ -1,4 +1,5 @@
-import { useLoaderData, useParams } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
+import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -13,7 +14,6 @@ export const loader = async ({ params }) => {
 
   try {
     const response = await axios.get(carUrl);
-    console.log("Données de la voiture :", response.data);
     return response.data;
   } catch (error) {
     console.error("Erreur lors de la récupération de la voiture :", error);
@@ -23,49 +23,120 @@ export const loader = async ({ params }) => {
 
 const SingleCar = () => {
   const car = useLoaderData();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   if (!car) {
     toast.error("Erreur lors du chargement du véhicule.");
     return <p>Aucune voiture trouvée.</p>;
   }
 
+  const handleNext = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === car.images.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const handlePrev = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? car.images.length - 1 : prevIndex - 1
+    );
+  };
+
+  const handleDotClick = (index) => {
+    setCurrentImageIndex(index);
+  };
+
   return (
-    <section className="single-car-container">
-      <div className="single-car-card">
-        {car.images && car.images.length > 0 ? (
-          <img
-            src={car.images[0].url}
-            alt={`${car.brand} ${car.model}`}
-            className="car-image"
-          />
-        ) : (
-          <p>Image non disponible</p>
-        )}
-        <h2>
-          {car.brand} {car.model} ({car.year})
-        </h2>
-        <div className="car-details">
-          <p>
-            <img src={gearIcon} className="gear" />
-            Transmission : {car.transmission}
-          </p>
-          <p>
-            <img src={carSeatIcon} className="car-seat" /> Places :{car.seats}
-          </p>
-          <p>
-            <img src={fuelTypeIcon} className="fuel" />
-            Carburant : {car.fuelType}
-          </p>
-          <p>
-            <img src={horsePowerIcon} className="horse-power" />
-            Puissance : {car.horsePower} CV
-          </p>
-          <p>Prix par heure : {car.pricePerHour} €/h</p>
-          <p>Prix par jour : {car.pricePerDay} €/jour</p>
-          <p>Status : {car.status}</p>
-        </div>
+    <>
+      <div className="btn-padding">
+        <Link to={"/cars"}>
+          <button className="btn-redirect-container">
+            Retour à tous nos véhicules
+          </button>
+        </Link>
       </div>
-    </section>
+      <section className="single-car-container">
+        <div className="single-car-card">
+          {car.images && car.images.length > 0 ? (
+            <div className="carousel">
+              {car.images.length > 1 ? (
+                <>
+                  <div className="btn-prev">
+                    <button onClick={handlePrev} className="carousel-button">
+                      &lt;
+                    </button>
+                  </div>
+                  <div>
+                    <div className="img-single-car">
+                      <img
+                        src={car.images[currentImageIndex].url}
+                        alt={`${car.brand} ${car.model}`}
+                        className="car-image"
+                      />
+                    </div>
+                    {car.images.length > 1 ? (
+                      <div className="dots-container">
+                        {car.images.map((image, index) => (
+                          <span
+                            key={index}
+                            className={`dot ${
+                              currentImageIndex === index ? "active" : ""
+                            }`}
+                            onClick={() => handleDotClick(index)}
+                          ></span>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
+                  <div>
+                    <button onClick={handleNext} className="carousel-button">
+                      &gt;
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <div className="img-single-car">
+                  <img
+                    src={car.images[currentImageIndex].url}
+                    alt={`${car.brand} ${car.model}`}
+                    className="car-image"
+                  />
+                </div>
+              )}
+            </div>
+          ) : (
+            <p>Image non disponible</p>
+          )}
+
+          <div className="car-details">
+            <h2>
+              {car.brand} {car.model} ({car.year})
+            </h2>
+            <p>
+              <img src={gearIcon} className="gear" alt="Transmission" />
+              Transmission : {car.transmission}
+            </p>
+            <p>
+              <img src={carSeatIcon} className="car-seat" alt="Places" />
+              Places : {car.seats}
+            </p>
+            <p>
+              <img src={fuelTypeIcon} className="fuel" alt="Carburant" />
+              Carburant : {car.fuelType}
+            </p>
+            <p>
+              <img
+                src={horsePowerIcon}
+                className="horse-power"
+                alt="Puissance"
+              />
+              Puissance : {car.horsePower} CV
+            </p>
+            <p>Prix par jour : {car.pricePerDay} €/jour</p>
+          </div>
+        </div>
+      </section>
+    </>
   );
 };
 

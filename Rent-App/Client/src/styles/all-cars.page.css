@@ -70,7 +70,7 @@
 
 .h1-car {
   text-align: left;
-  margin-inline-start: 1.3rem;
+  margin-inline-start: 3.2rem;
 }
 
 .car-name {
@@ -137,6 +137,77 @@
 
 .modal button {
   margin-top: 10px;
+}
+
+.details-button,
+.edit-button {
+  border: transparent;
+  background-color: #5774ff;
+  color: var(--white);
+  border-radius: var(--borderRadius);
+  padding: 0.3rem 0.3rem;
+  cursor: pointer;
+}
+
+.delete-button {
+  border: transparent;
+  background-color: #e73535;
+  color: var(--white);
+  border-radius: var(--borderRadius);
+  padding: 0.3rem 0.3rem;
+  cursor: pointer;
+}
+
+.delete-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  z-index: 1001;
+}
+
+.delete-modal h2 {
+  font-weight: 500;
+  margin-block-end: 1rem;
+}
+
+.delete-modal p {
+  margin-block-end: 1rem;
+}
+
+.flex-btn-modal {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+}
+
+.flex-btn-admin {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
+}
+
+.confirm-btn,
+.save-btn {
+  border: transparent;
+  background-color: #239c3d;
+  color: var(--white);
+  border-radius: var(--borderRadius);
+  padding: 0.3rem 0.3rem;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  border: transparent;
+  background-color: #e73535;
+  color: var(--white);
+  border-radius: var(--borderRadius);
+  padding: 0.3rem 0.3rem;
+  cursor: pointer;
 }
 
 @media (max-width: 1540px) {

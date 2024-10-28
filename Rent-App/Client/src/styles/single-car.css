@@ -35,3 +35,85 @@
   white-space: nowrap;
   border-width: 0;
 }
+
+.single-car-container {
+  display: flex;
+  justify-content: center;
+  height: calc(100vh - 14rem);
+}
+
+.car-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.car-details p img {
+  margin-inline-end: 0.5rem;
+}
+
+.single-car-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5rem;
+  position: relative;
+}
+
+.carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 800px;
+}
+
+.carousel img {
+  width: 100%;
+  border-radius: var(--borderRadius);
+}
+
+.car-image {
+  width: 100%;
+}
+
+.carousel-button {
+  border: transparent;
+  font-size: 2rem;
+  margin: 0.5rem;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.dots-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.dot {
+  height: 0.6rem;
+  width: 0.6rem;
+  margin-inline-start: 0.4rem;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.dot.active {
+  background-color: #4a6aff;
+}
+
+.btn-padding {
+  padding: 1rem;
+}
+
+.btn-redirect-container {
+  color: var(--white);
+  border-radius: var(--borderRadius);
+  border: transparent;
+  background-color: #5774ff;
+  padding: 0.5rem 0.5rem;
+  cursor: pointer;
+}
