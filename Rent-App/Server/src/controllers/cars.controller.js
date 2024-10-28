@@ -6,7 +6,6 @@ import mongoose from "mongoose";
 import { formatImage } from "../middlewares/multer.middleware.js";
 
 const create = async (req, res) => {
-  // Vérification si l'utilisateur est un admin
   checkAdmin(req, res, async () => {
     const carImages = req.files;
 

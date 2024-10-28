@@ -6,7 +6,6 @@ const CARS_STATUS = {
 
 const RENT_STATUS = {
   AVAILABLE: "en stock",
-  IN_PROGRESS: "loué",
   UNAVAILABLE: "non disponible à la location",
 };
 

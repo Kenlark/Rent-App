@@ -1,15 +1,16 @@
 import express from "express";
 import * as rentController from "../controllers/rents.controller.js";
-import upload from "../middlewares/multer.middleware.js";
+import authenticateUser from "../middlewares/auth.middleware.js";
+import checkAdmin from "../middlewares/checkAdmin.middleware.js";
 
 const router = express.Router();
 
-// router
-//   .route("/")
-//   .post(upload.array("image", 10), rentController.create)
-//   .get(rentController.getAll);
-// .put("/images/:id", rentController.update);
+router.post("/", authenticateUser, checkAdmin, rentController.create);
 
-// router.delete("/:id", rentController.remove);
+router.get("/", authenticateUser, checkAdmin, rentController.getAll);
+
+router.put("/:id", authenticateUser, checkAdmin, rentController.update);
+
+router.delete("/:id", authenticateUser, checkAdmin, rentController.remove);
 
 export default router;

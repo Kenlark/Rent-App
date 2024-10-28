@@ -5,7 +5,7 @@ import User from "./users.model.js";
 const ImagesCarsSchema = new Schema({
   url: {
     type: String,
-    required: [true, "Veuillez fournir l'URL de l'image de la voiture"],
+    required: [true, "Veuillez fournir les ou l'URL de l'image de la voiture"],
   },
 });
 
@@ -62,8 +62,9 @@ const CarsSchema = new Schema(
         message: "La donnée entrée n'est pas un nombre entier",
       },
     },
-    pricePerDay: {
+    pricePerHour: {
       type: Number,
+      required: [true, "Le prix par jour est obligatoire"],
       validate: {
         validator: function (value) {
           return Number.isInteger(value);

@@ -12,17 +12,13 @@ const RentSchema = new mongoose.Schema(
       type: Date,
       required: [true, "Veuillez entrer une date de fin de location"],
     },
-    totalPrice: {
+    pricePerDay: {
       type: Number,
       required: [true, "Veuillez entrer un prix de location"],
     },
     status: {
       type: String,
-      enum: [
-        RENT_STATUS.AVAILABLE,
-        RENT_STATUS.IN_PROGRESS,
-        RENT_STATUS.UNAVAILABLE,
-      ],
+      enum: [RENT_STATUS.AVAILABLE, RENT_STATUS.UNAVAILABLE],
       default: RENT_STATUS.AVAILABLE,
     },
     idCar: {

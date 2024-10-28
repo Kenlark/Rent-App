@@ -13,6 +13,11 @@ const authenticateUser = async (req, res, next) => {
   try {
     const decoded = verifyJWT(token);
 
+    req.car = {
+      car: decoded._id,
+      userID: decoded.userID,
+    };
+
     req.user = {
       userID: decoded.userID,
       role: decoded.role,
