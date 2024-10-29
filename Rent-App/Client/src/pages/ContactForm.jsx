@@ -31,7 +31,7 @@ const ContactForm = () => {
         toast.success("Email envoyé avec succès!");
       }
     } catch (error) {
-      toast.error("Erreur lors de l'envoi de l'email");
+      toast.error("Erreur lors de l'envoi de l'email", error);
     }
   };
 
@@ -54,7 +54,9 @@ const ContactForm = () => {
               onChange={handleChange}
               required
             />
-            <label className="form-label">De :</label>
+            <label htmlFor="subject" className="form-label">
+              De :
+            </label>
           </div>
           <div className="form-group">
             <input
@@ -66,7 +68,9 @@ const ContactForm = () => {
               onChange={handleChange}
               required
             />
-            <label className="form-label">Sujet :</label>
+            <label htmlFor="subject" className="form-label">
+              Sujet :
+            </label>
           </div>
           <div className="form-group">
             <textarea
@@ -77,7 +81,9 @@ const ContactForm = () => {
               onChange={handleChange}
               required
             />
-            <label className="form-label">Message :</label>
+            <label htmlFor="message" className="form-label">
+              Message :
+            </label>
           </div>
           <button type="submit" className="btn-submit-form-contact">
             Envoyer

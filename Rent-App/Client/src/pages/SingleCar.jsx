@@ -79,10 +79,17 @@ const SingleCar = () => {
                         {car.images.map((image, index) => (
                           <span
                             key={index}
+                            role="button"
+                            tabIndex="0"
                             className={`dot ${
                               currentImageIndex === index ? "active" : ""
                             }`}
                             onClick={() => handleDotClick(index)}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" || e.key === " ") {
+                                handleDotClick(index);
+                              }
+                            }}
                           ></span>
                         ))}
                       </div>

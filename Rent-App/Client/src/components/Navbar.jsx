@@ -2,7 +2,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuth } from "../authContext.jsx";
 import axios from "axios";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import house from "../assets/images/iconmonstr-home-6.svg";
@@ -99,21 +99,21 @@ function Navbar() {
                         <span>{user?.email}</span>
                         <span className="underline-edit">
                           <button className="edit-user-profile">
-                            <a href="#" className="edit-user-profile-link">
+                            <a href="/edit" className="edit-user-profile-link">
                               Modifier le Profil
                             </a>
                           </button>
                         </span>
-                        <a href="#" className="link-burger">
+                        <a href="/profile" className="link-burger">
                           Profil
                         </a>
-                        <a href="#" className="link-burger">
+                        <a href="/history" className="link-burger">
                           Historique
                         </a>
-                        <a href="#" className="link-burger">
+                        <a href="/settings" className="link-burger">
                           Paramètres
                         </a>
-                        <a href="#" className="link-burger">
+                        <a href="/contact" className="link-burger">
                           Contact
                         </a>
                         <span className="underline-logout">
@@ -149,7 +149,7 @@ function Navbar() {
                   </li>
                   <li className="register">
                     <NavLink to="register" className="register">
-                      S'inscrire
+                      S&apos;inscrire
                     </NavLink>
                   </li>
                 </>

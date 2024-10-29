@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
@@ -114,7 +114,7 @@ const Login = () => {
         navigate("/login");
       }, 2000);
     } catch (error) {
-      toast.error("Erreur lors de la réinitialisation du mot de passe");
+      toast.error("Erreur lors de la réinitialisation du mot de passe", error);
     }
   };
 
@@ -152,9 +152,13 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
               <div className="forgot-password">
-                <a href="#" onClick={() => setFormType("forgotPassword")}>
+                <button
+                  href="#"
+                  className="btn-forgot-password"
+                  onClick={() => setFormType("forgotPassword")}
+                >
                   Mot de passe oublié ?
-                </a>
+                </button>
                 <button type="submit" className="btn-submit">
                   Continuer
                 </button>

@@ -203,7 +203,6 @@ function AllCars() {
         className="modal"
         overlayClassName="overlay"
       >
-        {/* Modal de modification */}
         <h2>Modifier le véhicule</h2>
         <form
           onSubmit={(e) => {
@@ -211,7 +210,7 @@ function AllCars() {
             handleSave();
           }}
         >
-          <label>Marque :</label>
+          <label htmlFor="brand">Marque :</label>
           <input
             type="text"
             name="brand"
@@ -219,7 +218,7 @@ function AllCars() {
             onChange={handleInputChange}
             required
           />
-          <label>Modèle :</label>
+          <label htmlFor="model">Modèle :</label>
           <input
             type="text"
             name="model"
@@ -227,7 +226,7 @@ function AllCars() {
             onChange={handleInputChange}
             required
           />
-          <label>Transmission :</label>
+          <label htmlFor="transmission">Transmission :</label>
           <input
             type="text"
             name="transmission"
@@ -235,7 +234,7 @@ function AllCars() {
             onChange={handleInputChange}
             required
           />
-          <label>Places :</label>
+          <label htmlFor="seats">Places :</label>
           <input
             type="number"
             name="seats"
@@ -243,7 +242,7 @@ function AllCars() {
             onChange={handleInputChange}
             required
           />
-          <label>Type de carburant :</label>
+          <label htmlFor="fuelType">Type de carburant :</label>
           <input
             type="text"
             name="fuelType"
@@ -251,7 +250,7 @@ function AllCars() {
             onChange={handleInputChange}
             required
           />
-          <label>Puissance :</label>
+          <label htmlFor="horsePower">Puissance :</label>
           <input
             type="number"
             name="horsePower"
@@ -259,7 +258,7 @@ function AllCars() {
             onChange={handleInputChange}
             required
           />
-          <label>Prix par jour :</label>
+          <label htmlFor="pricePerDay">Prix par jour :</label>
           <input
             type="number"
             name="pricePerDay"

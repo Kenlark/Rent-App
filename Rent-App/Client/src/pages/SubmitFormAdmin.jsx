@@ -1,7 +1,6 @@
 import { useLoaderData, useNavigation } from "react-router-dom";
 
 import axios from "axios";
-import Cookies from "js-cookie";
 
 const allImages = "http://localhost:5000/api/v1/images";
 const allCars = "http://localhost:5000/api/v1/cars";

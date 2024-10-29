@@ -103,6 +103,12 @@
   color: #1473e6;
 }
 
+.btn-forgot-password {
+  color: #1473e6;
+  border: transparent;
+  background-color: transparent;
+}
+
 .form h1 {
   margin-block-end: 1rem;
 }
