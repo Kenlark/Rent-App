@@ -57,7 +57,7 @@ function AllCars() {
         pricePerDay: currentCar.pricePerDay,
       });
     }
-  }, [currentCar]);
+  }, [currentCar, cars]);
 
   const handleEditClick = (car) => {
     setCurrentCar(car);
@@ -282,23 +282,21 @@ function AllCars() {
       <Modal
         isOpen={isDeleteModalOpen}
         onRequestClose={() => setIsDeleteModalOpen(false)}
-        contentLabel="Confirmer la suppression"
-        className="delete-modal"
+        contentLabel="Confirmation de la suppression"
+        className="modal"
         overlayClassName="overlay"
       >
         <h2>Confirmer la suppression</h2>
-        <p>Êtes-vous sûr de vouloir supprimer ce véhicule ?</p>
-        <div className="flex-btn-modal">
-          <button className="confirm-btn" onClick={handleDelete}>
-            Confirmer
-          </button>
-          <button
-            className="cancel-btn"
-            onClick={() => setIsDeleteModalOpen(false)}
-          >
-            Annuler
-          </button>
-        </div>
+        <p>Êtes-vous sûr de vouloir supprimer cette voiture ?</p>
+        <button className="delete-confirm-btn" onClick={handleDelete}>
+          Oui, supprimer
+        </button>
+        <button
+          className="delete-cancel-btn"
+          onClick={() => setIsDeleteModalOpen(false)}
+        >
+          Annuler
+        </button>
       </Modal>
     </section>
   );

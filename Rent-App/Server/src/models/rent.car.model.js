@@ -1,4 +1,5 @@
 import mongoose, { Schema, model } from "mongoose";
+import User from "./users.model.js";
 
 import { RENT_STATUS } from "../utils/constants.js";
 

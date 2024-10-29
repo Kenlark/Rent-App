@@ -1,77 +1,362 @@
-import { useLoaderData, useNavigation } from "react-router-dom";
-
+import { useState, useEffect } from "react";
 import axios from "axios";
+import DatePicker, { registerLocale } from "react-datepicker";
+import fr from "date-fns/locale/fr";
+registerLocale("fr", fr);
+import { toast } from "react-toastify";
 
-const allImages = "http://localhost:5000/api/v1/images";
-const allCars = "http://localhost:5000/api/v1/cars";
-
-export const loader = async () => {
-  try {
-    const [carsResponse, imagesResponse] = await Promise.all([
-      axios.get(allCars),
-      axios.get(allImages),
-    ]);
-
-    return {
-      allCars: carsResponse.data,
-      allImages: imagesResponse.data,
-    };
-  } catch (error) {
-    console.error("Erreur dans le loader :", error);
-    throw new Error(
-      "Impossible de charger le contenu. Veuillez réessayer plus tard"
-    );
-  }
-};
-
-function Cars() {
-  const { allCars, allImages } = useLoaderData();
-  const navigation = useNavigation();
-
-  if (navigation.state === "loading") {
-    return (
-      <main className="loading-center">
-        <div className="loading"></div>
-      </main>
-    );
-  }
-
-  const carsWithImages = allCars.map((car) => {
-    const carImages = allImages.filter(
-      (image) => image.idCar.toString() === car._id.toString()
-    );
-    return {
-      ...car,
-      images: carImages,
-    };
+const SubmitFormAdmin = () => {
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [userID, setUserID] = useState(null);
+  const [carData, setCarData] = useState({
+    brand: "",
+    model: "",
+    year: "",
+    transmission: "",
+    fuelType: "",
+    seats: "",
+    pricePerHour: "",
+    pricePerDay: "",
+    horsePower: "",
+    status: "",
+    images: null,
   });
 
-  return (
-    <>
-      <h1>Voitures</h1>
-      {carsWithImages.map((car) => (
-        <div key={car._id} className="car-card">
-          {car.images.length > 0 && (
-            <img
-              src={car.images[0].url}
-              alt={`${car.brand} ${car.model}`}
-              className="cars-card"
-            />
-          )}
-          <h2>
-            {car.brand} {car.model}
-          </h2>
-          <p>Année : {car.year}</p>
-          <p>Transmission : {car.transmission}</p>
-          <p>Type de carburant : {car.fuelType}</p>
-          <p>Nombre de places : {car.seats}</p>
-          <p>Prix par heure : {car.pricePerHour}€</p>
-          <p>Prix par jour : {car.pricePerDay}€</p>
-          <p>Status : {car.status}</p>
-        </div>
-      ))}
-    </>
-  );
-}
+  const [rentalData, setRentalData] = useState({
+    pricePerDay: "",
+    startDate: null,
+    endDate: null,
+    idCar: "",
+  });
 
-export default Cars;
+  const [cars, setCars] = useState([]);
+
+  useEffect(() => {
+    const checkAdmin = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/v1/users/me",
+          { withCredentials: true }
+        );
+        if (response.data.role === "admin") {
+          setIsAdmin(true);
+          setUserID(response.data.userId);
+        }
+      } catch (error) {
+        toast.error("Erreur lors de la vérification du rôle.");
+      }
+    };
+
+    checkAdmin();
+
+    const fetchCars = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/v1/cars");
+        setCars(response.data.allCars);
+      } catch (error) {
+        toast.error("Erreur lors de la récupération des voitures.");
+      }
+    };
+
+    fetchCars();
+  }, []);
+
+  const handleCarChange = (e) => {
+    const { name, value, type, files } = e.target;
+    setCarData({
+      ...carData,
+      [name]: type === "file" ? Array.from(files) : value,
+    });
+  };
+
+  const handleRentalChange = (e) => {
+    const { name, value, type } = e.target;
+    setRentalData((prevData) => ({
+      ...prevData,
+      [name]: type === "number" ? Number(value) : value,
+    }));
+  };
+
+  const handleDateChange = (dateField) => (date) => {
+    setRentalData((prevState) => {
+      const newState = { ...prevState, [dateField]: date };
+      if (dateField === "endDate") {
+        if (!prevState.startDate) {
+          const errorMsg = "Vous devez d'abord sélectionner une date de début.";
+          setErrorMessage(errorMsg);
+          toast.error(errorMsg);
+          return { ...newState, endDate: null };
+        }
+        const startDate = new Date(prevState.startDate);
+        const endDate = new Date(date);
+        if (endDate <= startDate) {
+          const errorMsg =
+            "L'heure de fin doit être postérieure à l'heure de début.";
+          setErrorMessage(errorMsg);
+          toast.error(errorMsg);
+          return { ...newState, endDate: null };
+        }
+      }
+      setErrorMessage("");
+      return newState;
+    });
+  };
+
+  const getMinTime = () => {
+    if (rentalData.startDate) {
+      return new Date(rentalData.startDate).setHours(
+        new Date(rentalData.startDate).getHours() + 1
+      );
+    }
+    return new Date();
+  };
+
+  const handleCarSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    for (const key in carData) {
+      if (key === "images") {
+        carData.images.forEach((file) => {
+          formData.append("images", file);
+        });
+      } else {
+        formData.append(key, carData[key]);
+      }
+    }
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/v1/cars",
+        formData,
+        {
+          withCredentials: true,
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      toast.success("Voiture ajoutée avec succès !");
+    } catch (error) {
+      toast.error("Erreur lors de l'ajout de la voiture.");
+    }
+  };
+
+  const handleRentalSubmit = async (e) => {
+    e.preventDefault();
+    if (!userID) {
+      console.error("ID utilisateur manquant !");
+      toast.error("Erreur: ID utilisateur non défini.");
+      return;
+    }
+
+    try {
+      const rentData = {
+        ...rentalData,
+        userID: userID,
+      };
+
+      const response = await axios.post(
+        "http://localhost:5000/api/v1/rent",
+        rentData,
+        { withCredentials: true }
+      );
+      toast.success("Location créée avec succès !");
+    } catch (error) {
+      toast.error("Erreur lors de la création de la location.");
+    }
+  };
+
+  return (
+    <div>
+      <h1>Gestion des Voitures et Locations</h1>
+      {isAdmin ? (
+        <form onSubmit={handleCarSubmit}>
+          <h2>Ajouter une Voiture</h2>
+          <label>
+            Marque:
+            <input
+              type="text"
+              name="brand"
+              value={carData.brand}
+              onChange={handleCarChange}
+              required
+            />
+          </label>
+          <label>
+            Modèle:
+            <input
+              type="text"
+              name="model"
+              value={carData.model}
+              onChange={handleCarChange}
+              required
+            />
+          </label>
+          <label>
+            Année:
+            <input
+              type="number"
+              name="year"
+              value={carData.year}
+              onChange={handleCarChange}
+              required
+            />
+          </label>
+          <label>
+            Transmission:
+            <input
+              type="text"
+              name="transmission"
+              value={carData.transmission}
+              onChange={handleCarChange}
+              required
+            />
+          </label>
+          <label>
+            Type de Carburant:
+            <input
+              type="text"
+              name="fuelType"
+              value={carData.fuelType}
+              onChange={handleCarChange}
+              required
+            />
+          </label>
+          <label>
+            Places:
+            <input
+              type="number"
+              name="seats"
+              value={carData.seats}
+              onChange={handleCarChange}
+              required
+            />
+          </label>
+          <label>
+            Prix par Heure:
+            <input
+              type="number"
+              name="pricePerHour"
+              value={carData.pricePerHour}
+              onChange={handleCarChange}
+              required
+            />
+          </label>
+          <label>
+            Prix par Jour:
+            <input
+              type="number"
+              name="pricePerDay"
+              value={carData.pricePerDay}
+              onChange={handleCarChange}
+              required
+            />
+          </label>
+          <label>
+            Puissance (ch):
+            <input
+              type="number"
+              name="horsePower"
+              value={carData.horsePower}
+              onChange={handleCarChange}
+              required
+            />
+          </label>
+          <label>
+            Statut:
+            <input
+              type="text"
+              name="status"
+              value={carData.status}
+              onChange={handleCarChange}
+              required
+            />
+          </label>
+          <label>
+            Images:
+            <input
+              type="file"
+              name="images"
+              onChange={handleCarChange}
+              required
+              multiple
+            />
+          </label>
+          <button type="submit">Soumettre Voiture</button>
+        </form>
+      ) : (
+        <p>Vous devez être administrateur</p>
+      )}
+
+      {isAdmin ? (
+        <form onSubmit={handleRentalSubmit}>
+          <h2>Créer une Location</h2>
+          <label>
+            Prix par Jour:
+            <input
+              type="number"
+              name="pricePerDay"
+              value={rentalData.pricePerDay}
+              onChange={handleRentalChange}
+              required
+            />
+          </label>
+          <label>
+            Date et heure de Début:
+            <DatePicker
+              selected={rentalData.startDate}
+              onChange={handleDateChange("startDate")}
+              showTimeSelect
+              timeFormat="HH:mm"
+              timeIntervals={15}
+              dateFormat="Pp"
+              locale={fr}
+              placeholderText="Date et heure de début"
+              className="placeholder-datepicker"
+              required
+              minDate={new Date()}
+              minTime={new Date()}
+              maxTime={new Date().setHours(23, 59)}
+            />
+          </label>
+          <label>
+            Date et heure de Fin:
+            <DatePicker
+              selected={rentalData.endDate}
+              onChange={handleDateChange("endDate")}
+              showTimeSelect
+              timeFormat="HH:mm"
+              timeIntervals={15}
+              dateFormat="Pp"
+              locale={fr}
+              placeholderText="Date et heure de fin"
+              className="placeholder-datepicker"
+              required
+              minDate={getMinTime()}
+              minTime={getMinTime()}
+              maxTime={new Date().setHours(23, 59)}
+            />
+          </label>
+          <label>
+            ID de la Voiture:
+            <select
+              name="idCar"
+              value={rentalData.idCar}
+              onChange={handleRentalChange}
+              required
+            >
+              <option value="">Sélectionnez une voiture</option>
+              {cars.map((car) => (
+                <option key={car._id} value={car._id}>
+                  {car.brand} {car.model}
+                </option>
+              ))}
+            </select>
+          </label>
+          <button type="submit">Soumettre Location</button>
+        </form>
+      ) : null}
+    </div>
+  );
+};
+
+export default SubmitFormAdmin;

@@ -14,6 +14,7 @@ import chevronUp from "../assets/images/chevron-up.svg";
 function Navbar() {
   const { isLoggedIn, setIsLoggedIn, user, setUser } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -28,6 +29,7 @@ function Navbar() {
 
       setIsLoggedIn(false);
       setUser(null);
+      setIsAdmin(false);
 
       setTimeout(() => {
         navigate("/");
@@ -47,9 +49,38 @@ function Navbar() {
     }
   }, [isLoggedIn]);
 
+  useEffect(() => {
+    const checkAdmin = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/v1/users/me",
+          {
+            withCredentials: true,
+          }
+        );
+        if (response.data.role === "admin") {
+          setIsAdmin(true);
+        }
+      } catch (error) {
+        console.error("Erreur lors de la vérification du rôle:", error);
+      }
+    };
+
+    checkAdmin();
+  }, [isLoggedIn]);
+
   return (
     <>
       <section className="navbar">
+        {isAdmin ? (
+          <div className="create-form-absolute">
+            <div className="circle-create">
+              <NavLink to="submit-form-admin" className="create-car">
+                +
+              </NavLink>
+            </div>
+          </div>
+        ) : null}
         <div className="flex-navbar">
           <h5 className="logo-navbar">Logo</h5>
           <nav className="navlink">

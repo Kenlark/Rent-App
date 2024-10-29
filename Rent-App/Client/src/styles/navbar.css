@@ -63,6 +63,7 @@ ul {
   align-items: center;
   background-color: var(--navbar-color);
   height: 5rem;
+  position: relative;
 }
 
 .flex-navbar {
@@ -178,6 +179,7 @@ ul {
 .menu-open {
   display: block;
   margin-inline-end: 10rem;
+  z-index: 999;
 }
 
 .flex-burger-li {
@@ -293,4 +295,28 @@ ul {
   cursor: pointer;
   transition: var(--transition);
   filter: invert(1);
+}
+
+.create-car {
+  position: absolute;
+  margin-block-start: -0.4rem;
+  margin-inline-start: 0.37rem;
+  text-decoration: none;
+  color: var(--white);
+  font-size: 36px;
+}
+
+.circle-create {
+  position: relative;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: #25b867;
+}
+
+.create-form-absolute {
+  position: absolute;
+  right: 0;
+  margin-inline-end: 10.5rem;
+  z-index: 999;
 }

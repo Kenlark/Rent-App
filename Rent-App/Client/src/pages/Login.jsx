@@ -153,7 +153,7 @@ const Login = () => {
               />
               <div className="forgot-password">
                 <button
-                  href="#"
+                  type="button"
                   className="btn-forgot-password"
                   onClick={() => setFormType("forgotPassword")}
                 >
