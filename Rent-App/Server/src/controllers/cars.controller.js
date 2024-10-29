@@ -29,7 +29,6 @@ const create = async (req, res) => {
         const response = await cloudinary.uploader.upload(formattedFile, {
           folder: "Car-Images",
         });
-        console.log(response);
 
         imageUrls.push({ url: response.secure_url });
       }
