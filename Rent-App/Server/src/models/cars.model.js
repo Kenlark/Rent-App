@@ -62,7 +62,7 @@ const CarsSchema = new Schema(
         message: "La donnée entrée n'est pas un nombre entier",
       },
     },
-    pricePerHour: {
+    pricePerDay: {
       type: Number,
       required: [true, "Le prix par jour est obligatoire"],
       validate: {
