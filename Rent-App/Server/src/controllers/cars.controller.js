@@ -1,7 +1,7 @@
 import * as carsService from "../services/car.service.js";
 import { StatusCodes } from "http-status-codes";
 import checkAdmin from "../middlewares/checkAdmin.middleware.js";
-import cloudinary from "cloudinary";
+import { v2 as cloudinary } from "cloudinary";
 import mongoose from "mongoose";
 import { formatImage } from "../middlewares/multer.middleware.js";
 
@@ -29,6 +29,7 @@ const create = async (req, res) => {
         const response = await cloudinary.uploader.upload(formattedFile, {
           folder: "Car-Images",
         });
+        console.log(response);
 
         imageUrls.push({ url: response.secure_url });
       }
