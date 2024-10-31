@@ -19,8 +19,6 @@ const SubmitFormAdmin = () => {
     transmission: "",
     fuelType: "",
     seats: "",
-    pricePerHour: "",
-    pricePerDay: "",
     horsePower: "",
     images: null,
   });
@@ -189,10 +187,13 @@ const SubmitFormAdmin = () => {
 
   return (
     <div>
-      <h1>Gestion des Voitures et Locations</h1>
+      <h1>Ajout d'une nouvelle voiture</h1>
       {isAdmin ? (
         <form onSubmit={handleCarSubmit}>
-          <h2>Ajouter une Voiture</h2>
+          <p>
+            Veuillez rentrer toutes les informations nécessaires à la mise en
+            location du véicule
+          </p>
           <label>
             Marque:
             <input
