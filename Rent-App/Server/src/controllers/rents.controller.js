@@ -6,9 +6,17 @@ import checkAdmin from "../middlewares/checkAdmin.middleware.js";
 const create = async (req, res) => {
   checkAdmin(req, res, async () => {
     try {
+      const { pricePerDay, startDate, endDate, idCar } = req.body;
+
+      if (!pricePerDay || isNaN(pricePerDay) || pricePerDay <= 0) {
+        return res
+          .status(StatusCodes.BAD_REQUEST)
+          .json({ message: "Le prix par jour doit être un nombre valide." });
+      }
+
       const rentData = {
         ...req.body,
-        idCar: req.body.idCar,
+        idCar,
         createdBy: req.user.userID,
       };
 
@@ -68,22 +76,29 @@ const update = async (req, res) => {
           .json({ message: "Location non trouvée" });
       }
 
+      const { pricePerDay } = req.body;
+      if (pricePerDay && (isNaN(pricePerDay) || pricePerDay <= 0)) {
+        return res
+          .status(StatusCodes.BAD_REQUEST)
+          .json({ message: "Le prix par jour doit être un nombre valide." });
+      }
+
       const updatedRentData = {
         ...req.body,
         createdBy: req.user.userID,
       };
 
-      const updatedCar = await rentService.update(id, updatedRentData);
+      const updatedRent = await rentService.update(id, updatedRentData);
 
-      res.status(StatusCodes.OK).json({ rent: updatedCar });
+      res.status(StatusCodes.OK).json({ rent: updatedRent });
     } catch (error) {
       console.error(
-        "Erreur lors de la mise à jour de la voiture :",
+        "Erreur lors de la mise à jour de la location :",
         error.message
       );
       return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .json({ message: "Erreur lors de la mise à jour de la voiture" });
+        .json({ message: "Erreur lors de la mise à jour de la location" });
     }
   });
 };

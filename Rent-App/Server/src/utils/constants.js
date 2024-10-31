@@ -1,12 +1,6 @@
-const CARS_STATUS = {
-  AVAILABLE: "disponible",
-  IN_PROGRESS: "en cours",
-  COMPLETED: "terminé",
-};
-
 const RENT_STATUS = {
-  AVAILABLE: "en stock",
-  UNAVAILABLE: "non disponible à la location",
+  AVAILABLE: "Disponible",
+  UNAVAILABLE: "Indisponible",
 };
 
-export { CARS_STATUS, RENT_STATUS };
+export { RENT_STATUS };

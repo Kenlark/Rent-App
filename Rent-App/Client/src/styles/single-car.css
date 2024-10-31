@@ -68,12 +68,12 @@
 }
 
 .carousel img {
-  width: 100%;
+  width: 90%;
   border-radius: var(--borderRadius);
 }
 
 .car-image {
-  width: 100%;
+  width: 90%;
 }
 
 .carousel-button {

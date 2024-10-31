@@ -1,5 +1,4 @@
 import mongoose, { Schema, model } from "mongoose";
-import User from "./users.model.js";
 
 import { RENT_STATUS } from "../utils/constants.js";
 
@@ -13,14 +12,32 @@ const RentSchema = new mongoose.Schema(
       type: Date,
       required: [true, "Veuillez entrer une date de fin de location"],
     },
+    pricePerHour: {
+      type: Number,
+      validate: {
+        validator: function (value) {
+          return Number.isInteger(value);
+        },
+        message: "La donnée entrée n'est pas un nombre entier",
+      },
+    },
     pricePerDay: {
       type: Number,
-      required: [true, "Veuillez entrer un prix de location"],
+      required: [true, "Le prix par jour est obligatoire"],
+      validate: {
+        validator: function (value) {
+          return Number.isInteger(value);
+        },
+        message: "La donnée entrée n'est pas un nombre entier",
+      },
     },
     status: {
       type: String,
       enum: [RENT_STATUS.AVAILABLE, RENT_STATUS.UNAVAILABLE],
-      default: RENT_STATUS.AVAILABLE,
+      required: [
+        true,
+        "Veuillez indiquez si le véhicule est disponible ou non",
+      ],
     },
     idCar: {
       type: mongoose.Types.ObjectId,

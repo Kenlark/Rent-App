@@ -4,8 +4,11 @@ import DatePicker, { registerLocale } from "react-datepicker";
 import fr from "date-fns/locale/fr";
 registerLocale("fr", fr);
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const SubmitFormAdmin = () => {
+  const navigate = useNavigate();
+
   const [isAdmin, setIsAdmin] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [userID, setUserID] = useState(null);
@@ -19,18 +22,35 @@ const SubmitFormAdmin = () => {
     pricePerHour: "",
     pricePerDay: "",
     horsePower: "",
-    status: "",
     images: null,
   });
 
   const [rentalData, setRentalData] = useState({
     pricePerDay: "",
+    status: "",
     startDate: null,
     endDate: null,
     idCar: "",
   });
 
   const [cars, setCars] = useState([]);
+  const [rentStatusOptions, setRentStatusOptions] = useState({});
+
+  useEffect(() => {
+    const fetchRentStatus = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/v1/rent-status",
+          { withCredentials: true }
+        );
+        setRentStatusOptions(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchRentStatus();
+  }, []);
 
   useEffect(() => {
     const checkAdmin = async () => {
@@ -105,9 +125,8 @@ const SubmitFormAdmin = () => {
 
   const getMinTime = () => {
     if (rentalData.startDate) {
-      return new Date(rentalData.startDate).setHours(
-        new Date(rentalData.startDate).getHours() + 1
-      );
+      const startDate = new Date(rentalData.startDate);
+      return new Date(startDate.setHours(startDate.getHours() + 1));
     }
     return new Date();
   };
@@ -160,6 +179,9 @@ const SubmitFormAdmin = () => {
         { withCredentials: true }
       );
       toast.success("Location créée avec succès !");
+      setTimeout(() => {
+        navigate("/cars");
+      }, 1500);
     } catch (error) {
       toast.error("Erreur lors de la création de la location.");
     }
@@ -232,41 +254,11 @@ const SubmitFormAdmin = () => {
             />
           </label>
           <label>
-            Prix par Heure:
-            <input
-              type="number"
-              name="pricePerHour"
-              value={carData.pricePerHour}
-              onChange={handleCarChange}
-              required
-            />
-          </label>
-          <label>
-            Prix par Jour:
-            <input
-              type="number"
-              name="pricePerDay"
-              value={carData.pricePerDay}
-              onChange={handleCarChange}
-              required
-            />
-          </label>
-          <label>
             Puissance (ch):
             <input
               type="number"
               name="horsePower"
               value={carData.horsePower}
-              onChange={handleCarChange}
-              required
-            />
-          </label>
-          <label>
-            Statut:
-            <input
-              type="text"
-              name="status"
-              value={carData.status}
               onChange={handleCarChange}
               required
             />
@@ -300,6 +292,19 @@ const SubmitFormAdmin = () => {
               required
             />
           </label>
+          <select
+            name="status"
+            value={rentalData.status}
+            onChange={handleRentalChange}
+            required
+          >
+            <option value="">Sélectionnez la disponibilité</option>
+            {Object.entries(rentStatusOptions).map(([key, value]) => (
+              <option key={key} value={value}>
+                {value}
+              </option>
+            ))}
+          </select>
           <label>
             Date et heure de Début:
             <DatePicker
@@ -347,7 +352,7 @@ const SubmitFormAdmin = () => {
               <option value="">Sélectionnez une voiture</option>
               {cars.map((car) => (
                 <option key={car._id} value={car._id}>
-                  {car.brand} {car.model}
+                  {car.brand} {car.model} ({car.year})
                 </option>
               ))}
             </select>

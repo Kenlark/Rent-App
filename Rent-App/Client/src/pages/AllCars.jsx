@@ -11,6 +11,7 @@ import horsePower from "../assets/images/motor-svgrepo-com.png";
 import { useAuth } from "../authContext.jsx";
 
 const allCarsUrl = "http://localhost:5000/api/v1/cars";
+const allRentsUrl = "http://localhost:5000/api/v1/rent";
 
 Modal.setAppElement("#root");
 
@@ -43,7 +44,23 @@ function AllCars() {
   });
 
   const [cars, setCars] = useState(allCars || []);
+  const [rent, setRent] = useState([]);
   const { user } = useAuth();
+
+  useEffect(() => {
+    const rentInfo = async () => {
+      try {
+        const response = await axios.get(allRentsUrl, {
+          withCredentials: true,
+        });
+        setRent(response.data.allRents);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    rentInfo();
+  }, []);
 
   useEffect(() => {
     if (currentCar) {
@@ -57,7 +74,7 @@ function AllCars() {
         pricePerDay: currentCar.pricePerDay,
       });
     }
-  }, [currentCar, cars]);
+  }, [currentCar]);
 
   const handleEditClick = (car) => {
     setCurrentCar(car);
@@ -67,6 +84,51 @@ function AllCars() {
   const handleModalClose = () => {
     setIsModalOpen(false);
     setCurrentCar(null);
+  };
+
+  const handleUpdatePrice = async (carId, newPrice) => {
+    try {
+      const rentToUpdate = rent.find((rent) => rent.idCar === carId);
+
+      if (!rentToUpdate) {
+        toast.error("Aucune location trouvée pour cette voiture.");
+        return;
+      }
+
+      const response = await axios.put(
+        `http://localhost:5000/api/v1/rent/${rentToUpdate._id}`,
+        { pricePerDay: newPrice },
+        { withCredentials: true }
+      );
+
+      toast.success("Prix par jour mis à jour avec succès !");
+
+      setCars((prevCars) =>
+        prevCars.map((car) =>
+          car._id === carId ? { ...car, pricePerDay: newPrice } : car
+        )
+      );
+
+      // Rechargez les informations de location pour synchroniser les prix
+      await refreshRentData();
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour du prix :", error);
+      toast.error("Erreur lors de la mise à jour du prix.");
+    }
+  };
+
+  const refreshRentData = async () => {
+    try {
+      const response = await axios.get(allRentsUrl, {
+        withCredentials: true,
+      });
+      setRent(response.data.allRents);
+    } catch (error) {
+      console.log(
+        "Erreur lors du rechargement des données de location :",
+        error
+      );
+    }
   };
 
   const handleSave = async () => {
@@ -84,6 +146,7 @@ function AllCars() {
       );
 
       setCars(updatedCars);
+      await handleUpdatePrice(currentCar._id, updatedCarData.pricePerDay);
       handleModalClose();
     } catch (error) {
       console.error("Erreur lors de la mise à jour de la voiture:", error);
@@ -126,6 +189,21 @@ function AllCars() {
     setIsDeleteModalOpen(true);
   };
 
+  useEffect(() => {
+    const rentInfo = async () => {
+      try {
+        const response = await axios.get(allRentsUrl, {
+          withCredentials: true,
+        });
+        setRent(response.data.allRents);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    rentInfo();
+  }, []);
+
   return (
     <section className="container-car-page">
       <h1 className="h1-car">Découvrez nos véhicules</h1>
@@ -133,6 +211,21 @@ function AllCars() {
         {cars.map((car) => (
           <section key={car._id} className="cars-card">
             <div className="individual-card">
+              <h2 className="car-name">
+                <div>
+                  {car.brand} {car.model}
+                  <span className="year-fs">({car.year})</span>
+                </div>
+                <div>
+                  {rent.map((rent) =>
+                    rent.idCar === car._id ? (
+                      <span key={rent._id} className="rent-status">
+                        <span className="fs-status">{rent.status}</span>
+                      </span>
+                    ) : null
+                  )}
+                </div>
+              </h2>
               {car.images && car.images.length > 0 ? (
                 <img
                   src={car.images[0].url}
@@ -143,9 +236,6 @@ function AllCars() {
                 <p>Aucun véhicule disponible</p>
               )}
               <div>
-                <h2 className="car-name">
-                  {car.brand} {car.model}
-                </h2>
                 <div className="car-info">
                   <p className="align-info-img">
                     <img src={gear} className="gear" alt="Transmission" />
@@ -167,12 +257,22 @@ function AllCars() {
                     />
                     {car.horsePower} Cv
                   </p>
-                  <p className="align-info-img">{car.pricePerDay} €/jour</p>
+                  {rent.map((rent) =>
+                    rent.idCar === car._id ? (
+                      <p key={rent._id} className="align-info-img">
+                        {rent.pricePerDay} €/jour
+                      </p>
+                    ) : null
+                  )}
                 </div>
                 <div className="flex-btn-admin">
-                  <Link to={`/cars/${car._id}`}>
-                    <button className="details-button">Voir les détails</button>
-                  </Link>
+                  <div className="link-details">
+                    <Link to={`/cars/${car._id}`}>
+                      <button className="details-button">
+                        Voir les détails
+                      </button>
+                    </Link>
+                  </div>
                   {user && user.role === "admin" && (
                     <>
                       <button
@@ -242,7 +342,7 @@ function AllCars() {
             onChange={handleInputChange}
             required
           />
-          <label htmlFor="fuelType">Type de carburant :</label>
+          <label htmlFor="fuelType">Carburant :</label>
           <input
             type="text"
             name="fuelType"
@@ -262,18 +362,12 @@ function AllCars() {
           <input
             type="number"
             name="pricePerDay"
-            value={updatedCarData.pricePerDay}
+            value={updatedCarData.pricePerDay || ""}
             onChange={handleInputChange}
             required
           />
-          <button className="save-btn" type="submit">
-            Sauvegarder
-          </button>
-          <button
-            className="cancel-btn"
-            type="button"
-            onClick={handleModalClose}
-          >
+          <button type="submit">Sauvegarder</button>
+          <button type="button" onClick={handleModalClose}>
             Annuler
           </button>
         </form>
@@ -282,21 +376,14 @@ function AllCars() {
       <Modal
         isOpen={isDeleteModalOpen}
         onRequestClose={() => setIsDeleteModalOpen(false)}
-        contentLabel="Confirmation de la suppression"
+        contentLabel="Confirmer la suppression"
         className="modal"
         overlayClassName="overlay"
       >
         <h2>Confirmer la suppression</h2>
-        <p>Êtes-vous sûr de vouloir supprimer cette voiture ?</p>
-        <button className="delete-confirm-btn" onClick={handleDelete}>
-          Oui, supprimer
-        </button>
-        <button
-          className="delete-cancel-btn"
-          onClick={() => setIsDeleteModalOpen(false)}
-        >
-          Annuler
-        </button>
+        <p>Êtes-vous sûr de vouloir supprimer ce véhicule ?</p>
+        <button onClick={handleDelete}>Oui, supprimer</button>
+        <button onClick={() => setIsDeleteModalOpen(false)}>Annuler</button>
       </Modal>
     </section>
   );

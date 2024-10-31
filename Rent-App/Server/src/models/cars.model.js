@@ -1,5 +1,4 @@
 import mongoose, { model, Schema } from "mongoose";
-import { CARS_STATUS } from "../utils/constants.js";
 import User from "./users.model.js";
 
 const ImagesCarsSchema = new Schema({
@@ -53,25 +52,6 @@ const CarsSchema = new Schema(
         message: "La donnée entrée n'est pas un nombre entier",
       },
     },
-    pricePerHour: {
-      type: Number,
-      validate: {
-        validator: function (value) {
-          return Number.isInteger(value);
-        },
-        message: "La donnée entrée n'est pas un nombre entier",
-      },
-    },
-    pricePerDay: {
-      type: Number,
-      required: [true, "Le prix par jour est obligatoire"],
-      validate: {
-        validator: function (value) {
-          return Number.isInteger(value);
-        },
-        message: "La donnée entrée n'est pas un nombre entier",
-      },
-    },
     horsePower: {
       type: Number,
       validate: {
@@ -80,15 +60,6 @@ const CarsSchema = new Schema(
         },
         message: "La donnée entrée n'est pas un nombre entier",
       },
-    },
-    status: {
-      type: String,
-      enum: [
-        CARS_STATUS.IN_PROGRESS,
-        CARS_STATUS.COMPLETED,
-        CARS_STATUS.AVAILABLE,
-      ],
-      default: CARS_STATUS.AVAILABLE,
     },
     createdBy: {
       type: mongoose.Types.ObjectId,
