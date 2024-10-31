@@ -33,6 +33,7 @@ const SubmitFormAdmin = () => {
 
   const [cars, setCars] = useState([]);
   const [rentStatusOptions, setRentStatusOptions] = useState({});
+  const [step, setStep] = useState(1); // État pour gérer l'étape du formulaire
 
   useEffect(() => {
     const fetchRentStatus = async () => {
@@ -151,7 +152,11 @@ const SubmitFormAdmin = () => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
+
+      setCars((prevCars) => [...prevCars, response.data.car]);
+
       toast.success("Voiture ajoutée avec succès !");
+      setStep(2); // Passe à l'étape 2 après soumission réussie
     } catch (error) {
       toast.error("Erreur lors de l'ajout de la voiture.");
     }
@@ -187,180 +192,176 @@ const SubmitFormAdmin = () => {
 
   return (
     <div>
-      <h1>Ajout d'une nouvelle voiture</h1>
+      <h1>
+        {step === 1 ? "Ajout d'une nouvelle voiture" : "Créer une Location"}
+      </h1>
       {isAdmin ? (
-        <form onSubmit={handleCarSubmit}>
-          <p>
-            Veuillez rentrer toutes les informations nécessaires à la mise en
-            location du véicule
-          </p>
-          <label>
-            Marque:
-            <input
-              type="text"
-              name="brand"
-              value={carData.brand}
-              onChange={handleCarChange}
-              required
-            />
-          </label>
-          <label>
-            Modèle:
-            <input
-              type="text"
-              name="model"
-              value={carData.model}
-              onChange={handleCarChange}
-              required
-            />
-          </label>
-          <label>
-            Année:
-            <input
-              type="number"
-              name="year"
-              value={carData.year}
-              onChange={handleCarChange}
-              required
-            />
-          </label>
-          <label>
-            Transmission:
-            <input
-              type="text"
-              name="transmission"
-              value={carData.transmission}
-              onChange={handleCarChange}
-              required
-            />
-          </label>
-          <label>
-            Type de Carburant:
-            <input
-              type="text"
-              name="fuelType"
-              value={carData.fuelType}
-              onChange={handleCarChange}
-              required
-            />
-          </label>
-          <label>
-            Places:
-            <input
-              type="number"
-              name="seats"
-              value={carData.seats}
-              onChange={handleCarChange}
-              required
-            />
-          </label>
-          <label>
-            Puissance (ch):
-            <input
-              type="number"
-              name="horsePower"
-              value={carData.horsePower}
-              onChange={handleCarChange}
-              required
-            />
-          </label>
-          <label>
-            Images:
-            <input
-              type="file"
-              name="images"
-              onChange={handleCarChange}
-              required
-              multiple
-            />
-          </label>
-          <button type="submit">Soumettre Voiture</button>
-        </form>
+        <>
+          {step === 1 && (
+            <form onSubmit={handleCarSubmit}>
+              <p>
+                Veuillez rentrer toutes les informations nécessaires à la mise
+                en location du véhicule.
+              </p>
+              <label>
+                Marque:
+                <input
+                  type="text"
+                  name="brand"
+                  value={carData.brand}
+                  onChange={handleCarChange}
+                  required
+                />
+              </label>
+              <label>
+                Modèle:
+                <input
+                  type="text"
+                  name="model"
+                  value={carData.model}
+                  onChange={handleCarChange}
+                  required
+                />
+              </label>
+              <label>
+                Année:
+                <input
+                  type="number"
+                  name="year"
+                  value={carData.year}
+                  onChange={handleCarChange}
+                  required
+                />
+              </label>
+              <label>
+                Transmission:
+                <input
+                  type="text"
+                  name="transmission"
+                  value={carData.transmission}
+                  onChange={handleCarChange}
+                  required
+                />
+              </label>
+              <label>
+                Type de Carburant:
+                <input
+                  type="text"
+                  name="fuelType"
+                  value={carData.fuelType}
+                  onChange={handleCarChange}
+                  required
+                />
+              </label>
+              <label>
+                Places:
+                <input
+                  type="number"
+                  name="seats"
+                  value={carData.seats}
+                  onChange={handleCarChange}
+                  required
+                />
+              </label>
+              <label>
+                Puissance (ch):
+                <input
+                  type="number"
+                  name="horsePower"
+                  value={carData.horsePower}
+                  onChange={handleCarChange}
+                  required
+                />
+              </label>
+              <label>
+                Images:
+                <input
+                  type="file"
+                  name="images"
+                  onChange={handleCarChange}
+                  required
+                  multiple
+                />
+              </label>
+              <button type="submit">Soumettre Voiture</button>
+            </form>
+          )}
+          {step === 2 && (
+            <form onSubmit={handleRentalSubmit}>
+              <h2>Créer une Location</h2>
+              <label>
+                Prix par Jour:
+                <input
+                  type="number"
+                  name="pricePerDay"
+                  value={rentalData.pricePerDay}
+                  onChange={handleRentalChange}
+                  required
+                />
+              </label>
+              <select
+                name="status"
+                value={rentalData.status}
+                onChange={handleRentalChange}
+                required
+              >
+                <option value="">Sélectionnez la disponibilité</option>
+                {Object.entries(rentStatusOptions).map(([key, value]) => (
+                  <option key={key} value={value}>
+                    {value}
+                  </option>
+                ))}
+              </select>
+              <label>
+                Date et heure de Début:
+                <DatePicker
+                  selected={rentalData.startDate}
+                  onChange={handleDateChange("startDate")}
+                  locale="fr"
+                  showTimeSelect
+                  timeIntervals={15}
+                  minDate={new Date()}
+                  timeCaption="Heure"
+                  dateFormat="dd/MM/yyyy h:mm aa"
+                />
+              </label>
+              <label>
+                Date et heure de Fin:
+                <DatePicker
+                  selected={rentalData.endDate}
+                  onChange={handleDateChange("endDate")}
+                  locale="fr"
+                  showTimeSelect
+                  timeIntervals={15}
+                  minDate={getMinTime()}
+                  timeCaption="Heure"
+                  dateFormat="dd/MM/yyyy h:mm aa"
+                />
+              </label>
+              <select
+                name="idCar"
+                value={rentalData.idCar}
+                onChange={handleRentalChange}
+                required
+              >
+                <option value="">Sélectionnez une voiture</option>
+                {cars.map((car) => (
+                  <option key={car._id} value={car._id}>
+                    {car.brand} {car.model} ({car.year})
+                  </option>
+                ))}
+              </select>
+              <button type="submit">Soumettre Location</button>
+            </form>
+          )}
+          <button onClick={() => setStep(1)}>Retour à l'étape 1</button>
+        </>
       ) : (
-        <p>Vous devez être administrateur</p>
+        <p>
+          Vous n'avez pas les autorisations nécessaires pour accéder à ce
+          formulaire.
+        </p>
       )}
-
-      {isAdmin ? (
-        <form onSubmit={handleRentalSubmit}>
-          <h2>Créer une Location</h2>
-          <label>
-            Prix par Jour:
-            <input
-              type="number"
-              name="pricePerDay"
-              value={rentalData.pricePerDay}
-              onChange={handleRentalChange}
-              required
-            />
-          </label>
-          <select
-            name="status"
-            value={rentalData.status}
-            onChange={handleRentalChange}
-            required
-          >
-            <option value="">Sélectionnez la disponibilité</option>
-            {Object.entries(rentStatusOptions).map(([key, value]) => (
-              <option key={key} value={value}>
-                {value}
-              </option>
-            ))}
-          </select>
-          <label>
-            Date et heure de Début:
-            <DatePicker
-              selected={rentalData.startDate}
-              onChange={handleDateChange("startDate")}
-              showTimeSelect
-              timeFormat="HH:mm"
-              timeIntervals={15}
-              dateFormat="Pp"
-              locale={fr}
-              placeholderText="Date et heure de début"
-              className="placeholder-datepicker"
-              required
-              minDate={new Date()}
-              minTime={new Date()}
-              maxTime={new Date().setHours(23, 59)}
-            />
-          </label>
-          <label>
-            Date et heure de Fin:
-            <DatePicker
-              selected={rentalData.endDate}
-              onChange={handleDateChange("endDate")}
-              showTimeSelect
-              timeFormat="HH:mm"
-              timeIntervals={15}
-              dateFormat="Pp"
-              locale={fr}
-              placeholderText="Date et heure de fin"
-              className="placeholder-datepicker"
-              required
-              minDate={getMinTime()}
-              minTime={getMinTime()}
-              maxTime={new Date().setHours(23, 59)}
-            />
-          </label>
-          <label>
-            ID de la Voiture:
-            <select
-              name="idCar"
-              value={rentalData.idCar}
-              onChange={handleRentalChange}
-              required
-            >
-              <option value="">Sélectionnez une voiture</option>
-              {cars.map((car) => (
-                <option key={car._id} value={car._id}>
-                  {car.brand} {car.model} ({car.year})
-                </option>
-              ))}
-            </select>
-          </label>
-          <button type="submit">Soumettre Location</button>
-        </form>
-      ) : null}
     </div>
   );
 };
