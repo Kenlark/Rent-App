@@ -71,13 +71,16 @@ function AllCars() {
         seats: currentCar.seats,
         fuelType: currentCar.fuelType,
         horsePower: currentCar.horsePower,
-        pricePerDay: currentCar.pricePerDay,
       });
     }
   }, [currentCar]);
 
   const handleEditClick = (car) => {
+    const carRent = rent.find((rent) => rent.idCar === car._id);
     setCurrentCar(car);
+    setUpdatedCarData({
+      pricePerDay: carRent ? carRent.pricePerDay : "",
+    });
     setIsModalOpen(true);
   };
 
@@ -101,7 +104,7 @@ function AllCars() {
         { withCredentials: true }
       );
 
-      toast.success("Prix par jour mis à jour avec succès !");
+      toast.success("Location mis à jour avec succès !");
 
       setCars((prevCars) =>
         prevCars.map((car) =>
@@ -109,7 +112,6 @@ function AllCars() {
         )
       );
 
-      // Rechargez les informations de location pour synchroniser les prix
       await refreshRentData();
     } catch (error) {
       console.error("Erreur lors de la mise à jour du prix :", error);
@@ -362,7 +364,7 @@ function AllCars() {
           <input
             type="number"
             name="pricePerDay"
-            value={updatedCarData.pricePerDay || ""}
+            value={updatedCarData.pricePerDay}
             onChange={handleInputChange}
             required
           />
