@@ -210,92 +210,93 @@ function AllCars() {
     <section className="container-car-page">
       <h1 className="h1-car">Découvrez nos véhicules</h1>
       <div className="cars-container">
-        {cars.map((car) => (
-          <section key={car._id} className="cars-card">
-            <div className="individual-card">
-              <h2 className="car-name">
-                <div>
-                  {car.brand} {car.model}
-                  <span className="year-fs">({car.year})</span>
-                </div>
-                <div>
-                  {rent.map((rent) =>
-                    rent.idCar === car._id ? (
-                      <span key={rent._id} className="rent-status">
-                        <span className="fs-status">{rent.status}</span>
-                      </span>
-                    ) : null
-                  )}
-                </div>
-              </h2>
-              {car.images && car.images.length > 0 ? (
-                <img
-                  src={car.images[0].url}
-                  alt={`${car.brand} ${car.model}`}
-                  className="card-img"
-                />
-              ) : (
-                <p>Aucun véhicule disponible</p>
-              )}
-              <div>
-                <div className="car-info">
-                  <p className="align-info-img">
-                    <img src={gear} className="gear" alt="Transmission" />
-                    {car.transmission}
-                  </p>
-                  <p className="align-info-img">
-                    <img src={carSeat} className="car-seat" alt="Places" />
-                    {car.seats} places
-                  </p>
-                  <p className="align-info-img">
-                    <img src={fuelType} className="fuel" alt="Carburant" />
-                    {car.fuelType}
-                  </p>
-                  <p className="align-info-img">
-                    <img
-                      src={horsePower}
-                      className="horse-power"
-                      alt="Puissance"
-                    />
-                    {car.horsePower} Cv
-                  </p>
-                  {rent.map((rent) =>
-                    rent.idCar === car._id ? (
-                      <p key={rent._id} className="align-info-img">
-                        {rent.pricePerDay} €/jour
-                      </p>
-                    ) : null
-                  )}
-                </div>
-                <div className="flex-btn-admin">
-                  <div className="link-details">
-                    <Link to={`/cars/${car._id}`}>
-                      <button className="details-button">
-                        Voir les détails
-                      </button>
-                    </Link>
+        {cars.map((car) => {
+          const carRent = rent.find((rent) => rent.idCar === car._id);
+          const rentStatus = carRent ? carRent.status : null;
+
+          const cardClass =
+            rentStatus === "Disponible" ? "card-available" : "card-unavailable";
+
+          return (
+            <section key={car._id} className={`cars-card ${cardClass}`}>
+              <div className="individual-card">
+                <h2 className="car-name">
+                  <div>
+                    {car.brand} {car.model}
                   </div>
-                  {user && user.role === "admin" && (
-                    <>
-                      <button
-                        className="edit-button"
-                        onClick={() => handleEditClick(car)}
-                      >
-                        Modifier
-                      </button>
-                      <button
-                        className="delete-button"
-                        onClick={() => confirmDelete(car._id)}
-                      >
-                        Supprimer
-                      </button>
-                    </>
+                  {carRent && (
+                    <span key={carRent._id} className="rent-status">
+                      <span className="fs-status">{rentStatus}</span>
+                    </span>
                   )}
+                </h2>
+                {car.images && car.images.length > 0 ? (
+                  <img
+                    src={car.images[0].url}
+                    alt={`${car.brand} ${car.model}`}
+                    className="card-img"
+                  />
+                ) : (
+                  <p>Aucun véhicule disponible</p>
+                )}
+                <div>
+                  <div className="car-info">
+                    <p className="align-info-img">
+                      <img src={gear} className="gear" alt="Transmission" />
+                      {car.transmission}
+                    </p>
+                    <p className="align-info-img">
+                      <img src={carSeat} className="car-seat" alt="Places" />
+                      {car.seats} places
+                    </p>
+                    <p className="align-info-img">
+                      <img src={fuelType} className="fuel" alt="Carburant" />
+                      {car.fuelType}
+                    </p>
+                    <p className="align-info-img">
+                      <img
+                        src={horsePower}
+                        className="horse-power"
+                        alt="Puissance"
+                      />
+                      {car.horsePower} Cv
+                    </p>
+                    {carRent && (
+                      <p key={carRent._id} className="align-info-img">
+                        {carRent.pricePerDay} €/jour
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex-btn-admin">
+                    <div className="link-details">
+                      <Link to={`/cars/${car._id}`}>
+                        <button className="details-button">
+                          Voir les détails
+                        </button>
+                      </Link>
+                    </div>
+                    {user && user.role === "admin" && (
+                      <>
+                        <button
+                          className="edit-button"
+                          onClick={() => handleEditClick(car)}
+                        >
+                          Modifier
+                        </button>
+                        <button
+                          className="delete-button"
+                          onClick={() => confirmDelete(car._id)}
+                        >
+                          Supprimer
+                        </button>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          </section>
-        ))}
+            </section>
+          );
+        })}
       </div>
 
       <Modal
