@@ -77,9 +77,10 @@
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 5px;
   font-size: 16px;
   transition: border-color var(--transition);
+  resize: vertical;
+  border-width: 0px 0px 1px 0px;
 }
 
 .form-input-contact:focus {
@@ -116,6 +117,21 @@ input:focus {
   text-align: start;
   height: 5rem;
   width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  transition: border-color var(--transition);
+  resize: vertical;
+  border-width: 0px 0px 1px 0px;
+  max-height: 125px;
+  min-height: 80px;
+}
+
+.text-area-message:focus + .form-label {
+  top: -23px;
+  left: 5px;
+  font-size: 16px;
+  color: #007bff;
 }
 
 .btn-submit-form-contact {
