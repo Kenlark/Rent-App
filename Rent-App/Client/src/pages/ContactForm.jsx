@@ -75,7 +75,7 @@ const ContactForm = () => {
           <div className="form-group">
             <textarea
               name="message"
-              className="text-area-message form-input-contact"
+              className="text-area-message"
               placeholder=" "
               value={formData.message}
               onChange={handleChange}
