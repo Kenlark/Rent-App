@@ -1,7 +1,9 @@
 import { Link, useLoaderData } from "react-router-dom";
-import { useState } from "react";
-import axios from "axios";
 import { toast } from "react-toastify";
+import Slider from "react-slick";
+import axios from "axios";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 import gearIcon from "../assets/images/gear-solid.svg";
 import carSeatIcon from "../assets/images/car-seat-_2_.png";
@@ -23,27 +25,20 @@ export const loader = async ({ params }) => {
 
 const SingleCar = () => {
   const car = useLoaderData();
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   if (!car) {
     toast.error("Erreur lors du chargement du véhicule.");
     return <p>Aucune voiture trouvée.</p>;
   }
 
-  const handleNext = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === car.images.length - 1 ? 0 : prevIndex + 1
-    );
-  };
-
-  const handlePrev = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === 0 ? car.images.length - 1 : prevIndex - 1
-    );
-  };
-
-  const handleDotClick = (index) => {
-    setCurrentImageIndex(index);
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: false,
+    arrows: true,
   };
 
   return (
@@ -55,62 +50,21 @@ const SingleCar = () => {
           </button>
         </Link>
       </div>
+
       <section className="single-car-container">
         <div className="single-car-card">
           {car.images && car.images.length > 0 ? (
-            <div className="carousel">
-              {car.images.length > 1 ? (
-                <>
-                  <div className="btn-prev">
-                    <button onClick={handlePrev} className="carousel-button">
-                      &lt;
-                    </button>
-                  </div>
-                  <div>
-                    <div className="img-single-car">
-                      <img
-                        src={car.images[currentImageIndex].url}
-                        alt={`${car.brand} ${car.model}`}
-                        className="car-image"
-                      />
-                    </div>
-                    {car.images.length > 1 ? (
-                      <div className="dots-container">
-                        {car.images.map((image, index) => (
-                          <span
-                            key={index}
-                            role="button"
-                            tabIndex="0"
-                            className={`dot ${
-                              currentImageIndex === index ? "active" : ""
-                            }`}
-                            onClick={() => handleDotClick(index)}
-                            onKeyDown={(e) => {
-                              if (e.key === "Enter" || e.key === " ") {
-                                handleDotClick(index);
-                              }
-                            }}
-                          ></span>
-                        ))}
-                      </div>
-                    ) : null}
-                  </div>
-                  <div>
-                    <button onClick={handleNext} className="carousel-button">
-                      &gt;
-                    </button>
-                  </div>
-                </>
-              ) : (
-                <div className="img-single-car">
+            <Slider {...settings} className="carousel">
+              {car.images.map((image, index) => (
+                <div key={index} className="img-single-car">
                   <img
-                    src={car.images[currentImageIndex].url}
+                    src={image.url}
                     alt={`${car.brand} ${car.model}`}
                     className="car-image"
                   />
                 </div>
-              )}
-            </div>
+              ))}
+            </Slider>
           ) : (
             <p>Image non disponible</p>
           )}

@@ -117,3 +117,16 @@
   padding: 0.5rem 0.5rem;
   cursor: pointer;
 }
+
+.slick-prev:before,
+.slick-next:before {
+  color: red;
+}
+
+.slick-next {
+  left: 95%;
+}
+
+.slick-prev {
+  left: -8%;
+}
