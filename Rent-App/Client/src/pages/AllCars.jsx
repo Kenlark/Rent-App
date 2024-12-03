@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLoaderData, Link } from "react-router-dom";
+import { useLoaderData, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Modal from "react-modal";
 import { toast } from "react-toastify";
@@ -46,6 +46,7 @@ function AllCars() {
   const [cars, setCars] = useState(allCars || []);
   const [rent, setRent] = useState([]);
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const rentInfo = async () => {
@@ -288,6 +289,12 @@ function AllCars() {
                           onClick={() => confirmDelete(car._id)}
                         >
                           Supprimer
+                        </button>
+                        <button
+                          className="edit-button"
+                          onClick={() => navigate("/rent")}
+                        >
+                          Réserver
                         </button>
                       </>
                     )}

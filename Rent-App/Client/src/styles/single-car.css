@@ -120,7 +120,7 @@
 
 .slick-prev:before,
 .slick-next:before {
-  color: red;
+  color: #3355ff;
 }
 
 .slick-next {

@@ -20,7 +20,10 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AuthProvider>
       <App />
-      <ToastContainer position="top-center" />
+      <ToastContainer
+        position="top-center"
+        toastStyle={{ textAlign: "center" }}
+      />
     </AuthProvider>
   </StrictMode>
 );
