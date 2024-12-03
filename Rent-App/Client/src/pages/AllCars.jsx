@@ -3,6 +3,7 @@ import { useLoaderData, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Modal from "react-modal";
 import { toast } from "react-toastify";
+import Filters from "../components/Filter.jsx";
 
 import gear from "../assets/images/gear-solid.svg";
 import carSeat from "../assets/images/car-seat-_2_.png";
@@ -42,11 +43,50 @@ function AllCars() {
     horsePower: "",
     pricePerDay: "",
   });
+  const [filters, setFilters] = useState({
+    brand: "",
+    model: "",
+    transmission: "",
+    seats: "",
+    fuelType: "",
+    horsePower: "",
+    pricePerDay: "",
+  });
 
   const [cars, setCars] = useState(allCars || []);
   const [rent, setRent] = useState([]);
   const { user } = useAuth();
   const navigate = useNavigate();
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: value,
+    }));
+  };
+
+  const filteredCars = cars.filter((car) => {
+    return (
+      (filters.brand === "" ||
+        car.brand.toLowerCase().includes(filters.brand.toLowerCase())) &&
+      (filters.model === "" ||
+        car.model.toLowerCase().includes(filters.model.toLowerCase())) &&
+      (filters.transmission === "" ||
+        car.transmission
+          .toLowerCase()
+          .includes(filters.transmission.toLowerCase())) &&
+      (filters.seats === "" || car.seats === parseInt(filters.seats)) &&
+      (filters.fuelType === "" ||
+        car.fuelType.toLowerCase().includes(filters.fuelType.toLowerCase())) &&
+      (filters.horsePower === "" ||
+        car.horsePower === parseInt(filters.horsePower)) &&
+      (filters.pricePerDay === "" ||
+        car.pricePerDay
+          .toLowerCase()
+          .includes(filters.pricePerDay.toLowerCase()))
+    );
+  });
 
   useEffect(() => {
     const rentInfo = async () => {
@@ -211,7 +251,8 @@ function AllCars() {
     <section className="container-car-page">
       <h1 className="h1-car">Découvrez nos véhicules</h1>
       <div className="cars-container">
-        {cars.map((car) => {
+        <Filters filters={filters} onFilterChange={handleFilterChange} />
+        {filteredCars.map((car) => {
           const carRent = rent.find((rent) => rent.idCar === car._id);
           const rentStatus = carRent ? carRent.status : null;
 
