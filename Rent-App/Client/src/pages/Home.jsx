@@ -129,7 +129,10 @@ const Home = () => {
 
       <div className="cars-container-home">
         {cars.map((car) => (
-          <div key={car._id} className={`car-item ${getCardClass(car._id)}`}>
+          <div
+            key={car._id}
+            className={`car-item-home ${getCardClass(car._id)}`}
+          >
             <div className="flex-header-card-home">
               <h3>
                 {car.brand} {car.model}
@@ -140,7 +143,7 @@ const Home = () => {
               <img
                 src={car.images[0].url}
                 alt={`${car.brand} ${car.model}`}
-                className="card-img"
+                className="card-img-home"
               />
             ) : (
               <p>Aucune image disponible</p>

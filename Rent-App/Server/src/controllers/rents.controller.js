@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import * as rentService from "../services/rent.service.js";
 import { StatusCodes } from "http-status-codes";
 import checkAdmin from "../middlewares/checkAdmin.middleware.js";
+import carsModel from "../models/cars.model.js";
 
 const create = async (req, res) => {
   checkAdmin(req, res, async () => {
@@ -20,17 +21,37 @@ const create = async (req, res) => {
         createdBy: req.user.userID,
       };
 
+      // Crée la location
       const createRent = await rentService.create(rentData);
 
+      //--ajout de priceperday dans le model cars
+      // Vérifie l'existence de la voiture
+      const car = await carsModel.findById(idCar);
+      if (!car) {
+        return res
+          .status(StatusCodes.NOT_FOUND)
+          .json({ message: "Voiture non trouvée" });
+      }
+
+      // Met à jour le pricePerDay de la voiture avec la valeur de la location
+      car.pricePerDay = pricePerDay;
+      await car.save(); // Sauvegarde la voiture mise à jour
+      //-- jusqu'ici
+
       res.status(StatusCodes.CREATED).json({
-        user: {
+        rent: {
           id: createRent._id,
           startDate: createRent.startDate,
           endDate: createRent.endDate,
           pricePerDay: createRent.pricePerDay,
           status: createRent.status,
           idCar: createRent.idCar,
-          UserID: createRent.createdBy,
+          createdBy: createRent.createdBy,
+        },
+        car: {
+          id: car._id,
+          model: car.model,
+          pricePerDay: car.pricePerDay,
         },
       });
     } catch (error) {
@@ -50,10 +71,10 @@ const getAll = async (req, res) => {
     const allRents = await rentService.getAll();
     res.status(StatusCodes.OK).json({ allRents });
   } catch (error) {
-    console.error("Erreur lors de la récupération des voitures :", error);
+    console.error("Erreur lors de la récupération des locations :", error);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: "Erreur lors de la récupération des voitures" });
+      .json({ error: "Erreur lors de la récupération des locations" });
   }
 };
 
@@ -109,24 +130,30 @@ const remove = async (req, res) => {
 
     const isMongoId = mongoose.isValidObjectId(id);
     if (!isMongoId) {
-      throw new BadRequestError(`Format de l'id invalide : ${id}`);
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: `ID invalide : ${id}` });
     }
 
-    const car = await rentService.get(id);
-    if (!car) {
-      throw new NotFoundError(`Pas de voiture avec l'id : ${id}`);
+    const rent = await rentService.get(id);
+    if (!rent) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ message: `Location avec l'id ${id} non trouvée` });
     }
 
     try {
       await rentService.remove(id);
-
       res
         .status(StatusCodes.OK)
         .json({ msg: "Location supprimée avec succès" });
     } catch (error) {
-      console.error(error.message);
+      console.error(
+        "Erreur lors de la suppression de la location :",
+        error.message
+      );
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: "Erreur lors de la suppression de la voiture ou des images",
+        message: "Erreur lors de la suppression de la location",
       });
     }
   });

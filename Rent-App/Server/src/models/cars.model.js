@@ -61,6 +61,16 @@ const CarsSchema = new Schema(
         message: "La donnée entrée n'est pas un nombre entier",
       },
     },
+    pricePerDay: {
+      type: Number,
+      required: [false],
+      validate: {
+        validator: function (value) {
+          return Number.isInteger(value);
+        },
+        message: "La donnée entrée n'est pas un nombre entier",
+      },
+    },
     createdBy: {
       type: mongoose.Types.ObjectId,
       ref: "User",

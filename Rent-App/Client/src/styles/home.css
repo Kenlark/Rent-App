@@ -129,17 +129,34 @@
 
 .cars-container-home {
   display: grid;
-  grid-template-columns: repeat(3, minmax(380px, 1fr));
-  grid-template-rows: auto;
-  row-gap: 2.5rem;
-  column-gap: 2.5rem;
-  padding-left: 3rem;
-  padding-right: 3rem;
-  padding-top: 2rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem;
+  padding: 2rem 3rem;
+  width: 100%;
+  max-width: 1650px;
+  margin: 0 auto;
 }
 
 .flex-header-card-home {
   display: flex;
   justify-content: space-between;
-  padding: 1rem 2rem;
+  align-items: center;
+  padding: 1rem;
+}
+
+.car-item-home {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: var(--shadow-1);
+  padding-block-end: 1rem;
+}
+
+.card-img-home {
+  display: block;
+  object-fit: cover;
+  width: 100%;
+  height: 350px;
+  margin-inline: auto;
+  border-top-left-radius: var(--borderRadius);
+  border-top-right-radius: var(--borderRadius);
 }
