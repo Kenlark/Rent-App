@@ -86,6 +86,15 @@ const Home = () => {
     loadRents();
   }, []);
 
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+        Chargement des voitures...
+      </div>
+    );
+  }
+
   // Fonction pour vérifier la disponibilité du véhicule
   const getRentStatus = (carId) => {
     const carRent = rent.find((rent) => rent.idCar === carId);
@@ -122,19 +131,10 @@ const Home = () => {
         availabilityMatch = !isAvailable; // Si indisponible, doit être déjà loué
       }
 
-      // Retourne le véhicule si tous les filtres sont satisfaits
+      // Retourne le véhicule si tous les filtres sont true
       return matchesBrand && matchesModel && availabilityMatch;
     });
   };
-
-  if (loading) {
-    return (
-      <div className="loading-container">
-        <div className="spinner"></div>
-        Chargement des voitures...
-      </div>
-    );
-  }
 
   return (
     <>
