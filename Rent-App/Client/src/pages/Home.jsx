@@ -24,7 +24,6 @@ const allRentsUrl = "http://localhost:5000/api/v1/rent";
 export const loader = async () => {
   try {
     const carsResponse = await axios.get(allCarsUrl);
-    console.log("Réponse de l'API:", carsResponse.data); // Affiche les données pour vérification
     return carsResponse.data.allCars;
   } catch (error) {
     console.error("Erreur dans le loader :", error);
@@ -44,6 +43,16 @@ const Home = () => {
   const [rent, setRent] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openIndex, setOpenIndex] = useState(null);
+  const [filterValue, setFilterValue] = useState("");
+  const [availabilityFilter, setAvailabilityFilter] = useState("");
+
+  const handleFilterChange = (event) => {
+    setFilterValue(event.target.value);
+  };
+
+  const handleAvailabilityChange = (event) => {
+    setAvailabilityFilter(event.target.value);
+  };
 
   const handleToggle = (index) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -89,6 +98,35 @@ const Home = () => {
     return status === "Disponible" ? "card-available" : "card-unavailable";
   };
 
+  const filterCars = () => {
+    return cars.filter((car) => {
+      // Vérifie si la voiture correspond au filtre de marque ou de modèle
+      const matchesBrand = filterValue ? car.brand === filterValue : true;
+      const matchesModel = filterValue ? car.model === filterValue : true;
+
+      // Vérification de la disponibilité du véhicule selon les dates de location
+      const isAvailable = rent.every((r) => {
+        if (r.idCar === car._id) {
+          const rentStartDate = new Date(r.startDate);
+          const rentEndDate = new Date(r.endDate);
+          return !(startDate < rentEndDate && endDate > rentStartDate); // Pas de chevauchement des dates
+        }
+        return true; // Si la voiture n'est pas louée, elle est considérée disponible
+      });
+
+      // Applique le filtre de disponibilité basé sur la sélection (Disponible ou Indisponible)
+      let availabilityMatch = true;
+      if (availabilityFilter === "available") {
+        availabilityMatch = isAvailable; // Si disponible, doit être disponible selon les dates
+      } else if (availabilityFilter === "unavailable") {
+        availabilityMatch = !isAvailable; // Si indisponible, doit être déjà loué
+      }
+
+      // Retourne le véhicule si tous les filtres sont satisfaits
+      return matchesBrand && matchesModel && availabilityMatch;
+    });
+  };
+
   if (loading) {
     return (
       <div className="loading-container">
@@ -102,39 +140,54 @@ const Home = () => {
     <>
       <div className="filter-container">
         <div className="filter-wrapper">
-          <select className="filter-select" defaultValue="Renault">
-            <option>Marque</option>
-            <option>Renault</option>
-            {/* Autres options */}
-          </select>
+          <div>
+            <p>Marque</p>
+            <select value={filterValue} onChange={handleFilterChange}>
+              <option value="">Sélectionner une marque ou un modèle</option>
+              <option value="Renault">Renault</option>
+              <option value="Peugeot">Peugeot</option>
+              <option value="Clio">Clio</option>
+              <option value="208">208</option>
+              {/* Ajoutez d'autres options selon les modèles */}
+            </select>
 
-          <select className="filter-select" defaultValue="Tout">
-            <option>Modèle</option>
-            <option>Tout</option>
-            {/* Autres options */}
-          </select>
+            <select
+              value={availabilityFilter}
+              onChange={handleAvailabilityChange}
+              defaultValue=""
+            >
+              <option value="">Disponibilité</option>
+              <option value="available">Disponibles</option>
+              <option value="unavailable">Indisponibles</option>
+            </select>
+          </div>
 
-          <DatePicker
-            locale="fr"
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
-            showTimeSelect
-            timeIntervals={15}
-            minDate={new Date()}
-            timeCaption="Heure"
-            dateFormat="dd/MM/yyyy h:mm aa"
-          />
-
-          <DatePicker
-            locale="fr"
-            selected={endDate}
-            onChange={(date) => setEndDate(date)}
-            showTimeSelect
-            timeIntervals={15}
-            minDate={startDate} // Date de fin ne peut pas être avant la date de début
-            timeCaption="Heure"
-            dateFormat="dd/MM/yyyy h:mm aa"
-          />
+          <div>
+            <p>Date et heure de début</p>
+            <DatePicker
+              locale="fr"
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+              showTimeSelect
+              timeIntervals={15}
+              minDate={new Date()}
+              timeCaption="Heure"
+              dateFormat="dd/MM/yyyy h:mm aa"
+            />
+          </div>
+          <div>
+            <p>Date et heure de fin</p>
+            <DatePicker
+              locale="fr"
+              selected={endDate}
+              onChange={(date) => setEndDate(date)}
+              showTimeSelect
+              timeIntervals={15}
+              minDate={startDate} // Date de fin ne peut pas être avant la date de début
+              timeCaption="Heure"
+              dateFormat="dd/MM/yyyy h:mm aa"
+            />
+          </div>
 
           <button className="search-button">
             <span className="search-icon">
@@ -146,7 +199,7 @@ const Home = () => {
       </div>
 
       <div className="cars-container-home">
-        {cars.map((car) => (
+        {filterCars().map((car) => (
           <div
             key={car._id}
             className={`car-item-home ${getCardClass(car._id)}`}
@@ -166,7 +219,6 @@ const Home = () => {
             ) : (
               <p>Aucune image disponible</p>
             )}
-
             <div className="car-info">
               <p className="align-info-img">
                 <img src={gear} className="gear" alt="Transmission" />
@@ -186,7 +238,6 @@ const Home = () => {
               </p>
               <p className="align-info-img">{car.pricePerDay} €/jour</p>
             </div>
-
             <div className="flex-btn-admin">
               <div className="link-details">
                 <Link to={`/cars/${car._id}`}>
@@ -197,6 +248,7 @@ const Home = () => {
           </div>
         ))}
       </div>
+
       <div className="flex-btn-home">
         <Link to={"/cars"} className="underline-home">
           <button className="btn-home">
