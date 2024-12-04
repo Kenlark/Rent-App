@@ -114,6 +114,7 @@ function AllCars() {
         seats: currentCar.seats,
         fuelType: currentCar.fuelType,
         horsePower: currentCar.horsePower,
+        pricePerDay: carRent ? carRent.pricePerDay : updatedCarData.pricePerDay,
         rentStatus: carRent ? carRent.status : "Disponible",
       });
     }
@@ -123,7 +124,14 @@ function AllCars() {
     const carRent = rent.find((rent) => rent.idCar === car._id);
     setCurrentCar(car);
     setUpdatedCarData({
-      pricePerDay: carRent ? carRent.pricePerDay : "",
+      brand: car.brand,
+      model: car.model,
+      transmission: car.transmission,
+      seats: car.seats,
+      fuelType: car.fuelType,
+      horsePower: car.horsePower,
+      pricePerDay: carRent ? carRent.pricePerDay : car.pricePerDay,
+      rentStatus: carRent ? carRent.status : "Disponible",
     });
     setIsModalOpen(true);
   };
@@ -133,7 +141,7 @@ function AllCars() {
     setCurrentCar(null);
   };
 
-  const handleUpdatePrice = async (carId, newPrice) => {
+  const handleUpdatePrice = async (carId) => {
     try {
       const rentToUpdate = rent.find((rent) => rent.idCar === carId);
 
@@ -144,16 +152,13 @@ function AllCars() {
 
       const response = await axios.put(
         `http://localhost:5000/api/v1/rent/${rentToUpdate._id}`,
-        { pricePerDay: newPrice },
         { withCredentials: true }
       );
 
       toast.success("Location mis à jour avec succès !");
 
       setCars((prevCars) =>
-        prevCars.map((car) =>
-          car._id === carId ? { ...car, pricePerDay: newPrice } : car
-        )
+        prevCars.map((car) => (car._id === carId ? { ...car } : car))
       );
 
       await refreshRentData();
@@ -216,6 +221,7 @@ function AllCars() {
       ...prevData,
       [name]: value,
     }));
+    console.log("updatedCarData:", updatedCarData); // Vérifie les valeurs ici
   };
 
   const handleDelete = async () => {
@@ -428,6 +434,7 @@ function AllCars() {
             onChange={handleInputChange}
             required
           />
+
           <label htmlFor="rentStatus">Statut de location :</label>
           <select
             name="rentStatus"

@@ -3,12 +3,16 @@ import Glass from "../assets/images/loupe.png";
 import axios from "axios";
 import { toast } from "react-toastify";
 import DatePicker from "react-datepicker";
+import { Link } from "react-router-dom";
 
 import gear from "../assets/images/gear-solid.svg";
 import carSeat from "../assets/images/car-seat-_2_.png";
 import fuelType from "../assets/images/gas-pump-solid.svg";
 import horsePower from "../assets/images/motor-svgrepo-com.png";
-import { Link } from "react-router-dom";
+import Aircraft from "../assets/images/iconmonstr-airport-3.svg";
+import Smiley from "../assets/images/iconmonstr-smiley-thin.svg";
+import EuroLogo from "../assets/images/iconmonstr-currency-6.svg";
+import RoadLogo from "../assets/images/road_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg";
 
 const allCarsUrl = "http://localhost:5000/api/v1/cars";
 const allRentsUrl = "http://localhost:5000/api/v1/rent";
@@ -166,6 +170,7 @@ const Home = () => {
                 <img src={horsePower} className="horse-power" alt="Puissance" />
                 {car.horsePower} Cv
               </p>
+              <p className="align-info-img">{car.pricePerDay} €/jour</p>
             </div>
 
             <div className="flex-btn-admin">
@@ -178,6 +183,46 @@ const Home = () => {
           </div>
         ))}
       </div>
+      <div className="flex-btn-home">
+        <Link to={"/cars"}>
+          <button className="btn-home">Découvrir tous les véhicules</button>
+        </Link>
+      </div>
+      <section className="advantages">
+        <div className="advantages-container">
+          <div className="advantage-item">
+            <img
+              src={Aircraft}
+              alt="Icône aéroport"
+              className="advantage-icon"
+            />
+            <h4>Accueil/Retour Aéroport</h4>
+            <p>Gratuit</p>
+          </div>
+
+          <div className="advantage-item">
+            <img src={Smiley} alt="Icône qualité" className="advantage-icon" />
+            <h4>Qualité Garantie</h4>
+            <p>24/24H</p>
+          </div>
+
+          <div className="advantage-item">
+            <img src={EuroLogo} alt="Icône prix" className="advantage-icon" />
+            <h4>Rapport Qualité/Prix</h4>
+            <p>Optimal</p>
+          </div>
+
+          <div className="advantage-item">
+            <img
+              src={RoadLogo}
+              alt="Icône kilométrage"
+              className="advantage-icon"
+            />
+            <h4>Kilométrage</h4>
+            <p>Illimité</p>
+          </div>
+        </div>
+      </section>
     </>
   );
 };
