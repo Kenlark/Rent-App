@@ -42,6 +42,7 @@ function AllCars() {
     fuelType: "",
     horsePower: "",
     pricePerDay: "",
+    rentStatus: "Disponible",
   });
   const [filters, setFilters] = useState({
     brand: "",
@@ -105,6 +106,7 @@ function AllCars() {
 
   useEffect(() => {
     if (currentCar) {
+      const carRent = rent.find((rent) => rent.idCar === currentCar._id);
       setUpdatedCarData({
         brand: currentCar.brand,
         model: currentCar.model,
@@ -112,9 +114,10 @@ function AllCars() {
         seats: currentCar.seats,
         fuelType: currentCar.fuelType,
         horsePower: currentCar.horsePower,
+        rentStatus: carRent ? carRent.status : "Disponible",
       });
     }
-  }, [currentCar]);
+  }, [currentCar, rent]);
 
   const handleEditClick = (car) => {
     const carRent = rent.find((rent) => rent.idCar === car._id);
@@ -176,12 +179,22 @@ function AllCars() {
 
   const handleSave = async () => {
     try {
+      const rentToUpdate = rent.find((rent) => rent.idCar === currentCar._id);
+
+      if (rentToUpdate) {
+        await axios.put(
+          `http://localhost:5000/api/v1/rent/${rentToUpdate._id}`,
+          {
+            status: updatedCarData.rentStatus,
+          },
+          { withCredentials: true }
+        );
+      }
+
       const response = await axios.put(
         `http://localhost:5000/api/v1/cars/${currentCar._id}`,
         updatedCarData,
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true }
       );
 
       const updatedCars = cars.map((car) =>
@@ -189,13 +202,11 @@ function AllCars() {
       );
 
       setCars(updatedCars);
-      await handleUpdatePrice(currentCar._id, updatedCarData.pricePerDay);
       handleModalClose();
+      toast.success("Véhicule mis à jour avec succès !");
     } catch (error) {
       console.error("Erreur lors de la mise à jour de la voiture:", error);
-      if (error.response) {
-        toast.error("Vous n'avez pas les droits administrateurs");
-      }
+      toast.error("Erreur lors de la mise à jour.");
     }
   };
 
@@ -417,6 +428,16 @@ function AllCars() {
             onChange={handleInputChange}
             required
           />
+          <label htmlFor="rentStatus">Statut de location :</label>
+          <select
+            name="rentStatus"
+            value={updatedCarData.rentStatus}
+            onChange={handleInputChange}
+            required
+          >
+            <option value="Disponible">Disponible</option>
+            <option value="Indisponible">Indisponible</option>
+          </select>
           <button type="submit">Sauvegarder</button>
           <button type="button" onClick={handleModalClose}>
             Annuler
