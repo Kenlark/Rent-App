@@ -16,6 +16,7 @@ import EuroLogo from "../assets/images/iconmonstr-currency-6.svg";
 import RoadLogo from "../assets/images/road_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg";
 import ChevronDown from "../assets/images/iconmonstr-arrow-65-240.png";
 import ChevronUp from "../assets/images/iconmonstr-arrow-66-240.png";
+import ChevronRight from "../assets/images/iconmonstr-arrow-63-240.png";
 
 const allCarsUrl = "http://localhost:5000/api/v1/cars";
 const allRentsUrl = "http://localhost:5000/api/v1/rent";
@@ -89,7 +90,12 @@ const Home = () => {
   };
 
   if (loading) {
-    return <div>Chargement des voitures...</div>; // Affichez un message ou un spinner pendant le chargement
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+        Chargement des voitures...
+      </div>
+    );
   }
 
   return (
@@ -192,8 +198,11 @@ const Home = () => {
         ))}
       </div>
       <div className="flex-btn-home">
-        <Link to={"/cars"}>
-          <button className="btn-home">Découvrir tous les véhicules</button>
+        <Link to={"/cars"} className="underline-home">
+          <button className="btn-home">
+            Découvrir tous les véhicules{" "}
+            <img src={ChevronRight} className="chevron-home" />
+          </button>
         </Link>
       </div>
       <section className="advantages">
