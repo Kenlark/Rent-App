@@ -11,6 +11,7 @@ import horsePower from "../assets/images/motor-svgrepo-com.png";
 import { Link } from "react-router-dom";
 
 const allCarsUrl = "http://localhost:5000/api/v1/cars";
+const allRentsUrl = "http://localhost:5000/api/v1/rent";
 
 export const loader = async () => {
   try {
@@ -32,6 +33,7 @@ const Home = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [cars, setCars] = useState([]);
+  const [rent, setRent] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -47,8 +49,32 @@ const Home = () => {
       }
     };
 
+    const loadRents = async () => {
+      try {
+        const rentData = await axios.get(allRentsUrl, {
+          withCredentials: true,
+        });
+        setRent(rentData.data.allRents);
+      } catch (error) {
+        console.error("Erreur lors du chargement des locations", error);
+      }
+    };
+
     loadCars();
+    loadRents();
   }, []);
+
+  // Fonction pour vérifier la disponibilité du véhicule
+  const getRentStatus = (carId) => {
+    const carRent = rent.find((rent) => rent.idCar === carId);
+    return carRent ? carRent.status : null;
+  };
+
+  // Fonction pour déterminer la classe de la carte en fonction de la disponibilité
+  const getCardClass = (carId) => {
+    const status = getRentStatus(carId);
+    return status === "Disponible" ? "card-available" : "card-unavailable";
+  };
 
   if (loading) {
     return <div>Chargement des voitures...</div>; // Affichez un message ou un spinner pendant le chargement
@@ -81,7 +107,6 @@ const Home = () => {
             dateFormat="dd/MM/yyyy h:mm aa"
           />
 
-          {/* Deuxième DatePicker pour la date de fin */}
           <DatePicker
             locale="fr"
             selected={endDate}
@@ -101,15 +126,16 @@ const Home = () => {
           </button>
         </div>
       </div>
-      <div className="car-list">
+
+      <div className="cars-container-home">
         {cars.map((car) => (
-          <div key={car._id} className="car-item">
-            <h3>
-              {car.brand} {car.model}
-            </h3>
-            <p>
-              {car.year} - {car.transmission}
-            </p>
+          <div key={car._id} className={`car-item ${getCardClass(car._id)}`}>
+            <div className="flex-header-card-home">
+              <h3>
+                {car.brand} {car.model}
+              </h3>
+              <p className="status">{getRentStatus(car._id)}</p>
+            </div>
             {car.images && car.images.length > 0 ? (
               <img
                 src={car.images[0].url}
@@ -117,37 +143,33 @@ const Home = () => {
                 className="card-img"
               />
             ) : (
-              <p>Aucun véhicule disponible</p>
+              <p>Aucune image disponible</p>
             )}
-            <div>
-              <div className="car-info">
-                <p className="align-info-img">
-                  <img src={gear} className="gear" alt="Transmission" />
-                  {car.transmission}
-                </p>
-                <p className="align-info-img">
-                  <img src={carSeat} className="car-seat" alt="Places" />
-                  {car.seats} places
-                </p>
-                <p className="align-info-img">
-                  <img src={fuelType} className="fuel" alt="Carburant" />
-                  {car.fuelType}
-                </p>
-                <p className="align-info-img">
-                  <img
-                    src={horsePower}
-                    className="horse-power"
-                    alt="Puissance"
-                  />
-                  {car.horsePower} Cv
-                </p>
-              </div>
-              <div className="flex-btn-admin">
-                <div className="link-details">
-                  <Link to={`/cars/${car._id}`}>
-                    <button className="details-button">Voir les détails</button>
-                  </Link>
-                </div>
+
+            <div className="car-info">
+              <p className="align-info-img">
+                <img src={gear} className="gear" alt="Transmission" />
+                {car.transmission}
+              </p>
+              <p className="align-info-img">
+                <img src={carSeat} className="car-seat" alt="Places" />
+                {car.seats} places
+              </p>
+              <p className="align-info-img">
+                <img src={fuelType} className="fuel" alt="Carburant" />
+                {car.fuelType}
+              </p>
+              <p className="align-info-img">
+                <img src={horsePower} className="horse-power" alt="Puissance" />
+                {car.horsePower} Cv
+              </p>
+            </div>
+
+            <div className="flex-btn-admin">
+              <div className="link-details">
+                <Link to={`/cars/${car._id}`}>
+                  <button className="details-button">Voir les détails</button>
+                </Link>
               </div>
             </div>
           </div>

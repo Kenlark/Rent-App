@@ -126,3 +126,20 @@
   margin-block-start: 0.2rem;
   width: 20px;
 }
+
+.cars-container-home {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(380px, 1fr));
+  grid-template-rows: auto;
+  row-gap: 2.5rem;
+  column-gap: 2.5rem;
+  padding-left: 3rem;
+  padding-right: 3rem;
+  padding-top: 2rem;
+}
+
+.flex-header-card-home {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+}
