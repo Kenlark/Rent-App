@@ -4,12 +4,12 @@ import axios from "axios";
 import Modal from "react-modal";
 import { toast } from "react-toastify";
 import Filters from "../components/Filter.jsx";
+import { useAuth } from "../authContext.jsx";
 
 import gear from "../assets/images/gear-solid.svg";
 import carSeat from "../assets/images/car-seat-_2_.png";
 import fuelType from "../assets/images/gas-pump-solid.svg";
 import horsePower from "../assets/images/motor-svgrepo-com.png";
-import { useAuth } from "../authContext.jsx";
 
 const allCarsUrl = "http://localhost:5000/api/v1/cars";
 const allRentsUrl = "http://localhost:5000/api/v1/rent";

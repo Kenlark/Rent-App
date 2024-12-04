@@ -9,60 +9,62 @@ const Filters = ({ onFilterChange }) => {
   const [availability, setAvailability] = useState("");
 
   const handlePriceChange = (e) => {
-    const newPriceRange = [e.target.value, priceRange[1]];
+    const newPriceRange = [parseInt(e.target.value), priceRange[1]];
     setPriceRange(newPriceRange);
-    onFilterChange({ priceRange: newPriceRange });
+    onFilterChange({ type: "price", value: newPriceRange });
   };
 
   const handleYearChange = (e) => {
-    const newYearRange = [e.target.value, yearRange[1]];
+    const newYearRange = [parseInt(e.target.value), yearRange[1]];
     setYearRange(newYearRange);
-    onFilterChange({ yearRange: newYearRange });
+    onFilterChange({ type: "year", value: newYearRange });
   };
 
   const handleTransmissionChange = (value) => {
     setTransmission(value);
-    onFilterChange({ transmission: value });
+    onFilterChange({ type: "transmission", value });
   };
 
   const handleFuelTypeChange = (value) => {
     setFuelType(value);
-    onFilterChange({ fuelType: value });
+    onFilterChange({ type: "fuelType", value });
   };
 
   const handleSeatsChange = (value) => {
     setSeats(value);
-    onFilterChange({ seats: value });
+    onFilterChange({ type: "seats", value });
   };
 
   const handleAvailabilityChange = (value) => {
     setAvailability(value);
-    onFilterChange({ availability: value });
+    onFilterChange({ type: "availability", value });
+  };
+
+  const resetFilters = () => {
+    setPriceRange([15, 500]);
+    setYearRange([2008, 2024]);
+    setTransmission("");
+    setFuelType("");
+    setSeats("");
+    setAvailability("");
+    onFilterChange({
+      type: "reset",
+      value: {
+        priceRange: [15, 500],
+        yearRange: [2008, 2024],
+        transmission: "",
+        fuelType: "",
+        seats: "",
+        availability: "",
+      },
+    });
   };
 
   return (
     <div className="card-filter">
       <div className="header-filter">
         <h3>Filtres</h3>
-        <button
-          className="button-filter"
-          onClick={() => {
-            setPriceRange([15, 500]);
-            setYearRange([2008, 2024]);
-            setTransmission("");
-            setFuelType("");
-            setSeats("");
-            setAvailability("");
-            onFilterChange({
-              priceRange: [15, 500],
-              yearRange: [2008, 2024],
-              transmission: "",
-              fuelType: "",
-              seats: "",
-              availability: "",
-            });
-          }}
-        >
+        <button className="button-filter" onClick={resetFilters}>
           Réinitialiser
         </button>
       </div>
@@ -71,19 +73,23 @@ const Filters = ({ onFilterChange }) => {
         <label className="slider-label-filter">Type de location</label>
         <div className="flex-filter gap-2">
           <button
-            className="button-outline"
+            className={`button-outline ${availability === "" ? "active" : ""}`}
             onClick={() => handleAvailabilityChange("")}
           >
             Tout
           </button>
           <button
-            className="button-outline"
+            className={`button-outline ${
+              availability === "day" ? "active" : ""
+            }`}
             onClick={() => handleAvailabilityChange("day")}
           >
             Par jour
           </button>
           <button
-            className="button-outline"
+            className={`button-outline ${
+              availability === "hour" ? "active" : ""
+            }`}
             onClick={() => handleAvailabilityChange("hour")}
           >
             Par heure
@@ -131,19 +137,23 @@ const Filters = ({ onFilterChange }) => {
         <label className="slider-label-filter">Transmission</label>
         <div className="flex-filter gap-2">
           <button
-            className="button-outline"
+            className={`button-outline ${transmission === "" ? "active" : ""}`}
             onClick={() => handleTransmissionChange("")}
           >
             Tout
           </button>
           <button
-            className="button-outline"
+            className={`button-outline ${
+              transmission === "manual" ? "active" : ""
+            }`}
             onClick={() => handleTransmissionChange("manual")}
           >
             Manuelle
           </button>
           <button
-            className="button-outline"
+            className={`button-outline ${
+              transmission === "automatic" ? "active" : ""
+            }`}
             onClick={() => handleTransmissionChange("automatic")}
           >
             Automatique
@@ -155,31 +165,39 @@ const Filters = ({ onFilterChange }) => {
         <label className="slider-label-filter">Carburant</label>
         <div className="flex-filter flex-wrap-filter gap-2">
           <button
-            className="button-outline"
+            className={`button-outline ${fuelType === "" ? "active" : ""}`}
             onClick={() => handleFuelTypeChange("")}
           >
             Tout
           </button>
           <button
-            className="button-outline"
+            className={`button-outline ${
+              fuelType === "gasoline" ? "active" : ""
+            }`}
             onClick={() => handleFuelTypeChange("gasoline")}
           >
             Essence
           </button>
           <button
-            className="button-outline"
+            className={`button-outline ${
+              fuelType === "diesel" ? "active" : ""
+            }`}
             onClick={() => handleFuelTypeChange("diesel")}
           >
             Diesel
           </button>
           <button
-            className="button-outline"
+            className={`button-outline ${
+              fuelType === "hybrid" ? "active" : ""
+            }`}
             onClick={() => handleFuelTypeChange("hybrid")}
           >
             Hybride
           </button>
           <button
-            className="button-outline"
+            className={`button-outline ${
+              fuelType === "electric" ? "active" : ""
+            }`}
             onClick={() => handleFuelTypeChange("electric")}
           >
             Électrique
@@ -191,58 +209,34 @@ const Filters = ({ onFilterChange }) => {
         <label className="slider-label-filter">Places</label>
         <div className="flex-filter flex-wrap-filter gap-2">
           <button
-            className="button-outline"
+            className={`button-outline ${seats === "" ? "active" : ""}`}
             onClick={() => handleSeatsChange("")}
           >
             Tout
           </button>
           <button
-            className="button-outline"
+            className={`button-outline ${seats === "2" ? "active" : ""}`}
             onClick={() => handleSeatsChange("2")}
           >
             2 Places
           </button>
           <button
-            className="button-outline"
+            className={`button-outline ${seats === "4" ? "active" : ""}`}
             onClick={() => handleSeatsChange("4")}
           >
             4 Places
           </button>
           <button
-            className="button-outline"
+            className={`button-outline ${seats === "5" ? "active" : ""}`}
             onClick={() => handleSeatsChange("5")}
           >
             5 Places
           </button>
           <button
-            className="button-outline"
+            className={`button-outline ${seats === "other" ? "active" : ""}`}
             onClick={() => handleSeatsChange("other")}
           >
             Autre
-          </button>
-        </div>
-      </div>
-
-      <div>
-        <label className="slider-label-filter">Disponibilité</label>
-        <div className="flex-filter gap-2">
-          <button
-            className="button-outline"
-            onClick={() => handleAvailabilityChange("")}
-          >
-            Tout
-          </button>
-          <button
-            className="button-outline"
-            onClick={() => handleAvailabilityChange("available")}
-          >
-            Disponible
-          </button>
-          <button
-            className="button-outline"
-            onClick={() => handleAvailabilityChange("unavailable")}
-          >
-            Indisponible
           </button>
         </div>
       </div>

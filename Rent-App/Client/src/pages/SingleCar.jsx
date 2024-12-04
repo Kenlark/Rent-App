@@ -54,22 +54,34 @@ const SingleCar = () => {
       <section className="single-car-container">
         <div className="single-car-card">
           {car.images && car.images.length > 0 ? (
-            <Slider {...settings} className="carousel">
-              {car.images.map((image, index) => (
-                <div key={index} className="img-single-car">
-                  <img
-                    src={image.url}
-                    alt={`${car.brand} ${car.model}`}
-                    className="car-image"
-                  />
-                </div>
-              ))}
-            </Slider>
+            // Si il y a plus d'une image, on utilise le carrousel
+            car.images.length > 1 ? (
+              <Slider {...settings} className="carousel">
+                {car.images.map((image, index) => (
+                  <div key={index} className="img-single-car">
+                    <img
+                      src={image.url}
+                      alt={`${car.brand} ${car.model}`}
+                      className="car-image-singlecar"
+                    />
+                  </div>
+                ))}
+              </Slider>
+            ) : (
+              // Si il n'y a qu'une seule image, on l'affiche directement
+              <div className="img-single-car">
+                <img
+                  src={car.images[0].url}
+                  alt={`${car.brand} ${car.model}`}
+                  className="car-image-singlecar"
+                />
+              </div>
+            )
           ) : (
             <p>Image non disponible</p>
           )}
 
-          <div className="car-details">
+          <div className="car-details-singlecar">
             <h2>
               {car.brand} {car.model} ({car.year})
             </h2>

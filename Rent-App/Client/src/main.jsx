@@ -16,6 +16,7 @@ import "./styles/contact-form.css";
 import "./styles/single-car.css";
 import "react-datepicker/dist/react-datepicker.css";
 import "./styles/filter.css";
+import "./styles/home.css";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

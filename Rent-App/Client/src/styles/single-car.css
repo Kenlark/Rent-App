@@ -42,13 +42,13 @@
   height: calc(100vh - 14rem);
 }
 
-.car-details {
+.car-details-singlecar {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.car-details p img {
+.car-details-singlecar p img {
   margin-inline-end: 0.5rem;
 }
 
@@ -72,8 +72,10 @@
   border-radius: var(--borderRadius);
 }
 
-.car-image {
+.car-image-singlecar {
   width: 90%;
+  height: 400px;
+  object-fit: cover;
 }
 
 .carousel-button {

@@ -16,6 +16,7 @@ import SingleCar from "./pages/SingleCar.jsx";
 import { loader as SingleCarLoader } from "./pages/SingleCar.jsx";
 import FormRent from "./pages/FormRent.jsx";
 import { loader as FormRentLoader } from "./pages/FormRent.jsx";
+import { loader as HomeLoader } from "./pages/Home.jsx";
 
 function ReactRouter() {
   const router = createBrowserRouter([
@@ -27,6 +28,7 @@ function ReactRouter() {
         {
           index: true,
           element: <Home />,
+          loader: HomeLoader,
         },
         {
           path: "cars",

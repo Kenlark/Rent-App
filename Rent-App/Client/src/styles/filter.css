@@ -112,3 +112,16 @@
 .gap-4 {
   gap: 16px;
 }
+
+.button-outline.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.filter-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-top: 4px;
+}
