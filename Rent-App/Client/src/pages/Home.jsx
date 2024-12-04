@@ -4,6 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import DatePicker from "react-datepicker";
 import { Link } from "react-router-dom";
+import { faqData } from "../data.js";
 
 import gear from "../assets/images/gear-solid.svg";
 import carSeat from "../assets/images/car-seat-_2_.png";
@@ -13,6 +14,8 @@ import Aircraft from "../assets/images/iconmonstr-airport-3.svg";
 import Smiley from "../assets/images/iconmonstr-smiley-thin.svg";
 import EuroLogo from "../assets/images/iconmonstr-currency-6.svg";
 import RoadLogo from "../assets/images/road_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.svg";
+import ChevronDown from "../assets/images/iconmonstr-arrow-65-240.png";
+import ChevronUp from "../assets/images/iconmonstr-arrow-66-240.png";
 
 const allCarsUrl = "http://localhost:5000/api/v1/cars";
 const allRentsUrl = "http://localhost:5000/api/v1/rent";
@@ -39,6 +42,11 @@ const Home = () => {
   const [cars, setCars] = useState([]);
   const [rent, setRent] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [openIndex, setOpenIndex] = useState(null);
+
+  const handleToggle = (index) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
 
   useEffect(() => {
     const loadCars = async () => {
@@ -222,6 +230,38 @@ const Home = () => {
             <p>Illimité</p>
           </div>
         </div>
+      </section>
+      <section className="faq-section">
+        <h2>Foire aux Questions</h2>
+        {faqData.map((item, index) => (
+          <div key={index} className="faq-item">
+            <h3 onClick={() => handleToggle(index)}>
+              {item.question}
+              <span>
+                {openIndex === index ? (
+                  <img
+                    src={ChevronUp}
+                    alt="Chevron Up"
+                    className="chevron-home"
+                  />
+                ) : (
+                  <img
+                    src={ChevronDown}
+                    alt="Chevron Down"
+                    className="chevron-home"
+                  />
+                )}
+              </span>
+            </h3>
+            <div
+              className={`faq-answer ${
+                openIndex === index ? "open" : "closed"
+              }`}
+            >
+              <p>{item.answer}</p>
+            </div>
+          </div>
+        ))}
       </section>
     </>
   );

@@ -25,6 +25,14 @@
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 8px 15px rgba(0, 0, 0, 0.2);
+  --navbar-color: #191919;
+  --ff-color: #e3e2e2;
+  --ff-red: #ef4444;
+  --ff-grey1: #f9fafb;
+  --ff-grey2: #f3f4f6;
+  --ff-grey3: #d1d5db;
+  --ff-grey4: #4b5563;
+  --ff-red-hover: #dc2626;
 }
 
 .sr-only {
@@ -238,4 +246,106 @@
 .advantage-item:hover .advantage-icon {
   filter: invert(40%) sepia(62%) saturate(3500%) hue-rotate(190deg)
     brightness(70%) contrast(150%) opacity(1);
+}
+
+.faq-section {
+  display: flex;
+  flex-direction: column;
+  padding: 3rem 2rem;
+  max-width: 90ch;
+  margin: 0 auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.faq-section h2 {
+  display: inline-block;
+  margin: 0 auto;
+  text-align: center;
+  color: #4e7bef;
+  margin-bottom: 2rem;
+  background-color: #4e7bef;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  color: white;
+  font-size: 1.5rem;
+  box-shadow: var(--shadow-md);
+  transition: var(--transition);
+  cursor: default;
+}
+
+.faq-section h2:hover {
+  transform: translateY(-5px);
+  transition: var(--transition);
+  cursor: default;
+}
+
+.faq-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  text-align: center;
+  max-width: 90ch;
+  margin-block-end: 1rem;
+  border-bottom: 1px solid var(--ff-grey3);
+  background-color: var(--bcg-body);
+  width: 100%;
+  position: relative;
+}
+
+.faq-item h3 {
+  display: flex;
+  background-color: var(--bcg-body);
+  align-items: center;
+  justify-content: center;
+  color: #4b5563;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.faq-item p {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #374151;
+  background-color: var(--bcg-body);
+  padding: 1rem;
+  margin-block-start: 1rem;
+  margin-block-end: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15), 0 0 10px rgba(0, 0, 0, 0.05);
+  line-height: 1.6;
+}
+
+.faq-answer {
+  display: flex;
+  justify-content: center;
+  opacity: 0;
+  transform: scaleY(0.8);
+  max-height: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease, max-height 0.3s ease;
+  background-color: var(--bcg-body);
+}
+
+.faq-answer.open {
+  opacity: 1;
+  transform: scaleY(1);
+  max-height: 500px;
+}
+
+.faq-answer.closed {
+  background-color: var(--bcg-body);
+  opacity: 0;
+  transform: scaleY(0.8);
+  max-height: 0;
+}
+
+.chevron-home {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-inline-start: 0.7rem;
+  width: 25px;
 }
