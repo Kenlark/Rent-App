@@ -86,14 +86,6 @@ const getAll = async (req, res) => {
 const update = async (req, res) => {
   checkAdmin(req, res, async () => {
     const { id } = req.params;
-    const carImages = req.files;
-
-    const isMongoId = mongoose.isValidObjectId(id);
-    if (!isMongoId) {
-      return res
-        .status(StatusCodes.BAD_REQUEST)
-        .json({ message: "ID invalide" });
-    }
 
     try {
       const existingCar = await carsService.get(id);
@@ -108,22 +100,14 @@ const update = async (req, res) => {
         createdBy: req.user.userID,
       };
 
-      if (carImages && carImages.length > 0) {
-        const imageUrls = [];
-
-        for (const file of carImages) {
-          const formattedFile = formatImage(file);
-          const response = await cloudinary.uploader.upload(formattedFile, {
-            folder: "Car-Images",
-          });
-          imageUrls.push({ url: response.secure_url });
-        }
-
-        updatedCarData.images = imageUrls;
-      }
-
-      // Appel au service pour mettre à jour la voiture
       const updatedCar = await carsService.update(id, updatedCarData);
+
+      // Synchroniser le pricePerDay dans les locations associées
+      if (updatedCar.pricePerDay) {
+        await rentService.updateByCarId(id, {
+          pricePerDay: updatedCar.pricePerDay,
+        });
+      }
 
       res.status(StatusCodes.OK).json({ car: updatedCar });
     } catch (error) {

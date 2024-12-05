@@ -109,7 +109,17 @@ const update = async (req, res) => {
         createdBy: req.user.userID,
       };
 
+      // Mise à jour de la location
       const updatedRent = await rentService.update(id, updatedRentData);
+
+      // Synchronisation du prix dans le modèle des voitures, si le `pricePerDay` a changé
+      if (pricePerDay && pricePerDay !== existingRent.pricePerDay) {
+        const car = await carsModel.findById(existingRent.idCar);
+        if (car) {
+          car.pricePerDay = pricePerDay;
+          await car.save();
+        }
+      }
 
       res.status(StatusCodes.OK).json({ rent: updatedRent });
     } catch (error) {

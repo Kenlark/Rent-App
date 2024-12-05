@@ -25,4 +25,8 @@ const update = async (id, data) => {
   return await rentCarModel.findByIdAndUpdate(id, data, { new: true });
 };
 
-export { getAll, create, remove, update, get, removeByCarId };
+const updateByCarId = async (carId, data) => {
+  return await rentCarModel.updateMany({ idCar: carId }, data);
+};
+
+export { getAll, create, remove, update, get, removeByCarId, updateByCarId };

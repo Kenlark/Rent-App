@@ -29,7 +29,8 @@ export const loader = async () => {
 };
 
 function AllCars() {
-  const { allCars } = useLoaderData();
+  const { allCars: initialCars } = useLoaderData();
+  const [cars, setCars] = useState(initialCars || []);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -54,11 +55,55 @@ function AllCars() {
     horsePower: "",
     pricePerDay: "",
   });
-
-  const [cars, setCars] = useState(allCars || []);
   const [rent, setRent] = useState([]);
   const { user } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchAllCars = async () => {
+      try {
+        const response = await axios.get(allCarsUrl);
+        setCars(response.data.allCars);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des voitures :", error);
+        toast.error("Erreur lors de la récupération des voitures");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAllCars();
+  }, []);
+
+  useEffect(() => {
+    const fetchRentInfo = async () => {
+      try {
+        const response = await axios.get(allRentsUrl, {
+          withCredentials: true,
+        });
+        setRent(response.data.allRents);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchRentInfo();
+  }, []);
+
+  useEffect(() => {
+    if (currentCar && rent.length > 0) {
+      const carRent = rent.find((rent) => rent.idCar === currentCar._id);
+      setUpdatedCarData((prevData) => ({
+        ...prevData,
+        brand: currentCar.brand,
+        model: currentCar.model,
+        transmission: currentCar.transmission,
+        seats: currentCar.seats,
+        fuelType: currentCar.fuelType,
+        horsePower: currentCar.horsePower,
+        pricePerDay: carRent ? carRent.pricePerDay : prevData.pricePerDay,
+        rentStatus: carRent ? carRent.status : "Disponible",
+      }));
+    }
+  }, [currentCar, rent]);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -84,43 +129,9 @@ function AllCars() {
       (filters.horsePower === "" ||
         car.horsePower === parseInt(filters.horsePower)) &&
       (filters.pricePerDay === "" ||
-        car.pricePerDay
-          .toLowerCase()
-          .includes(filters.pricePerDay.toLowerCase()))
+        car.pricePerDay === parseInt(filters.pricePerDay))
     );
   });
-
-  useEffect(() => {
-    const rentInfo = async () => {
-      try {
-        const response = await axios.get(allRentsUrl, {
-          withCredentials: true,
-        });
-        setRent(response.data.allRents);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    rentInfo();
-  }, []);
-
-  useEffect(() => {
-    if (currentCar && rent.length > 0) {
-      const carRent = rent.find((rent) => rent.idCar === currentCar._id);
-      setUpdatedCarData((prevData) => ({
-        ...prevData,
-        brand: currentCar.brand,
-        model: currentCar.model,
-        transmission: currentCar.transmission,
-        seats: currentCar.seats,
-        fuelType: currentCar.fuelType,
-        horsePower: currentCar.horsePower,
-        pricePerDay: carRent ? carRent.pricePerDay : prevData.pricePerDay,
-        rentStatus: carRent ? carRent.status : "Disponible",
-      }));
-    }
-  }, [currentCar, rent]);
 
   const handleEditClick = (car) => {
     const carRent = rent.find((rent) => rent.idCar === car._id);
@@ -141,46 +152,6 @@ function AllCars() {
   const handleModalClose = () => {
     setIsModalOpen(false);
     setCurrentCar(null);
-  };
-
-  const updatePrice = async (carId, newPrice) => {
-    try {
-      const response = await axios.put(`/api/v1/cars/${carId}`, {
-        pricePerDay: newPrice,
-      });
-      if (response.status === 200) {
-        // Requête réussie, mettre à jour l'état
-        const updatedCars = cars.map((car) =>
-          car._id === carId ? { ...car, pricePerDay: newPrice } : car
-        );
-        setCars(updatedCars);
-      }
-    } catch (error) {
-      console.error("Erreur lors de la mise à jour du prix :", error);
-    }
-  };
-
-  useEffect(() => {
-    if (currentCar) {
-      setUpdatedCarData((prevData) => ({
-        ...prevData,
-        pricePerDay: currentCar.pricePerDay,
-      }));
-    }
-  }, [currentCar]);
-
-  const refreshRentData = async () => {
-    try {
-      const response = await axios.get(allRentsUrl, {
-        withCredentials: true,
-      });
-      setRent(response.data.allRents);
-    } catch (error) {
-      console.log(
-        "Erreur lors du rechargement des données de location :",
-        error
-      );
-    }
   };
 
   const handleSave = async () => {
@@ -249,23 +220,6 @@ function AllCars() {
     setIsDeleteModalOpen(true);
   };
 
-  useEffect(() => {
-    const rentInfo = async () => {
-      try {
-        const response = await axios.get(allRentsUrl, {
-          withCredentials: true,
-        });
-        setRent(response.data.allRents);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    rentInfo();
-  }, []);
-
   if (loading) {
     return (
       <div className="loading-container">
@@ -331,9 +285,9 @@ function AllCars() {
                       />
                       {car.horsePower} Cv
                     </p>
-                    {carRent && (
-                      <p key={carRent._id} className="align-info-img">
-                        {carRent.pricePerDay} €/jour
+                    {car && (
+                      <p key={car._id} className="align-info-img">
+                        {car.pricePerDay} €/jour
                       </p>
                     )}
                   </div>
