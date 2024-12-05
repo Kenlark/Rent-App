@@ -333,6 +333,12 @@ function AllCars() {
                         </button>
                       </Link>
                     </div>
+                    <button
+                      className="edit-button"
+                      onClick={() => navigate("/rent")}
+                    >
+                      Réserver
+                    </button>
                     {user && user.role === "admin" && (
                       <>
                         <button
@@ -346,12 +352,6 @@ function AllCars() {
                           onClick={() => confirmDelete(car._id)}
                         >
                           Supprimer
-                        </button>
-                        <button
-                          className="edit-button"
-                          onClick={() => navigate("/rent")}
-                        >
-                          Réserver
                         </button>
                       </>
                     )}
