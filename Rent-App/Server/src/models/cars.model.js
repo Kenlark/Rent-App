@@ -81,6 +81,16 @@ const CarsSchema = new Schema(
   { timestamps: true }
 );
 
+// hook remove pour supprimer toutes les locations qui se réfèrent à la voiture
+CarsSchema.pre("remove", async function (next) {
+  try {
+    await mongoose.model("Rent").deleteMany({ idCar: this._id });
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
 CarsSchema.pre("save", async function (next) {
   const user = await User.findById(this.createdBy);
   if (!user) {

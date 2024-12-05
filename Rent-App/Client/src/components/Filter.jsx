@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 
 const Filters = ({ onFilterChange }) => {
   const [priceRange, setPriceRange] = useState([15, 500]);
@@ -60,6 +61,10 @@ const Filters = ({ onFilterChange }) => {
     });
   };
 
+  Filters.propTypes = {
+    onFilterChange: PropTypes.func.isRequired,
+  };
+
   return (
     <div className="card-filter">
       <div className="header-filter">
@@ -70,7 +75,9 @@ const Filters = ({ onFilterChange }) => {
       </div>
 
       <div>
-        <label className="slider-label-filter">Type de location</label>
+        <label htmlFor="rent" className="slider-label-filter">
+          Type de location
+        </label>
         <div className="flex-filter gap-2">
           <button
             className={`button-outline ${availability === "" ? "active" : ""}`}
@@ -98,7 +105,9 @@ const Filters = ({ onFilterChange }) => {
       </div>
 
       <div>
-        <label className="slider-label-filter">Gamme de prix</label>
+        <label htmlFor="price" className="slider-label-filter">
+          Gamme de prix
+        </label>
         <div className="slider-container-filter">
           <input
             type="range"
@@ -116,7 +125,9 @@ const Filters = ({ onFilterChange }) => {
       </div>
 
       <div>
-        <label className="slider-label-filter">Année</label>
+        <label htmlFor="year" className="slider-label-filter">
+          Année
+        </label>
         <div className="slider-container-filter">
           <input
             type="range"
@@ -134,7 +145,9 @@ const Filters = ({ onFilterChange }) => {
       </div>
 
       <div>
-        <label className="slider-label-filter">Transmission</label>
+        <label htmlFor="gear" className="slider-label-filter">
+          Transmission
+        </label>
         <div className="flex-filter gap-2">
           <button
             className={`button-outline ${transmission === "" ? "active" : ""}`}
@@ -162,7 +175,9 @@ const Filters = ({ onFilterChange }) => {
       </div>
 
       <div>
-        <label className="slider-label-filter">Carburant</label>
+        <label htmlFor="fuel" className="slider-label-filter">
+          Carburant
+        </label>
         <div className="flex-filter flex-wrap-filter gap-2">
           <button
             className={`button-outline ${fuelType === "" ? "active" : ""}`}
@@ -206,7 +221,9 @@ const Filters = ({ onFilterChange }) => {
       </div>
 
       <div>
-        <label className="slider-label-filter">Places</label>
+        <label htmlFor="seats" className="slider-label-filter">
+          Places
+        </label>
         <div className="flex-filter flex-wrap-filter gap-2">
           <button
             className={`button-outline ${seats === "" ? "active" : ""}`}

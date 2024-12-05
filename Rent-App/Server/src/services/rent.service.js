@@ -16,8 +16,13 @@ const remove = async (id) => {
   return await rentCarModel.findByIdAndDelete(id);
 };
 
+// Nouveau service pour supprimer toutes les locations d'une voiture donnée
+const removeByCarId = async (carId) => {
+  return await rentCarModel.deleteMany({ idCar: carId });
+};
+
 const update = async (id, data) => {
   return await rentCarModel.findByIdAndUpdate(id, data, { new: true });
 };
 
-export { getAll, create, remove, update, get };
+export { getAll, create, remove, update, get, removeByCarId };

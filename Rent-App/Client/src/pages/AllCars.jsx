@@ -106,18 +106,19 @@ function AllCars() {
   }, []);
 
   useEffect(() => {
-    if (currentCar) {
+    if (currentCar && rent.length > 0) {
       const carRent = rent.find((rent) => rent.idCar === currentCar._id);
-      setUpdatedCarData({
+      setUpdatedCarData((prevData) => ({
+        ...prevData,
         brand: currentCar.brand,
         model: currentCar.model,
         transmission: currentCar.transmission,
         seats: currentCar.seats,
         fuelType: currentCar.fuelType,
         horsePower: currentCar.horsePower,
-        pricePerDay: carRent ? carRent.pricePerDay : updatedCarData.pricePerDay,
+        pricePerDay: carRent ? carRent.pricePerDay : prevData.pricePerDay,
         rentStatus: carRent ? carRent.status : "Disponible",
-      });
+      }));
     }
   }, [currentCar, rent]);
 
@@ -142,32 +143,31 @@ function AllCars() {
     setCurrentCar(null);
   };
 
-  const handleUpdatePrice = async (carId) => {
+  const updatePrice = async (carId, newPrice) => {
     try {
-      const rentToUpdate = rent.find((rent) => rent.idCar === carId);
-
-      if (!rentToUpdate) {
-        toast.error("Aucune location trouvée pour cette voiture.");
-        return;
+      const response = await axios.put(`/api/v1/cars/${carId}`, {
+        pricePerDay: newPrice,
+      });
+      if (response.status === 200) {
+        // Requête réussie, mettre à jour l'état
+        const updatedCars = cars.map((car) =>
+          car._id === carId ? { ...car, pricePerDay: newPrice } : car
+        );
+        setCars(updatedCars);
       }
-
-      const response = await axios.put(
-        `http://localhost:5000/api/v1/rent/${rentToUpdate._id}`,
-        { withCredentials: true }
-      );
-
-      toast.success("Location mis à jour avec succès !");
-
-      setCars((prevCars) =>
-        prevCars.map((car) => (car._id === carId ? { ...car } : car))
-      );
-
-      await refreshRentData();
     } catch (error) {
       console.error("Erreur lors de la mise à jour du prix :", error);
-      toast.error("Erreur lors de la mise à jour du prix.");
     }
   };
+
+  useEffect(() => {
+    if (currentCar) {
+      setUpdatedCarData((prevData) => ({
+        ...prevData,
+        pricePerDay: currentCar.pricePerDay,
+      }));
+    }
+  }, [currentCar]);
 
   const refreshRentData = async () => {
     try {

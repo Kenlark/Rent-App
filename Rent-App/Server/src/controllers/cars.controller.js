@@ -1,4 +1,5 @@
 import * as carsService from "../services/car.service.js";
+import * as rentService from "../services/rent.service.js";
 import { StatusCodes } from "http-status-codes";
 import checkAdmin from "../middlewares/checkAdmin.middleware.js";
 import { v2 as cloudinary } from "cloudinary";
@@ -153,6 +154,10 @@ const remove = async (req, res) => {
     }
 
     try {
+      // Étape 1 : Supprimer les locations associées à cette voiture
+      await rentService.removeByCarId(id); // Appel au nouveau service pour supprimer toutes les locations
+
+      // Étape 2 : Supprimer la voiture et les images
       const images = car.images;
       for (const image of images) {
         const publicId = image.url.split("/").pop().split(".")[0];
