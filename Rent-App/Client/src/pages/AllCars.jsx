@@ -221,7 +221,6 @@ function AllCars() {
       ...prevData,
       [name]: value,
     }));
-    console.log("updatedCarData:", updatedCarData); // Vérifie les valeurs ici
   };
 
   const handleDelete = async () => {

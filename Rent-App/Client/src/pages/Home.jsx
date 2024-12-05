@@ -37,21 +37,57 @@ export const loader = async () => {
 };
 
 const Home = () => {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [cars, setCars] = useState([]);
   const [rent, setRent] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openIndex, setOpenIndex] = useState(null);
   const [filterValue, setFilterValue] = useState("");
   const [availabilityFilter, setAvailabilityFilter] = useState("");
+  const [brands, setBrands] = useState([]);
+  const [models, setModels] = useState([]);
+  const [selectedBrand, setSelectedBrand] = useState("");
+  const [selectedModel, setSelectedModel] = useState("");
 
-  const handleFilterChange = (event) => {
-    setFilterValue(event.target.value);
+  useEffect(() => {
+    // Simuler la récupération des données depuis une API
+    const fetchCars = async () => {
+      const response = await fetch("http://localhost:5000/api/v1/cars"); // URL de votre API
+      const data = await response.json();
+      setCars(data.allCars);
+
+      // Extraire les marques uniques
+      const uniqueBrands = [...new Set(data.allCars.map((car) => car.brand))];
+      setBrands(uniqueBrands);
+    };
+
+    fetchCars();
+  }, []);
+
+  useEffect(() => {
+    if (selectedBrand) {
+      // Filtrer les modèles basés sur la marque sélectionnée
+      const filteredModels = [
+        ...new Set(
+          cars
+            .filter((car) => car.brand === selectedBrand)
+            .map((car) => car.model)
+        ),
+      ];
+      setModels(filteredModels);
+      setSelectedModel(""); // Réinitialiser le modèle sélectionné
+    } else {
+      setModels([]);
+    }
+  }, [selectedBrand, cars]);
+
+  const handleFilterChange = (e) => {
+    setFilterValue(e.target.value);
   };
 
-  const handleAvailabilityChange = (event) => {
-    setAvailabilityFilter(event.target.value);
+  const handleAvailabilityChange = (e) => {
+    setAvailabilityFilter(e.target.value);
   };
 
   const handleToggle = (index) => {
@@ -109,29 +145,22 @@ const Home = () => {
 
   const filterCars = () => {
     return cars.filter((car) => {
-      // Vérifie si la voiture correspond au filtre de marque ou de modèle
-      const matchesBrand = filterValue ? car.brand === filterValue : true;
-      const matchesModel = filterValue ? car.model === filterValue : true;
-
-      // Vérification de la disponibilité du véhicule selon les dates de location
+      const matchesBrand = selectedBrand ? car.brand === selectedBrand : true;
+      const matchesModel = selectedModel ? car.model === selectedModel : true;
       const isAvailable = rent.every((r) => {
         if (r.idCar === car._id) {
           const rentStartDate = new Date(r.startDate);
           const rentEndDate = new Date(r.endDate);
-          return !(startDate < rentEndDate && endDate > rentStartDate); // Pas de chevauchement des dates
+          return !(startDate < rentEndDate && endDate > rentStartDate);
         }
-        return true; // Si la voiture n'est pas louée, elle est considérée disponible
+        return true;
       });
-
-      // Applique le filtre de disponibilité basé sur la sélection (Disponible ou Indisponible)
       let availabilityMatch = true;
       if (availabilityFilter === "available") {
-        availabilityMatch = isAvailable; // Si disponible, doit être disponible selon les dates
+        availabilityMatch = isAvailable;
       } else if (availabilityFilter === "unavailable") {
-        availabilityMatch = !isAvailable; // Si indisponible, doit être déjà loué
+        availabilityMatch = !isAvailable;
       }
-
-      // Retourne le véhicule si tous les filtres sont true
       return matchesBrand && matchesModel && availabilityMatch;
     });
   };
@@ -140,17 +169,38 @@ const Home = () => {
     <>
       <div className="filter-container">
         <div className="filter-wrapper">
+          {/* Select pour les marques */}
           <div>
             <p>Marque</p>
-            <select value={filterValue} onChange={handleFilterChange}>
-              <option value="">Sélectionner une marque ou un modèle</option>
-              <option value="Renault">Renault</option>
-              <option value="Peugeot">Peugeot</option>
-              <option value="Clio">Clio</option>
-              <option value="208">208</option>
-              {/* Ajoutez d'autres options selon les modèles */}
+            <select
+              className="filter-select"
+              value={selectedBrand}
+              onChange={(e) => setSelectedBrand(e.target.value)}
+            >
+              <option value="">Sélectionnez une marque</option>
+              {brands.map((brand) => (
+                <option key={brand} value={brand}>
+                  {brand}
+                </option>
+              ))}
+            </select>
+
+            {/* Select pour les modèles */}
+            <select
+              className="filter-select"
+              value={selectedModel}
+              onChange={(e) => setSelectedModel(e.target.value)}
+              disabled={!selectedBrand}
+            >
+              <option value="">Sélectionnez un modèle</option>
+              {models.map((model) => (
+                <option key={model} value={model}>
+                  {model}
+                </option>
+              ))}
             </select>
           </div>
+
           <div>
             <p>Disponibilités</p>
             <select
@@ -185,7 +235,7 @@ const Home = () => {
               onChange={(date) => setEndDate(date)}
               showTimeSelect
               timeIntervals={15}
-              minDate={startDate} // Date de fin ne peut pas être avant la date de début
+              minDate={startDate}
               timeCaption="Heure"
               dateFormat="dd/MM/yyyy h:mm aa"
             />
@@ -255,10 +305,11 @@ const Home = () => {
         <Link to={"/cars"} className="underline-home">
           <button className="btn-home">
             Découvrir tous les véhicules{" "}
-            <img src={ChevronRight} className="chevron-home" />
+            <img src={ChevronRight} className="chevron-home" alt="Chevron" />
           </button>
         </Link>
       </div>
+
       <section className="advantages">
         <div className="advantages-container">
           <div className="advantage-item">
@@ -294,6 +345,7 @@ const Home = () => {
           </div>
         </div>
       </section>
+
       <section className="faq-section">
         <h2>Foire aux Questions</h2>
         {faqData.map((item, index) => (
