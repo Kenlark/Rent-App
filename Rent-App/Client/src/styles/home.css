@@ -376,3 +376,10 @@
   margin-inline-start: 0.7rem;
   width: 25px;
 }
+
+.flex-brand-model {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}

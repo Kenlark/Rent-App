@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import Glass from "../assets/images/loupe.png";
 import axios from "axios";
 import { toast } from "react-toastify";
 import DatePicker from "react-datepicker";
 import { Link } from "react-router-dom";
 import { faqData } from "../data.js";
 
+import Glass from "../assets/images/loupe.png";
 import gear from "../assets/images/gear-solid.svg";
 import carSeat from "../assets/images/car-seat-_2_.png";
 import fuelType from "../assets/images/gas-pump-solid.svg";
@@ -145,22 +145,21 @@ const Home = () => {
 
   const filterCars = () => {
     return cars.filter((car) => {
+      // Vérifie la correspondance avec la marque et le modèle
       const matchesBrand = selectedBrand ? car.brand === selectedBrand : true;
       const matchesModel = selectedModel ? car.model === selectedModel : true;
-      const isAvailable = rent.every((r) => {
-        if (r.idCar === car._id) {
-          const rentStartDate = new Date(r.startDate);
-          const rentEndDate = new Date(r.endDate);
-          return !(startDate < rentEndDate && endDate > rentStartDate);
-        }
-        return true;
-      });
+
+      // Obtient le statut de location actuel
+      const status = getRentStatus(car._id);
+
+      // Applique le filtre de disponibilité
       let availabilityMatch = true;
       if (availabilityFilter === "available") {
-        availabilityMatch = isAvailable;
+        availabilityMatch = status === "Disponible";
       } else if (availabilityFilter === "unavailable") {
-        availabilityMatch = !isAvailable;
+        availabilityMatch = status === "Indisponible";
       }
+
       return matchesBrand && matchesModel && availabilityMatch;
     });
   };
@@ -170,35 +169,45 @@ const Home = () => {
       <div className="filter-container">
         <div className="filter-wrapper">
           {/* Select pour les marques */}
-          <div>
-            <p>Marque</p>
-            <select
-              className="filter-select"
-              value={selectedBrand}
-              onChange={(e) => setSelectedBrand(e.target.value)}
-            >
-              <option value="">Sélectionnez une marque</option>
-              {brands.map((brand) => (
-                <option key={brand} value={brand}>
-                  {brand}
-                </option>
-              ))}
-            </select>
+          <div className="flex-brand-model">
+            <div>
+              <p>Marque</p>
+              <select
+                className="filter-select"
+                value={selectedBrand}
+                onChange={(e) => {
+                  setSelectedBrand(e.target.value);
+                  if (!e.target.value) {
+                    setSelectedModel("");
+                  }
+                }}
+              >
+                <option value="">Sélectionnez une marque</option>
+                {brands.map((brand) => (
+                  <option key={brand} value={brand}>
+                    {brand}
+                  </option>
+                ))}
+              </select>
+            </div>
 
             {/* Select pour les modèles */}
-            <select
-              className="filter-select"
-              value={selectedModel}
-              onChange={(e) => setSelectedModel(e.target.value)}
-              disabled={!selectedBrand}
-            >
-              <option value="">Sélectionnez un modèle</option>
-              {models.map((model) => (
-                <option key={model} value={model}>
-                  {model}
-                </option>
-              ))}
-            </select>
+            <div>
+              <p>Modèle</p>
+              <select
+                className="filter-select"
+                value={selectedModel}
+                onChange={(e) => setSelectedModel(e.target.value)}
+                disabled={!selectedBrand}
+              >
+                <option value="">Sélectionnez un modèle</option>
+                {models.map((model) => (
+                  <option key={model} value={model}>
+                    {model}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           <div>
@@ -224,7 +233,7 @@ const Home = () => {
               timeIntervals={15}
               minDate={new Date()}
               timeCaption="Heure"
-              dateFormat="dd/MM/yyyy h:mm aa"
+              dateFormat="dd/MM/yyyy"
             />
           </div>
           <div>
@@ -237,7 +246,7 @@ const Home = () => {
               timeIntervals={15}
               minDate={startDate}
               timeCaption="Heure"
-              dateFormat="dd/MM/yyyy h:mm aa"
+              dateFormat="dd/MM/yyyy"
             />
           </div>
 
