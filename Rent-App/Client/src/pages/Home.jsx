@@ -150,13 +150,15 @@ const Home = () => {
               <option value="208">208</option>
               {/* Ajoutez d'autres options selon les modèles */}
             </select>
-
+          </div>
+          <div>
+            <p>Disponibilités</p>
             <select
               value={availabilityFilter}
               onChange={handleAvailabilityChange}
               defaultValue=""
             >
-              <option value="">Disponibilité</option>
+              <option value="">Tout</option>
               <option value="available">Disponibles</option>
               <option value="unavailable">Indisponibles</option>
             </select>

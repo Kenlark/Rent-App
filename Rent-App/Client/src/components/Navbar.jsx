@@ -71,124 +71,132 @@ function Navbar() {
 
   return (
     <>
-      <section className="navbar">
-        {isAdmin ? (
-          <div className="create-form-absolute">
-            <div className="circle-create">
-              <NavLink to="submit-form-admin" className="create-car">
-                +
-              </NavLink>
+      <div className="navbar-wrapper">
+        <section className="navbar">
+          {isAdmin ? (
+            <div className="create-form-absolute">
+              <div className="circle-create">
+                <NavLink to="submit-form-admin" className="create-car">
+                  +
+                </NavLink>
+              </div>
             </div>
+          ) : null}
+          <div className="flex-navbar">
+            <h5 className="logo-navbar">Logo</h5>
+            <nav className="navlink">
+              <ul>
+                <li className="home">
+                  <NavLink
+                    to="/"
+                    className={({ isActive }) =>
+                      isActive ? "active-btn home-active" : "inactive-btn"
+                    }
+                  >
+                    <img src={house} alt="Logo Accueil" className="logo-home" />
+                    Accueil
+                  </NavLink>
+                </li>
+                <li className="car">
+                  <NavLink
+                    to="cars"
+                    className={({ isActive }) =>
+                      isActive ? "active-btn cars-active" : "inactive-btn"
+                    }
+                  >
+                    <img
+                      src={car}
+                      alt="Logo Voiture"
+                      className="logo-car"
+                      width={20}
+                    />
+                    Nos Véhicules
+                  </NavLink>
+                </li>
+              </ul>
+            </nav>
           </div>
-        ) : null}
-        <div className="flex-navbar">
-          <h5 className="logo-navbar">Logo</h5>
-          <nav className="navlink">
-            <ul>
-              <li className="home">
-                <NavLink
-                  to="/"
-                  className={({ isActive }) =>
-                    isActive ? "active-btn home-active" : "inactive-btn"
-                  }
-                >
-                  <img src={house} alt="Logo Accueil" className="logo-home" />
-                  Accueil
-                </NavLink>
-              </li>
-              <li className="car">
-                <NavLink
-                  to="cars"
-                  className={({ isActive }) =>
-                    isActive ? "active-btn cars-active" : "inactive-btn"
-                  }
-                >
-                  <img
-                    src={car}
-                    alt="Logo Voiture"
-                    className="logo-car"
-                    width={20}
-                  />
-                  Nos Véhicules
-                </NavLink>
-              </li>
-            </ul>
-          </nav>
-        </div>
 
-        <div>
-          <nav>
-            <ul className="flex-login">
-              {isLoggedIn ? (
-                <>
-                  <nav className={isOpen ? "menu-open" : "menu"}>
-                    <ul>
-                      <li className="flex-burger-li">
-                        <span className="user-mail">
-                          {user?.firstName + " " + user?.lastName}
+          <div>
+            <nav>
+              <ul className="flex-login">
+                {isLoggedIn ? (
+                  <>
+                    <nav className={isOpen ? "menu-open" : "menu"}>
+                      <ul>
+                        <li className="flex-burger-li">
+                          <span className="user-mail">
+                            {user?.firstName + " " + user?.lastName}
+                          </span>
+                          <span>{user?.email}</span>
+                          <span className="underline-edit">
+                            <button className="edit-user-profile">
+                              <a
+                                href="/edit"
+                                className="edit-user-profile-link"
+                              >
+                                Modifier le Profil
+                              </a>
+                            </button>
+                          </span>
+                          <a href="/profile" className="link-burger">
+                            Profil
+                          </a>
+                          <a href="/history" className="link-burger">
+                            Historique
+                          </a>
+                          <a href="/settings" className="link-burger">
+                            Paramètres
+                          </a>
+                          <a href="/contact" className="link-burger">
+                            Contact
+                          </a>
+                          <span className="underline-logout">
+                            <button
+                              onClick={handleLogout}
+                              className="logout-btn"
+                            >
+                              Se déconnecter
+                            </button>
+                          </span>
+                        </li>
+                      </ul>
+                    </nav>
+                    <div className="burger-menu">
+                      <button onClick={toggleMenu} className="flex-avatar">
+                        <span className="avatar">
+                          <span className="color-avatar">
+                            <img src={profile} alt="Profile" />
+                          </span>
                         </span>
-                        <span>{user?.email}</span>
-                        <span className="underline-edit">
-                          <button className="edit-user-profile">
-                            <a href="/edit" className="edit-user-profile-link">
-                              Modifier le Profil
-                            </a>
-                          </button>
+                        <span className="btn-chevron">
+                          <img
+                            src={isOpen ? chevronUp : chevronDown}
+                            alt="Chevron"
+                          />
                         </span>
-                        <a href="/profile" className="link-burger">
-                          Profil
-                        </a>
-                        <a href="/history" className="link-burger">
-                          Historique
-                        </a>
-                        <a href="/settings" className="link-burger">
-                          Paramètres
-                        </a>
-                        <a href="/contact" className="link-burger">
-                          Contact
-                        </a>
-                        <span className="underline-logout">
-                          <button onClick={handleLogout} className="logout-btn">
-                            Se déconnecter
-                          </button>
-                        </span>
-                      </li>
-                    </ul>
-                  </nav>
-                  <div className="burger-menu">
-                    <button onClick={toggleMenu} className="flex-avatar">
-                      <span className="avatar">
-                        <span className="color-avatar">
-                          <img src={profile} alt="Profile" />
-                        </span>
-                      </span>
-                      <span className="btn-chevron">
-                        <img
-                          src={isOpen ? chevronUp : chevronDown}
-                          alt="Chevron"
-                        />
-                      </span>
-                    </button>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <li className="wrap login">
-                    <NavLink to="login" className="login">
-                      Se connecter
-                    </NavLink>
-                  </li>
-                  <li className="register">
-                    <NavLink to="register" className="register">
-                      S&apos;inscrire
-                    </NavLink>
-                  </li>
-                </>
-              )}
-            </ul>
-          </nav>
-        </div>
-      </section>
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <li className="wrap login">
+                      <NavLink to="login" className="login">
+                        Se connecter
+                      </NavLink>
+                    </li>
+                    <li className="register">
+                      <NavLink to="register" className="register">
+                        S&apos;inscrire
+                      </NavLink>
+                    </li>
+                  </>
+                )}
+              </ul>
+            </nav>
+          </div>
+        </section>
+      </div>
     </>
   );
 }

@@ -57,6 +57,13 @@ ul {
   cursor: pointer;
 }
 
+.navbar-wrapper {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  width: 100%;
+}
+
 .navbar {
   display: flex;
   justify-content: space-between;
