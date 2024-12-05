@@ -89,7 +89,7 @@ function AllCars() {
   }, []);
 
   useEffect(() => {
-    if (currentCar && rent.length > 0) {
+    if (currentCar) {
       const carRent = rent.find((rent) => rent.idCar === currentCar._id);
       setUpdatedCarData((prevData) => ({
         ...prevData,
@@ -99,7 +99,7 @@ function AllCars() {
         seats: currentCar.seats,
         fuelType: currentCar.fuelType,
         horsePower: currentCar.horsePower,
-        pricePerDay: carRent ? carRent.pricePerDay : prevData.pricePerDay,
+        pricePerDay: carRent ? carRent.pricePerDay : currentCar.pricePerDay,
         rentStatus: carRent ? carRent.status : "Disponible",
       }));
     }
@@ -154,6 +154,27 @@ function AllCars() {
     setCurrentCar(null);
   };
 
+  const fetchAllCars = async () => {
+    try {
+      const response = await axios.get(allCarsUrl);
+      setCars(response.data.allCars);
+    } catch (error) {
+      console.error("Erreur lors de la récupération des voitures :", error);
+      toast.error("Erreur lors de la récupération des voitures");
+    }
+  };
+
+  const fetchRentInfo = async () => {
+    try {
+      const response = await axios.get(allRentsUrl, {
+        withCredentials: true,
+      });
+      setRent(response.data.allRents);
+    } catch (error) {
+      console.error("Erreur lors de la récupération des locations :", error);
+    }
+  };
+
   const handleSave = async () => {
     try {
       const rentToUpdate = rent.find((rent) => rent.idCar === currentCar._id);
@@ -163,6 +184,7 @@ function AllCars() {
           `http://localhost:5000/api/v1/rent/${rentToUpdate._id}`,
           {
             status: updatedCarData.rentStatus,
+            pricePerDay: updatedCarData.pricePerDay,
           },
           { withCredentials: true }
         );
@@ -174,16 +196,28 @@ function AllCars() {
         { withCredentials: true }
       );
 
+      if (response.status !== 200) {
+        throw new Error(
+          "Erreur inattendue lors de la mise à jour de la voiture."
+        );
+      }
+
       const updatedCars = cars.map((car) =>
         car._id === currentCar._id ? response.data.car : car
       );
 
       setCars(updatedCars);
-      handleModalClose();
+
+      // Récupérer les données actualisées après la mise à jour
+      await fetchAllCars();
+      await fetchRentInfo();
+
       toast.success("Véhicule mis à jour avec succès !");
     } catch (error) {
       console.error("Erreur lors de la mise à jour de la voiture:", error);
       toast.error("Erreur lors de la mise à jour.");
+    } finally {
+      handleModalClose(); // Assurez-vous que la modale se ferme toujours
     }
   };
 
