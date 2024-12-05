@@ -150,6 +150,19 @@ const Home = () => {
       const matchesModel = selectedModel ? car.model === selectedModel : true;
 
       // Obtient le statut de location actuel
+      const carRent = rent.find((rent) => rent.idCar === car._id);
+
+      // Vérifie la disponibilité du véhicule dans la plage de dates
+      let isAvailableInDateRange = true;
+      if (startDate && endDate && carRent) {
+        const rentStart = new Date(carRent.startDate);
+        const rentEnd = new Date(carRent.endDate);
+
+        // Vérifier si les dates sélectionnées chevauchent les dates de location existantes
+        isAvailableInDateRange = endDate <= rentStart || startDate >= rentEnd;
+      }
+
+      // Obtient le statut de location actuel
       const status = getRentStatus(car._id);
 
       // Applique le filtre de disponibilité
@@ -160,7 +173,12 @@ const Home = () => {
         availabilityMatch = status === "Indisponible";
       }
 
-      return matchesBrand && matchesModel && availabilityMatch;
+      return (
+        matchesBrand &&
+        matchesModel &&
+        availabilityMatch &&
+        isAvailableInDateRange
+      );
     });
   };
 
@@ -230,10 +248,10 @@ const Home = () => {
               selected={startDate}
               onChange={(date) => setStartDate(date)}
               showTimeSelect
-              timeIntervals={15}
+              timeIntervals={15} // Intervalle de 15 minutes pour la sélection de l'heure
               minDate={new Date()}
               timeCaption="Heure"
-              dateFormat="dd/MM/yyyy"
+              dateFormat="dd/MM/yyyy HH:mm" // Format incluant la date et l'heure
             />
           </div>
           <div>
@@ -243,10 +261,10 @@ const Home = () => {
               selected={endDate}
               onChange={(date) => setEndDate(date)}
               showTimeSelect
-              timeIntervals={15}
+              timeIntervals={15} // Intervalle de 15 minutes pour la sélection de l'heure
               minDate={startDate}
               timeCaption="Heure"
-              dateFormat="dd/MM/yyyy"
+              dateFormat="dd/MM/yyyy HH:mm" // Format incluant la date et l'heure
             />
           </div>
 
