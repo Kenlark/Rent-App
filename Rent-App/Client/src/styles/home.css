@@ -177,8 +177,8 @@
 .car-item-home {
   width: 100%;
   border-radius: 10px;
-  box-shadow: var(--shadow-1);
   padding-block-end: 1rem;
+  box-shadow: var(--shadow-2);
 }
 
 .card-img-home {
