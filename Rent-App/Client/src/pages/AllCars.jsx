@@ -31,6 +31,7 @@ export const loader = async () => {
 function AllCars() {
   const { allCars } = useLoaderData();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [currentCar, setCurrentCar] = useState(null);
   const [carToDelete, setCarToDelete] = useState(null);
@@ -257,11 +258,22 @@ function AllCars() {
         setRent(response.data.allRents);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     };
 
     rentInfo();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+        Chargement des voitures...
+      </div>
+    );
+  }
 
   return (
     <section className="container-car-page">
