@@ -29,8 +29,8 @@ const FormRent = () => {
 
   // Générer une question mathématique simple
   const generateCaptcha = () => {
-    const num1 = Math.floor(Math.random() * 10);
-    const num2 = Math.floor(Math.random() * 10);
+    const num1 = Math.floor(Math.random() * 9) + 1;
+    const num2 = Math.floor(Math.random() * 9) + 1;
     const question = `${num1} + ${num2}`;
     const correctAnswer = num1 + num2;
 
@@ -140,12 +140,11 @@ const FormRent = () => {
 
   return (
     <section className="contact-container">
-      <h2>
-        Indiquez-nous quel véhicule vous souhaitez réserver et nous vous
-        répondrons dans les plus brefs délais
-      </h2>
-      <div className="bcg-contact"></div>
       <div className="form-wrapper">
+        <h2>
+          Indiquez-nous quel véhicule vous souhaitez réserver et nous vous
+          répondrons dans les plus brefs délais
+        </h2>
         <form onSubmit={handleSubmit} className="contact-form">
           <input
             type="text"
@@ -210,15 +209,19 @@ const FormRent = () => {
                   required
                 >
                   <option value="">Sélectionnez une voiture</option>
-                  {carData.map((car, index) => (
-                    <option key={index} value={car.model}>
-                      {car.model}
+                  {carData.map((car, id) => (
+                    <option key={id} value={car.model}>
+                      {car.brand} {""}
+                      {car.model} {""}
+                      {car.year} {""}({car.horsePower}cv)
                     </option>
                   ))}
                 </select>
               </div>
               <div>
-                <label>Ancienneté du permis de conduire</label>
+                <label className="label-form-rent">
+                  Ancienneté du permis de conduire
+                </label>
                 <select
                   name="license_duration"
                   value={formData.license_duration}

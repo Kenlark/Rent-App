@@ -56,7 +56,7 @@ function AllCars() {
     pricePerDay: "",
   });
   const [rent, setRent] = useState([]);
-  const { user } = useAuth();
+  const { user, isLoggedIn } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -77,17 +77,20 @@ function AllCars() {
   useEffect(() => {
     const fetchRentInfo = async () => {
       try {
-        const response = await axios.get(allRentsUrl, {
-          withCredentials: true,
-        });
-        setRent(response.data.allRents);
+        if (isLoggedIn) {
+          const response = await axios.get(allRentsUrl, {
+            withCredentials: true,
+          });
+          setRent(response.data.allRents);
+        }
       } catch (error) {
-        console.log(error);
+        console.error("Erreur lors de la récupération des locations :", error);
       }
     };
     fetchRentInfo();
-  }, []);
+  }, [isLoggedIn]);
 
+  // Défaut à "Disponible" si aucune info de location n'est récupérée
   useEffect(() => {
     if (currentCar) {
       const carRent = rent.find((rent) => rent.idCar === currentCar._id);

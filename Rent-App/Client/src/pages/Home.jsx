@@ -277,6 +277,14 @@ const Home = () => {
         </div>
       </div>
 
+      <div className="advert-rent">
+        <p>
+          <Link to="/rent" className="advert-rent-a">
+            Réserver en un clic ici !
+          </Link>
+        </p>
+      </div>
+
       <div className="cars-container-home">
         {filterCars().map((car) => (
           <div

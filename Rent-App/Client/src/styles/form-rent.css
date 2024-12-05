@@ -1,0 +1,140 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --navbar-color: #060b20;
+  --footer-color: #060b20;
+  --primary-color-footer: #b3b3b3;
+  --white: #fff;
+  --ff-primary: "Montserrat";
+  --bcg-body: #fafbff;
+  --borderRadius: 0.25rem;
+  --letterSpacing: 0.1em;
+  --transition: 0.3s ease-in-out all;
+  --max-width: 1180px;
+  --fixed-width: 600px;
+  --view-width: 90vw;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.contact-container {
+  position: absolute; /* Peut aussi être 'relative' si l'élément parent est un conteneur positionné */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%; /* Adaptez en fonction de votre design */
+  height: 100%; /* Adaptez en fonction de votre design */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  z-index: 1;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.form-wrapper h2 {
+  text-align: center;
+  padding-block-end: 2rem;
+}
+
+.contact-form {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: var(--shadow-lg);
+}
+
+.contact-form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: var(--ff-grey4);
+}
+
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 16px;
+  border: 1px solid var(--ff-grey3);
+  border-radius: 4px;
+}
+
+.contact-form textarea {
+  resize: vertical;
+  min-height: 100px;
+  max-height: 500px;
+}
+
+.btn-submit {
+  padding: 10px 20px;
+  background-color: #4386d8;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-submit:hover {
+  background-color: #1260c0;
+}
+
+.g-recaptcha {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.contact-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-pair {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.input-pair > div {
+  flex: 1;
+}
+
+.contact-form select {
+  padding: 10px;
+}
+
+div[style*="display: none"] {
+  position: absolute;
+  left: -9999px;
+}
+
+.label-form-rent {
+  text-wrap: nowrap;
+}
