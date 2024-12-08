@@ -34,6 +34,7 @@ const SubmitFormAdmin = () => {
   const [cars, setCars] = useState([]);
   const [rentStatusOptions, setRentStatusOptions] = useState({});
   const [step, setStep] = useState(1); // État pour gérer l'étape du formulaire
+  const [previewImages, setPreviewImages] = useState([]);
 
   useEffect(() => {
     const fetchRentStatus = async () => {
@@ -82,19 +83,22 @@ const SubmitFormAdmin = () => {
   }, []);
 
   const handleCarChange = (e) => {
-    const { name, value, type, files } = e.target;
-    setCarData({
-      ...carData,
-      [name]: type === "file" ? Array.from(files) : value,
-    });
-  };
-
-  const handleRentalChange = (e) => {
-    const { name, value, type } = e.target;
-    setRentalData((prevData) => ({
-      ...prevData,
-      [name]: type === "number" ? Number(value) : value,
-    }));
+    const { name, type, value, files } = e.target;
+    if (name === "images" && files.length > 0) {
+      const previewUrls = Array.from(files).map((file) =>
+        URL.createObjectURL(file)
+      );
+      setPreviewImages(previewUrls);
+      setCarData({
+        ...carData,
+        [name]: Array.from(files),
+      });
+    } else {
+      setCarData({
+        ...carData,
+        [name]: value,
+      });
+    }
   };
 
   const handleDateChange = (dateField) => (date) => {
@@ -120,6 +124,14 @@ const SubmitFormAdmin = () => {
       setErrorMessage("");
       return newState;
     });
+  };
+
+  const handleRentalChange = (e) => {
+    const { name, value, type } = e.target;
+    setRentalData((prevData) => ({
+      ...prevData,
+      [name]: type === "number" ? Number(value) : value,
+    }));
   };
 
   const getMinTime = () => {
@@ -191,18 +203,37 @@ const SubmitFormAdmin = () => {
   };
 
   return (
-    <div>
+    <div className="admin-form">
       <h1>
         {step === 1 ? "Ajout d'une nouvelle voiture" : "Créer une Location"}
       </h1>
       {isAdmin ? (
         <>
           {step === 1 && (
-            <form onSubmit={handleCarSubmit}>
+            <form onSubmit={handleCarSubmit} className="admin-form">
               <p>
                 Veuillez rentrer toutes les informations nécessaires à la mise
                 en location du véhicule.
               </p>
+              <label>
+                Images:
+                <input
+                  type="file"
+                  name="images"
+                  onChange={handleCarChange}
+                  required
+                  multiple
+                />
+                {previewImages.length > 0 && (
+                  <div className="image-previews">
+                    {previewImages.map((image, index) => (
+                      <div key={index} className="thumbnail">
+                        <img src={image} alt={`Aperçu ${index + 1}`} />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </label>
               <label>
                 Marque:
                 <input
@@ -273,21 +304,13 @@ const SubmitFormAdmin = () => {
                   required
                 />
               </label>
-              <label>
-                Images:
-                <input
-                  type="file"
-                  name="images"
-                  onChange={handleCarChange}
-                  required
-                  multiple
-                />
-              </label>
-              <button type="submit">Soumettre Voiture</button>
+              <button type="submit" className="submit-button">
+                Soumettre Voiture
+              </button>
             </form>
           )}
           {step === 2 && (
-            <form onSubmit={handleRentalSubmit}>
+            <form onSubmit={handleRentalSubmit} className="admin-form">
               <h2>Créer une Location</h2>
               <label>
                 Prix par Jour:
@@ -323,6 +346,7 @@ const SubmitFormAdmin = () => {
                   minDate={new Date()}
                   timeCaption="Heure"
                   dateFormat="dd/MM/yyyy h:mm aa"
+                  className="date-picker"
                 />
               </label>
               <label>
@@ -336,6 +360,7 @@ const SubmitFormAdmin = () => {
                   minDate={getMinTime()}
                   timeCaption="Heure"
                   dateFormat="dd/MM/yyyy h:mm aa"
+                  className="date-picker"
                 />
               </label>
               <select
@@ -351,10 +376,14 @@ const SubmitFormAdmin = () => {
                   </option>
                 ))}
               </select>
-              <button type="submit">Soumettre Location</button>
+              <button type="submit" className="submit-button">
+                Soumettre Location
+              </button>
             </form>
           )}
-          <button onClick={() => setStep(1)}>Retour à l'étape 1</button>
+          <button onClick={() => setStep(1)} className="back-button">
+            Retour à l'étape 1
+          </button>
         </>
       ) : (
         <p>

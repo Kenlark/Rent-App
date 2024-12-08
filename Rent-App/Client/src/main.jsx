@@ -18,6 +18,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./styles/filter.css";
 import "./styles/home.css";
 import "./styles/form-rent.css";
+import "./styles/submit-form-admin.css";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

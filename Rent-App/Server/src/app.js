@@ -4,6 +4,7 @@ import express from "express";
 import { v2 as cloudinary } from "cloudinary";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import mongoSanitize from "express-mongo-sanitize";
 
 const app = express();
 
@@ -17,6 +18,12 @@ import carRouter from "./routes/car.route.js";
 import emailsRouter from "./routes/email.route.js";
 import resetPassword from "./routes/reset.password.route.js";
 import rentStatusRoute from "./routes/rent.status.route.js";
+
+app.use(
+  mongoSanitize({
+    replaceWith: "_", //caractères malveillant remplacés par "_"
+  })
+);
 
 app.use(
   cors({
