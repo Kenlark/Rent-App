@@ -61,6 +61,7 @@ const login = async (req, res) => {
     }
 
     const isPasswordCorrect = await user.comparePasswords(req.body.password);
+
     if (!isPasswordCorrect) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
         message: "Votre Email ou votre mot de passe ne correspond pas",

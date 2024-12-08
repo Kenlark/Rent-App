@@ -77,18 +77,15 @@ function AllCars() {
   useEffect(() => {
     const fetchRentInfo = async () => {
       try {
-        if (isLoggedIn) {
-          const response = await axios.get(allRentsUrl, {
-            withCredentials: true,
-          });
-          setRent(response.data.allRents);
-        }
+        const response = await axios.get(allRentsUrl);
+        setRent(response.data.allRents);
       } catch (error) {
         console.error("Erreur lors de la récupération des locations :", error);
       }
     };
+
     fetchRentInfo();
-  }, [isLoggedIn]);
+  }, []);
 
   // Défaut à "Disponible" si aucune info de location n'est récupérée
   useEffect(() => {

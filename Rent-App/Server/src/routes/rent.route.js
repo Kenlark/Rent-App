@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post("/", authenticateUser, checkAdmin, rentController.create);
 
-router.get("/", authenticateUser, checkAdmin, rentController.getAll);
+router.get("/", checkAdmin, rentController.getAll);
 
 router.put("/:id", authenticateUser, checkAdmin, rentController.update);
 

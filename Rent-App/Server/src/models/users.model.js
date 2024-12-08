@@ -91,6 +91,7 @@ UserSchema.methods.createAccessToken = function () {
 
 UserSchema.methods.comparePasswords = async function (userPassword) {
   const isMatch = await bcrypt.compare(userPassword, this.password);
+
   return isMatch;
 };
 
