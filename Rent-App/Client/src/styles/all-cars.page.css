@@ -33,7 +33,6 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(380px, 1fr));
   grid-template-rows: auto;
-  column-gap: 1rem;
   align-items: start;
   row-gap: 2.5rem;
   padding: 1rem;
@@ -245,15 +244,23 @@
   background-color: #ffe9f2;
 }
 
+@media (max-width: 1780px) {
+  .cars-container {
+    column-gap: 1rem;
+  }
+}
+
 @media (max-width: 1540px) {
   .cars-container {
     grid-template-columns: repeat(2, minmax(300px, 1fr));
+    column-gap: 1rem;
   }
 }
 
 @media (max-width: 1092px) {
   .cars-container {
     grid-template-columns: repeat(1, minmax(200px, 1fr));
+    column-gap: 1rem;
   }
 
   .container-car-page {

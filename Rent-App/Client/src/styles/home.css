@@ -159,9 +159,11 @@
 
 .cars-container-home {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2.5rem;
-  padding: 2rem 3rem;
+  grid-template-columns: repeat(3, minmax(300px, 1fr));
+  grid-template-rows: auto;
+  align-items: start;
+  gap: 2rem;
+  padding: 2rem;
   width: 100%;
   max-width: 1650px;
   margin: 0 auto;
@@ -393,4 +395,207 @@
   color: #374151;
   font-weight: 700;
   text-decoration: none;
+}
+
+@media (max-width: 1540px) {
+  .cars-container-home {
+    grid-template-columns: repeat(2, minmax(300px, 1fr));
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 1092px) {
+  .cars-container-home {
+    grid-template-columns: repeat(1, minmax(250px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 1192px) {
+  .cars-container-home {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+
+  .card-img-home {
+    height: 350px;
+  }
+
+  .filter-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .filter-wrapper {
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 10px;
+    justify-content: center;
+  }
+
+  .filter-select,
+  .filter-date,
+  .filter-time {
+    min-width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .search-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .advantages-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .faq-section {
+    padding: 2rem 1rem;
+  }
+
+  .faq-item h3 {
+    font-size: 1rem;
+  }
+
+  .faq-item p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .cars-container-home {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .card-img-home {
+    height: 350px;
+  }
+
+  .advert-rent {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  .advert-rent-a {
+    font-size: 0.9rem;
+  }
+
+  .flex-btn-home {
+    justify-content: center;
+    margin-inline-end: 0;
+  }
+}
+
+@media (max-width: 1050px) and (min-width: 601px) {
+  .cars-container-home {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+
+  .card-img-home {
+    height: 250px; /* Hauteur intermédiaire */
+    max-width: 100%;
+    object-fit: cover;
+  }
+}
+
+@media (max-width: 480px) {
+  .advantages-container {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+    gap: 0.5rem;
+  }
+
+  .btn-home {
+    padding-top: 3rem;
+  }
+
+  .car-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .cars-container-home {
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+
+  .card-img-home {
+    height: 200px;
+  }
+
+  .flex-btn-home {
+    justify-content: center;
+    margin-inline-end: 0;
+  }
+
+  .advantages {
+    padding: 1rem 2rem;
+  }
+
+  .advantage-item {
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .faq-section {
+    padding: 1rem 1rem;
+  }
+
+  .faq-item {
+    padding: 0.5rem;
+  }
+
+  .filter-container {
+    flex-direction: column;
+    padding: 0.5rem;
+    gap: 0.5rem;
+  }
+
+  .filter-wrapper {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem;
+  }
+
+  .filter-select,
+  .filter-date,
+  .filter-time {
+    width: 100%;
+    font-size: 12px;
+    padding: 0.4rem;
+    height: auto;
+  }
+
+  .date-time-group {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .search-button {
+    width: 100%;
+    font-size: 13px;
+    padding: 0.4rem;
+  }
+
+  .search-icon {
+    font-size: 14px;
+  }
 }
