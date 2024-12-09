@@ -15,6 +15,7 @@ function Navbar() {
   const { isLoggedIn, setIsLoggedIn, user, setUser } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+
   const navigate = useNavigate();
 
   const handleLogout = async () => {

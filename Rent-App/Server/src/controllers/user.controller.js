@@ -145,4 +145,20 @@ const logout = (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "Deconnexion reussie" });
 };
 
-export { login, register, getAll, getMe, logout };
+const checkEmail = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const existingUser = await userService.get({ email });
+
+    if (existingUser) {
+      return res.status(200).json({ exists: true });
+    }
+
+    res.status(200).json({ exists: false });
+  } catch (error) {
+    console.error("Erreur lors de la vérification de l'email :", error);
+    res.status(500).json({ message: "Erreur interne du serveur" });
+  }
+};
+
+export { checkEmail, login, register, getAll, getMe, logout };

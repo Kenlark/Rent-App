@@ -327,3 +327,49 @@ ul {
   margin-inline-end: 10.5rem;
   z-index: 999;
 }
+
+/* Masque les boutons login et register et affiche le menu burger */
+@media (max-width: 830px) {
+  .flex-login {
+    display: none;
+  }
+
+  .burger-menu {
+    display: block;
+  }
+}
+
+/* Menu burger styles */
+.burger-menu {
+  display: none; /* Par défaut, il est masqué */
+  position: relative;
+}
+
+.menu-open ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background-color: var(--navbar-color);
+  position: absolute;
+  top: 5rem;
+  right: 1rem;
+  border-radius: var(--borderRadius);
+  box-shadow: var(--shadow-3);
+  z-index: 1000;
+}
+
+.menu-open ul li {
+  padding: 0.5rem;
+}
+
+.menu-open ul li a {
+  text-decoration: none;
+  color: var(--white);
+  display: block;
+  transition: var(--transition);
+}
+
+.menu-open ul li a:hover {
+  background-color: var(--white);
+  color: var(--navbar-color);
+}

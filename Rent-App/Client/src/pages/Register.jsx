@@ -76,9 +76,29 @@ const Register = () => {
     }
   };
 
-  const handleNextStep = (e) => {
+  const handleNextStep = async (e) => {
     e.preventDefault();
-    setStep(step + 1);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/v1/users/check-email",
+        { email },
+        { withCredentials: true }
+      );
+
+      if (response.data.exists) {
+        toast.error(
+          "Cet email est déjà utilisé. Veuillez utiliser une autre adresse."
+        );
+      } else {
+        setStep(step + 1);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la vérification de l'email :", error);
+      toast.error(
+        "Une erreur est survenue lors de la vérification de l'email."
+      );
+    }
   };
 
   useEffect(() => {
