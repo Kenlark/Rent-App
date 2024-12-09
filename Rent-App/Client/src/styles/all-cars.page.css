@@ -33,6 +33,7 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(380px, 1fr));
   grid-template-rows: auto;
+  column-gap: 1rem;
   align-items: start;
   row-gap: 2.5rem;
   padding: 1rem;
@@ -159,13 +160,20 @@
 }
 
 .details-button,
-.edit-button {
+.edit-button,
+.delete-button {
   border: transparent;
   background-color: #5774ff;
   color: var(--white);
   border-radius: var(--borderRadius);
-  padding: 0.3rem 0.3rem;
+  padding: 0.2rem 0.5rem;
+  font-size: 12px;
   cursor: pointer;
+}
+
+.car-info {
+  flex-wrap: wrap;
+  font-size: 14px;
 }
 
 .delete-button {
@@ -245,10 +253,24 @@
 
 @media (max-width: 1092px) {
   .cars-container {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(1, minmax(200px, 1fr));
+  }
+
+  .container-car-page {
+    padding: 0;
   }
 
   .h1-car {
     text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-img {
+    height: 200px;
+  }
+
+  .cars-container {
+    padding: 0.5rem;
   }
 }

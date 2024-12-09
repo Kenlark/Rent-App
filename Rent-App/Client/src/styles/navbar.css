@@ -328,23 +328,6 @@ ul {
   z-index: 999;
 }
 
-/* Masque les boutons login et register et affiche le menu burger */
-@media (max-width: 830px) {
-  .flex-login {
-    display: none;
-  }
-
-  .burger-menu {
-    display: block;
-  }
-}
-
-/* Menu burger styles */
-.burger-menu {
-  display: none; /* Par défaut, il est masqué */
-  position: relative;
-}
-
 .menu-open ul {
   list-style: none;
   padding: 0;
@@ -372,4 +355,211 @@ ul {
 .menu-open ul li a:hover {
   background-color: var(--white);
   color: var(--navbar-color);
+}
+
+.burger-menu {
+  display: none;
+  position: relative;
+}
+
+.burger-menu.logged-in {
+  margin-inline-end: 5rem;
+}
+
+.burger-menu.logged-out {
+  display: none;
+}
+
+.avatar-logged-out {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  border: transparent;
+  cursor: pointer;
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  z-index: 1001;
+}
+
+.mobile-menu-btn img {
+  width: 24px;
+  height: 24px;
+  filter: invert(1);
+}
+
+.mobile-register,
+.mobile-login {
+  display: none;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 830px) {
+  .flex-login .login,
+  .flex-login .register {
+    display: none;
+  }
+
+  .flex-login {
+    margin-inline-end: 0;
+  }
+
+  .burger-menu {
+    display: block;
+  }
+
+  .logged-out .flex-avatar {
+    margin-inline-end: 5rem;
+  }
+}
+
+@media (max-width: 830px) {
+  .burger-menu.logged-out {
+    display: block;
+  }
+}
+
+@media (max-width: 674px) {
+  .mobile-menu-btn {
+    display: block;
+    position: absolute;
+    right: -6rem;
+    bottom: -0.6rem;
+  }
+
+  .flex-navbar {
+    margin-inline-start: 1rem;
+    gap: 1rem;
+    position: relative;
+  }
+
+  .navlink {
+    display: none;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.3s ease;
+  }
+
+  .navlink.mobile-menu-open {
+    display: block;
+    visibility: visible;
+    opacity: 1;
+    position: fixed;
+    top: 5rem;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 5rem);
+    background-color: var(--navbar-color);
+    padding: 1rem;
+    box-shadow: var(--shadow-3);
+    z-index: 999;
+    animation: slideDown 0.3s ease forwards;
+  }
+
+  .navlink.mobile-menu-open .nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1rem;
+  }
+
+  .navlink.mobile-menu-open .nav-links li {
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards;
+  }
+
+  .navlink.mobile-menu-open .nav-links li:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+  .navlink.mobile-menu-open .nav-links li:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  .navlink.mobile-menu-open .nav-links li:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+  .navlink.mobile-menu-open .nav-links li:nth-child(4) {
+    animation-delay: 0.4s;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .navlink.mobile-menu-open .mobile-login,
+  .navlink.mobile-menu-open .mobile-register {
+    margin-top: 0.5rem;
+  }
+
+  .navlink.mobile-menu-open .mobile-login a,
+  .navlink.mobile-menu-open .mobile-register a {
+    display: block;
+    padding: 0.75rem;
+    color: var(--white);
+    text-decoration: none;
+    border: 1px solid var(--white);
+    border-radius: var(--borderRadius);
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+
+  .navlink.mobile-menu-open .mobile-login a:hover,
+  .navlink.mobile-menu-open .mobile-register a:hover {
+    background-color: var(--white);
+    color: var(--navbar-color);
+  }
+
+  /* Active state styles */
+  .navlink.mobile-menu-open .active-btn,
+  .navlink.mobile-menu-open .inactive-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .desktop-only {
+    display: none !important;
+  }
+
+  .burger-menu.logged-in {
+    margin-inline-end: 1rem;
+  }
+
+  .create-form-absolute {
+    margin-inline-end: 5rem;
+  }
+
+  .menu-open {
+    margin-inline-end: 5rem;
+  }
+
+  .navbar-wrapper {
+    overflow-x: hidden;
+  }
 }

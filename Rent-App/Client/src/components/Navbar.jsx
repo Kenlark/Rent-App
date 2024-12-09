@@ -10,12 +10,14 @@ import car from "../assets/images/car-solid.svg";
 import profile from "../assets/images/profile-avatar.svg";
 import chevronDown from "../assets/images/chevron-down.svg";
 import chevronUp from "../assets/images/chevron-up.svg";
+import profileLoggedOut from "../assets/images/iconmonstr-user-1.svg";
+import burger from "../assets/images/iconmonstr-menu-lined.svg";
 
 function Navbar() {
   const { isLoggedIn, setIsLoggedIn, user, setUser } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -40,13 +42,21 @@ function Navbar() {
     }
   };
 
+  const handleLoginRedirect = () => {
+    navigate("/login");
+  };
+
   const toggleMenu = () => {
     setIsOpen((prev) => !prev);
   };
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen((prev) => !prev);
+  };
+
   useEffect(() => {
     if (!isLoggedIn) {
-      setIsOpen(false); // Ferme le menu lors de la déconnexion
+      setIsOpen(false);
     }
   }, [isLoggedIn]);
 
@@ -64,17 +74,16 @@ function Navbar() {
         }
       } catch (error) {
         console.error("Erreur lors de la vérification du rôle:", error);
-        setIsAdmin(false); // Assurez-vous que l'état admin est réinitialisé en cas d'erreur
+        setIsAdmin(false);
       }
     };
 
     if (isLoggedIn) {
-      // Ne vérifiez que si l'utilisateur est connecté
       checkAdmin();
     } else {
-      setIsAdmin(false); // Réinitialisez l'état si l'utilisateur n'est pas connecté
+      setIsAdmin(false);
     }
-  }, [isLoggedIn]); // Dépend de isLoggedIn
+  }, [isLoggedIn]);
 
   return (
     <>
@@ -91,14 +100,24 @@ function Navbar() {
           ) : null}
           <div className="flex-navbar">
             <h5 className="logo-navbar">Logo</h5>
-            <nav className="navlink">
-              <ul>
+
+            <button className="mobile-menu-btn" onClick={toggleMobileMenu}>
+              <img src={burger} alt="Menu" />
+            </button>
+
+            <nav
+              className={`navlink ${
+                isMobileMenuOpen ? "mobile-menu-open" : ""
+              }`}
+            >
+              <ul className="nav-links">
                 <li className="home">
                   <NavLink
                     to="/"
                     className={({ isActive }) =>
                       isActive ? "active-btn home-active" : "inactive-btn"
                     }
+                    onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <img src={house} alt="Logo Accueil" className="logo-home" />
                     Accueil
@@ -110,6 +129,7 @@ function Navbar() {
                     className={({ isActive }) =>
                       isActive ? "active-btn cars-active" : "inactive-btn"
                     }
+                    onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <img
                       src={car}
@@ -120,6 +140,26 @@ function Navbar() {
                     Nos Véhicules
                   </NavLink>
                 </li>
+                {!isLoggedIn && (
+                  <>
+                    <li className="mobile-login">
+                      <NavLink
+                        to="login"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        Se connecter
+                      </NavLink>
+                    </li>
+                    <li className="mobile-register">
+                      <NavLink
+                        to="register"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        S'inscrire
+                      </NavLink>
+                    </li>
+                  </>
+                )}
               </ul>
             </nav>
           </div>
@@ -169,7 +209,7 @@ function Navbar() {
                         </li>
                       </ul>
                     </nav>
-                    <div className="burger-menu">
+                    <div className="burger-menu logged-in">
                       <button onClick={toggleMenu} className="flex-avatar">
                         <span className="avatar">
                           <span className="color-avatar">
@@ -187,16 +227,28 @@ function Navbar() {
                   </>
                 ) : (
                   <>
-                    <li className="wrap login">
+                    <li className="wrap login desktop-only">
                       <NavLink to="login" className="login">
                         Se connecter
                       </NavLink>
                     </li>
-                    <li className="register">
+                    <li className="register desktop-only">
                       <NavLink to="register" className="register">
-                        S&apos;inscrire
+                        S'inscrire
                       </NavLink>
                     </li>
+                    <div className="burger-menu logged-out">
+                      <button
+                        onClick={handleLoginRedirect}
+                        className="flex-avatar"
+                      >
+                        <span className="avatar-logged-out">
+                          <span>
+                            <img src={profileLoggedOut} alt="Profile" />
+                          </span>
+                        </span>
+                      </button>
+                    </div>
                   </>
                 )}
               </ul>

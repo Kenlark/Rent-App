@@ -296,7 +296,7 @@ function AllCars() {
             </button>
           </div>
 
-          <div className="underline"></div>
+          {/* <div className="underline"></div> */}
 
           <div className="filter-buttons">
             {/* Transmission */}
