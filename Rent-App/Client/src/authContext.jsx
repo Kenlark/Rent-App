@@ -15,19 +15,23 @@ export const AuthProvider = ({ children }) => {
           "http://localhost:5000/api/v1/users/me",
           { withCredentials: true }
         );
-        if (response.data) {
+
+        if (response.data.userID) {
+          // Utilisateur connecté
           setIsLoggedIn(true);
           setUser(response.data);
-        }
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
+        } else {
+          // Utilisateur déconnecté
           setIsLoggedIn(false);
           setUser(null);
         }
+      } catch (error) {
         console.error(
-          "Erreur lors de la vérification du statut de l'utilisateur",
+          "Erreur lors de la vérification du statut de l'utilisateur :",
           error
         );
+        setIsLoggedIn(false);
+        setUser(null); // Assurez-vous de réinitialiser les états en cas d'erreur
       }
     };
 
@@ -47,7 +51,7 @@ export const AuthProvider = ({ children }) => {
       setIsLoggedIn(false);
       setUser(null);
     } catch (error) {
-      console.error("Erreur lors de la déconnexion", error);
+      console.error("Erreur lors de la déconnexion :", error);
     }
   };
 

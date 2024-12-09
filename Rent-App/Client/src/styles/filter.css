@@ -118,3 +118,54 @@
   border-radius: 4px;
   margin-top: 4px;
 }
+
+.filter-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-block-start: 1rem;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-label {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.filter-options {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.filter-button {
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+  color: #333;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.filter-button:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.filter-button.active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.underline {
+  margin-block-start: 0.2rem;
+  width: 465px;
+  height: 1px;
+  background-color: #9e9e9e;
+}

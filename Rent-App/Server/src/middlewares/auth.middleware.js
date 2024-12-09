@@ -5,31 +5,25 @@ const authenticateUser = async (req, res, next) => {
   const token = req.cookies.token;
 
   if (!token) {
-    return res
-      .status(StatusCodes.UNAUTHORIZED)
-      .json({ message: "Authentification invalide" });
+    req.isLoggedIn = false; // Utilisateur non connecté
+    req.user = null; // Pas d'utilisateur
+    return next(); // Continuez la requête
   }
 
   try {
-    const decoded = verifyJWT(token);
-
-    req.car = {
-      car: decoded._id,
-      userID: decoded.userID,
-    };
+    const decoded = verifyJWT(token); // Vérifiez le JWT
 
     req.user = {
       userID: decoded.userID,
       role: decoded.role,
     };
-
-    req.isLoggedIn = true;
+    req.isLoggedIn = true; // Utilisateur connecté
     next();
   } catch (error) {
-    console.error("Erreur de vérification du token :", error);
-    return res
-      .status(StatusCodes.UNAUTHORIZED)
-      .json({ message: "Authentification invalide" });
+    console.error("Erreur lors de la vérification du token :", error);
+    req.isLoggedIn = false;
+    req.user = null;
+    return next(); // Continuez la requête même en cas d'erreur
   }
 };
 

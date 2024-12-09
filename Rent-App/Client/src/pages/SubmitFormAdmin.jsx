@@ -323,6 +323,7 @@ const SubmitFormAdmin = () => {
                 />
               </label>
               <select
+                className="admin-disponibility"
                 name="status"
                 value={rentalData.status}
                 onChange={handleRentalChange}
@@ -376,14 +377,11 @@ const SubmitFormAdmin = () => {
                   </option>
                 ))}
               </select>
-              <button type="submit" className="submit-button">
+              <button type="submit" className="submit-button-admin">
                 Soumettre Location
               </button>
             </form>
           )}
-          <button onClick={() => setStep(1)} className="back-button">
-            Retour à l'étape 1
-          </button>
         </>
       ) : (
         <p>

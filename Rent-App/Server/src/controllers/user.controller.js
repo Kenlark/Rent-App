@@ -108,6 +108,13 @@ const getAll = async (req, res) => {
 
 const getMe = async (req, res) => {
   try {
+    // Si req.user est null (utilisateur déconnecté), retournez un message clair
+    if (!req.user) {
+      return res
+        .status(StatusCodes.OK)
+        .json({ message: "Utilisateur déconnecté" });
+    }
+
     const userId = req.user.userID;
 
     const user = await userService.getSingleUser(userId);

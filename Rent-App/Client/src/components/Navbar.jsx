@@ -63,11 +63,17 @@ function Navbar() {
         }
       } catch (error) {
         console.error("Erreur lors de la vérification du rôle:", error);
+        setIsAdmin(false); // Assurez-vous que l'état admin est réinitialisé en cas d'erreur
       }
     };
 
-    checkAdmin();
-  }, [isLoggedIn]);
+    if (isLoggedIn) {
+      // Ne vérifiez que si l'utilisateur est connecté
+      checkAdmin();
+    } else {
+      setIsAdmin(false); // Réinitialisez l'état si l'utilisateur n'est pas connecté
+    }
+  }, [isLoggedIn]); // Dépend de isLoggedIn
 
   return (
     <>

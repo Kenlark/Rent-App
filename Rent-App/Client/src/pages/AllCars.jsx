@@ -47,14 +47,34 @@ function AllCars() {
     rentStatus: "Disponible",
   });
   const [filters, setFilters] = useState({
-    brand: "",
-    model: "",
+    priceRange: [15, 500],
+    yearRange: [1990, 2024],
     transmission: "",
-    seats: "",
     fuelType: "",
-    horsePower: "",
-    pricePerDay: "",
+    seats: "",
+    availability: "",
+    horsePower: [15, 200],
   });
+
+  const initialFilters = {
+    priceRange: [15, 500],
+    yearRange: [1990, 2024],
+    transmission: "",
+    fuelType: "",
+    seats: "",
+    availability: "",
+    horsePower: [15, 200],
+  };
+
+  const resetFilters = () => {
+    setFilters(initialFilters);
+  };
+
+  useEffect(() => {
+    fetchAllCars();
+    fetchRentInfo();
+  }, []);
+
   const [rent, setRent] = useState([]);
   const { user, isLoggedIn } = useAuth();
   const navigate = useNavigate();
@@ -105,31 +125,32 @@ function AllCars() {
     }
   }, [currentCar, rent]);
 
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [name]: value,
-    }));
+  const handleFilterChange = (name, value) => {
+    setFilters((prevFilters) => ({ ...prevFilters, [name]: value }));
   };
 
   const filteredCars = cars.filter((car) => {
+    const carRent = rent.find((r) => r.idCar === car._id);
+    const rentStatus = carRent ? carRent.status : "Disponible";
+
     return (
-      (filters.brand === "" ||
-        car.brand.toLowerCase().includes(filters.brand.toLowerCase())) &&
-      (filters.model === "" ||
-        car.model.toLowerCase().includes(filters.model.toLowerCase())) &&
       (filters.transmission === "" ||
-        car.transmission
-          .toLowerCase()
-          .includes(filters.transmission.toLowerCase())) &&
-      (filters.seats === "" || car.seats === parseInt(filters.seats)) &&
+        car.transmission.toLowerCase() ===
+          filters.transmission.toLowerCase()) &&
       (filters.fuelType === "" ||
-        car.fuelType.toLowerCase().includes(filters.fuelType.toLowerCase())) &&
-      (filters.horsePower === "" ||
-        car.horsePower === parseInt(filters.horsePower)) &&
-      (filters.pricePerDay === "" ||
-        car.pricePerDay === parseInt(filters.pricePerDay))
+        car.fuelType.toLowerCase() === filters.fuelType.toLowerCase()) &&
+      (filters.seats === "" || car.seats === parseInt(filters.seats)) &&
+      (filters.availability === "" ||
+        (filters.availability === "Disponible" &&
+          rentStatus === "Disponible") ||
+        (filters.availability === "Indisponible" &&
+          rentStatus === "Indisponible")) &&
+      car.pricePerDay >= filters.priceRange[0] &&
+      car.pricePerDay <= filters.priceRange[1] &&
+      car.year >= filters.yearRange[0] &&
+      car.year <= filters.yearRange[1] &&
+      car.horsePower >= filters.horsePower[0] &&
+      car.horsePower <= filters.horsePower[1]
     );
   });
 
@@ -267,7 +288,151 @@ function AllCars() {
     <section className="container-car-page">
       <h1 className="h1-car">Découvrez nos véhicules</h1>
       <div className="cars-container">
-        <Filters filters={filters} onFilterChange={handleFilterChange} />
+        <div className="card-filter">
+          <div className="header-filter">
+            <h3>Filtres</h3>
+            <button className="button-filter" onClick={resetFilters}>
+              Réinitialiser
+            </button>
+          </div>
+
+          <div className="underline"></div>
+
+          <div className="filter-buttons">
+            {/* Transmission */}
+            <div className="filter-group">
+              <label className="filter-label">Transmission</label>
+              <div className="filter-options">
+                {["", "Manuelle", "Automatique"].map((option) => (
+                  <button
+                    key={option}
+                    className={`filter-button ${
+                      filters.transmission === option ? "active" : ""
+                    }`}
+                    onClick={() => handleFilterChange("transmission", option)}
+                  >
+                    {option === "" ? "Tout" : option}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Carburant */}
+            <div className="filter-group">
+              <label className="filter-label">Carburant</label>
+              <div className="filter-options">
+                {["", "Essence", "Diesel", "Hybride", "Électrique"].map(
+                  (option) => (
+                    <button
+                      key={option}
+                      className={`filter-button ${
+                        filters.fuelType === option ? "active" : ""
+                      }`}
+                      onClick={() => handleFilterChange("fuelType", option)}
+                    >
+                      {option === "" ? "Tout" : option}
+                    </button>
+                  )
+                )}
+              </div>
+            </div>
+
+            {/* Places */}
+            <div className="filter-group">
+              <label className="filter-label">Places</label>
+              <div className="filter-options">
+                {["", "2", "4", "5", "Autre"].map((option) => (
+                  <button
+                    key={option}
+                    className={`filter-button ${
+                      filters.seats === option ? "active" : ""
+                    }`}
+                    onClick={() =>
+                      handleFilterChange(
+                        "seats",
+                        option === "Autre" ? "Autre" : option
+                      )
+                    }
+                  >
+                    {option === "" ? "Tout" : `${option} Places`}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="slider-container-filter">
+            <label htmlFor="yearRange" className="slider-label-filter">
+              Année
+            </label>
+            <input
+              type="range"
+              id="yearRange"
+              min="1990"
+              max="2025"
+              value={filters.yearRange[0]}
+              onChange={(e) =>
+                handleFilterChange("yearRange", [
+                  parseInt(e.target.value),
+                  filters.yearRange[1],
+                ])
+              }
+              className="filter-input"
+            />
+            <div className="slider-value-filter">
+              <span>{filters.yearRange[0]}</span>
+              <span>{filters.yearRange[1]}</span>
+            </div>
+          </div>
+
+          <div className="slider-container-filter">
+            <label htmlFor="priceRange" className="slider-label-filter">
+              Gamme de prix
+            </label>
+            <input
+              type="range"
+              id="priceRange"
+              min="15"
+              max="500"
+              value={filters.priceRange[0]}
+              onChange={(e) =>
+                handleFilterChange("priceRange", [
+                  parseInt(e.target.value),
+                  filters.priceRange[1],
+                ])
+              }
+              className="filter-input"
+            />
+            <div className="slider-value-filter">
+              <span>{filters.priceRange[0]}€</span>
+              <span>{filters.priceRange[1]}€</span>
+            </div>
+          </div>
+
+          <div className="slider-container-filter">
+            <label htmlFor="horsePower" className="slider-label-filter">
+              Puissance (cv)
+            </label>
+            <input
+              type="range"
+              min="15"
+              max="200"
+              value={filters.horsePower[0]}
+              onChange={(e) =>
+                handleFilterChange("horsePower", [
+                  parseInt(e.target.value),
+                  filters.horsePower[1],
+                ])
+              }
+              className="filter-input"
+            />
+            <div className="slider-value-filter">
+              <span>{filters.horsePower[0]}cv</span>{" "}
+              <span>{filters.horsePower[1]}cv</span>
+            </div>
+          </div>
+        </div>
+
         {filteredCars.map((car) => {
           const carRent = rent.find((rent) => rent.idCar === car._id);
           const rentStatus = carRent ? carRent.status : null;

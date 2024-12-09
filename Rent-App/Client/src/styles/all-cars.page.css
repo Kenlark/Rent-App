@@ -33,6 +33,7 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(380px, 1fr));
   grid-template-rows: auto;
+  align-items: start;
   row-gap: 2.5rem;
   padding: 1rem;
 }
