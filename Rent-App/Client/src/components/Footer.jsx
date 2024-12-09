@@ -6,16 +6,16 @@ function Footer() {
   return (
     <>
       <section className="footer">
+        <p className="copyright">&copy; 2024 Rent-App</p>
         <div className="flex-footer">
-          <p className="copyright">&copy; 2024 Rent-App</p>
           <a href="/terms-and-conditions" className="color-link">
-            <p>Conditions d&apos;utilisation</p>
+            <p>Conditions Générales de location</p>
           </a>
           <a href="/privacy-policy" className="color-link">
-            <p>Politique de confidentialité</p>
+            <p>Mentions Légales</p>
           </a>
           <a href="/cookie-management" className="color-link">
-            <p>Gestion des cookies</p>
+            <p>Politique de confidentialité</p>
           </a>
         </div>
         <div className="flex-contact">
