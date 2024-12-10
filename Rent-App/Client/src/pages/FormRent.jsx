@@ -19,8 +19,6 @@ export const loader = async () => {
 };
 
 const FormRent = () => {
-  const [message, setMessage] = useState("");
-  const [captchaAnswer, setCaptchaAnswer] = useState(""); // Réponse du CAPTCHA
   const [captchaQuestion, setCaptchaQuestion] = useState(""); // Question mathématique
   const [captchaCorrectAnswer, setCaptchaCorrectAnswer] = useState(null); // Réponse correcte du CAPTCHA
   const [carData, setCarData] = useState([]);
@@ -199,7 +197,7 @@ const FormRent = () => {
                 />
               </div>
             </div>
-            <div className="input-pair">
+            <div className="input-pair flex-responsive">
               <div>
                 <label>Voiture</label>
                 <select

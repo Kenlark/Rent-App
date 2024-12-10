@@ -148,3 +148,43 @@ input:focus {
 input::placeholder {
   opacity: 0.7;
 }
+
+@media (max-width: 830px) {
+  .text-area-message {
+    max-height: 100px;
+    min-height: 60px;
+  }
+
+  .btn-submit-form-contact {
+    align-self: center;
+    width: 100%;
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 550px) {
+  .form-contact-bcg {
+    width: 90%;
+    height: auto;
+    padding: 1.5rem;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-contact-bcg {
+    padding: 1rem;
+  }
+
+  .form-label {
+    font-size: 14px;
+  }
+
+  .form-input-contact {
+    font-size: 14px;
+  }
+
+  .btn-submit-form-contact {
+    padding: 0.4rem;
+  }
+}

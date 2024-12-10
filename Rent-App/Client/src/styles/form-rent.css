@@ -32,19 +32,19 @@
 }
 
 .contact-container {
-  position: absolute; /* Peut aussi être 'relative' si l'élément parent est un conteneur positionné */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%; /* Adaptez en fonction de votre design */
-  height: 100%; /* Adaptez en fonction de votre design */
-  min-height: 100vh;
+  position: relative;
+  height: auto;
+  min-height: auto;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .form-wrapper {
   position: relative;
+  height: auto;
+  min-height: 50vh;
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
@@ -137,4 +137,48 @@ div[style*="display: none"] {
 
 .label-form-rent {
   text-wrap: nowrap;
+}
+
+@media screen and (max-width: 1160px) {
+  .contact-container {
+    min-height: 80vh;
+  }
+
+  .form-wrapper {
+    padding: 1rem;
+  }
+
+  .contact-form {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-form label {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-wrapper {
+    padding: 0.5rem;
+  }
+
+  .btn-submit {
+    font-size: 12px;
+  }
+
+  .contact-form label {
+    font-size: 12px;
+  }
+
+  .flex-responsive {
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .contact-form select {
+    width: 85vw;
+  }
 }
