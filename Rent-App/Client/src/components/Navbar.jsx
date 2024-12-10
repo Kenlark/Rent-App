@@ -61,7 +61,7 @@ function Navbar() {
   }, [isLoggedIn]);
 
   useEffect(() => {
-    const checkAdmin = async () => {
+    const fetchUserData = async () => {
       try {
         const response = await axios.get(
           "http://localhost:5000/api/v1/users/me",
@@ -69,21 +69,30 @@ function Navbar() {
             withCredentials: true,
           }
         );
-        if (response.data.role === "admin") {
-          setIsAdmin(true);
+        if (response.data) {
+          setIsLoggedIn(true);
+          setUser({
+            firstName: response.data.firstName,
+            lastName: response.data.lastName,
+            email: response.data.email,
+          });
+          if (response.data.role === "admin") {
+            setIsAdmin(true);
+          }
         }
       } catch (error) {
-        console.error("Erreur lors de la vérification du rôle:", error);
+        console.error(
+          "Erreur lors de la récupération des données utilisateur:",
+          error
+        );
+        setIsLoggedIn(false);
+        setUser(null);
         setIsAdmin(false);
       }
     };
 
-    if (isLoggedIn) {
-      checkAdmin();
-    } else {
-      setIsAdmin(false);
-    }
-  }, [isLoggedIn]);
+    fetchUserData();
+  }, [setIsLoggedIn, setUser]);
 
   return (
     <>

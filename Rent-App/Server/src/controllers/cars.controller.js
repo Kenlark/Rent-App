@@ -145,7 +145,7 @@ const remove = async (req, res) => {
       const images = car.images;
       for (const image of images) {
         const publicId = image.url.split("/").pop().split(".")[0];
-        await cloudinary.uploader.destroy(`Rent-Images/${publicId}`);
+        await cloudinary.uploader.destroy(`Car-Images/${publicId}`);
       }
 
       await carsService.remove(id);
