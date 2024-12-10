@@ -226,11 +226,6 @@ ul {
   margin-block-end: 1rem;
 }
 
-.edit-user-profile-link {
-  text-decoration: none;
-  color: var(--white);
-}
-
 .user-mail {
   margin-block-end: 0.3rem;
 }
@@ -244,10 +239,10 @@ ul {
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 117%;
+  width: 107%;
   height: 1px;
   background-color: #d8d8d8;
-  margin-inline-start: -1.05rem;
+  margin-inline-start: -0.45rem;
 }
 
 .underline-logout {
@@ -259,10 +254,10 @@ ul {
   position: absolute;
   top: 0;
   left: 0;
-  width: 117%;
+  width: 107%;
   height: 1px;
   background-color: #d8d8d8;
-  margin-inline-start: -1.05rem;
+  margin-inline-start: -0.45rem;
 }
 
 .flex-burger-li > a:first-of-type {
@@ -334,8 +329,8 @@ ul {
   margin: 0;
   background-color: var(--navbar-color);
   position: absolute;
-  top: 5rem;
-  right: 1rem;
+  top: 3rem;
+  right: 15rem;
   border-radius: var(--borderRadius);
   box-shadow: var(--shadow-3);
   z-index: 1000;
@@ -345,25 +340,20 @@ ul {
   padding: 0.5rem;
 }
 
-.menu-open ul li a {
+.menu-open ul li a:not(.edit-user-profile-link) {
   text-decoration: none;
-  color: var(--white);
+  color: var(--navbar-color);
   display: block;
   transition: var(--transition);
 }
 
-.menu-open ul li a:hover {
-  background-color: var(--white);
-  color: var(--navbar-color);
+.edit-user-profile-link {
+  text-decoration: none;
+  color: var(--white);
 }
 
 .burger-menu {
-  display: none;
   position: relative;
-}
-
-.burger-menu.logged-in {
-  margin-inline-end: 5rem;
 }
 
 .burger-menu.logged-out {
@@ -415,18 +405,27 @@ ul {
   }
 }
 
-@media (max-width: 830px) {
-  .flex-login .login,
-  .flex-login .register {
+@media screen and (max-width: 950px) {
+  .flex-login {
+    margin-inline-end: 1rem;
+  }
+
+  .create-form-absolute {
+    margin-inline-end: 6.5rem;
+  }
+}
+
+@media screen and (max-width: 830px) {
+  .burger-menu {
+    display: block;
+  }
+
+  .login {
     display: none;
   }
 
-  .flex-login {
-    margin-inline-end: 0;
-  }
-
-  .burger-menu {
-    display: block;
+  .register {
+    display: none;
   }
 
   .logged-out .flex-avatar {
@@ -437,14 +436,31 @@ ul {
 @media (max-width: 830px) {
   .burger-menu.logged-out {
     display: block;
+    margin-inline-start: -5rem;
   }
 }
 
-@media (max-width: 674px) {
+@media screen and (max-width: 674px) {
+  .burger-menu-avatar {
+    display: block;
+  }
+
+  .avatar {
+    display: none;
+  }
+
+  .btn-chevron {
+    display: none;
+  }
+
+  .create-form-absolute {
+    display: none;
+  }
+
   .mobile-menu-btn {
     display: block;
     position: absolute;
-    right: -6rem;
+    right: -1.5rem;
     bottom: -0.6rem;
   }
 
@@ -549,14 +565,6 @@ ul {
 
   .burger-menu.logged-in {
     margin-inline-end: 1rem;
-  }
-
-  .create-form-absolute {
-    margin-inline-end: 5rem;
-  }
-
-  .menu-open {
-    margin-inline-end: 5rem;
   }
 
   .navbar-wrapper {
