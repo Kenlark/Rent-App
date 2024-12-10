@@ -20,25 +20,60 @@ function Navbar() {
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/v1/users/me",
+          {
+            withCredentials: true,
+          }
+        );
+
+        if (response.data) {
+          setIsLoggedIn(true);
+          setUser(response.data);
+        }
+      } catch (error) {
+        setIsLoggedIn(false);
+        setUser(null);
+      }
+    };
+
+    checkAuthStatus();
+  }, []);
+
   const handleLogout = async () => {
     try {
+      // Appel API de déconnexion
       await axios.post(
         "http://localhost:5000/api/v1/users/logout",
         {},
         { withCredentials: true }
       );
 
-      toast.success("Déconnexion réussie");
-
+      // Réinitialisation immédiate des états
       setIsLoggedIn(false);
       setUser(null);
       setIsAdmin(false);
+      setIsOpen(false); // Ferme le menu déroulant
+      setIsMobileMenuOpen(false); // Ferme le menu mobile s'il est ouvert
 
+      toast.success("Déconnexion réussie");
+
+      // Redirection après un court délai
       setTimeout(() => {
         navigate("/");
       }, 500);
     } catch (error) {
       console.error("Erreur lors de la déconnexion", error);
+      // En cas d'erreur, on réinitialise quand même les états par sécurité
+      setIsLoggedIn(false);
+      setUser(null);
+      setIsAdmin(false);
+      setIsOpen(false);
+      setIsMobileMenuOpen(false);
+      toast.error("Erreur lors de la déconnexion");
     }
   };
 
@@ -61,7 +96,7 @@ function Navbar() {
   }, [isLoggedIn]);
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const checkAdmin = async () => {
       try {
         const response = await axios.get(
           "http://localhost:5000/api/v1/users/me",
@@ -69,30 +104,21 @@ function Navbar() {
             withCredentials: true,
           }
         );
-        if (response.data) {
-          setIsLoggedIn(true);
-          setUser({
-            firstName: response.data.firstName,
-            lastName: response.data.lastName,
-            email: response.data.email,
-          });
-          if (response.data.role === "admin") {
-            setIsAdmin(true);
-          }
+        if (response.data.role === "admin") {
+          setIsAdmin(true);
         }
       } catch (error) {
-        console.error(
-          "Erreur lors de la récupération des données utilisateur:",
-          error
-        );
-        setIsLoggedIn(false);
-        setUser(null);
+        console.error("Erreur lors de la vérification du rôle:", error);
         setIsAdmin(false);
       }
     };
 
-    fetchUserData();
-  }, [setIsLoggedIn, setUser]);
+    if (isLoggedIn) {
+      checkAdmin();
+    } else {
+      setIsAdmin(false);
+    }
+  }, [isLoggedIn]);
 
   return (
     <>
