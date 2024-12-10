@@ -294,3 +294,43 @@
   margin-block-end: 1rem;
   color: #787878;
 }
+
+@media (max-width: 768px) {
+  .form-register {
+    width: 90%;
+    padding: 1rem;
+    height: auto;
+    margin-block-end: 1rem;
+  }
+
+  .flex-name {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .flex-identity {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-register {
+    padding: 0.5rem;
+  }
+
+  .underline-register1,
+  .underline-register2 {
+    width: 35vw;
+  }
+
+  .form-register input {
+    width: 85vw;
+  }
+
+  .btn-submit-register {
+    width: 85vw;
+    font-size: 0.9rem;
+    padding: 0.5rem;
+  }
+}
