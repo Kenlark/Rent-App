@@ -38,45 +38,57 @@ Ce projet est un site interactif de location de véhicules. Il permet aux utilis
 
 # Front-end
 
+```bash
 cd Rent-App/Client
 npm install
+```
 
 # Back-end
 
-cd ../Server
+```bash
+cd Rent-App/Server
 npm install
-
-`````
+```
 
 2. **Configuration env**
    Je suggère de regrouper toutes les variables d'environnement dans un bloc de code unique :
 
-````markdown
 ## ⚙️ Configuration
 
 Créez un fichier `.env` dans le dossier `Server` :
 
-```env
 # Serveur
+
+```bash
 PORT=5000
+```
 
 # Base de données
+
+```bash
 MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/<db_name>
+```
 
 # JWT
+
+```bash
 JWT_SECRET=votre_secret_key
 JWT_LIFETIME=7d
+```
 
 # Cloudinary
+
+```bash
 CLOUD_NAME=votre_cloud_name
 CLOUD_API_KEY=votre_api_key
 CLOUD_API_SECRET=votre_api_secret
+```
 
 # Resend
-API_KEY_RESEND=votre_api_key_resend
-`````
 
-````
+```bash
+API_KEY_RESEND=votre_api_key_resend
+```
 
 # URL du back-end
 
@@ -94,8 +106,6 @@ Pour travailler sur le projet localement, utilisez les commandes suivantes :
 cd Rent-App/Server
 npm run dev
 ```
-
-````
 
 - **Front-end** :
 
