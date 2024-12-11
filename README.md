@@ -6,7 +6,7 @@
 
 Ce projet est un site interactif de location de véhicules. Il permet aux utilisateurs de parcourir les véhicules disponibles, filtrer les résultats, et réserver un véhicule via un formulaire qui sera envoyé au loueur. Les administrateurs peuvent ajouter des locations au site, les supprimer et les modifier en temps réel.
 
-![Screenshot de l'application](../Rent-App/Rent-App/Client/public/screen%20app.png)
+![Screenshot de l'application](../screen%20app.png)
 
 ---
 
