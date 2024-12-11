@@ -133,13 +133,18 @@ function AllCars() {
     const carRent = rent.find((r) => r.idCar === car._id);
     const rentStatus = carRent ? carRent.status : "Disponible";
 
+    const seatsFilter =
+      filters.seats === "" ||
+      (filters.seats === "Autre" && ![2, 4, 5].includes(car.seats)) ||
+      car.seats === parseInt(filters.seats);
+
     return (
       (filters.transmission === "" ||
         car.transmission.toLowerCase() ===
           filters.transmission.toLowerCase()) &&
       (filters.fuelType === "" ||
         car.fuelType.toLowerCase() === filters.fuelType.toLowerCase()) &&
-      (filters.seats === "" || car.seats === parseInt(filters.seats)) &&
+      seatsFilter &&
       (filters.availability === "" ||
         (filters.availability === "Disponible" &&
           rentStatus === "Disponible") ||

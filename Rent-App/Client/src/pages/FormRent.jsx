@@ -3,6 +3,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
+import { useAuth } from "../authContext.jsx";
 
 const carDataURL = "http://localhost:5000/api/v1/cars";
 
@@ -23,6 +24,7 @@ const FormRent = () => {
   const [captchaCorrectAnswer, setCaptchaCorrectAnswer] = useState(null); // Réponse correcte du CAPTCHA
   const [carData, setCarData] = useState([]);
   const [isSending, setIsSending] = useState(false);
+  const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
 
   // Générer une question mathématique simple
@@ -135,6 +137,15 @@ const FormRent = () => {
       setIsSending(false);
     }
   };
+
+  if (!isLoggedIn) {
+    return (
+      <div className="refused-access">
+        <h2>Accès refusé</h2>
+        <p>Vous devez être connecté pour accéder à cette page.</p>
+      </div>
+    );
+  }
 
   return (
     <section className="contact-container">

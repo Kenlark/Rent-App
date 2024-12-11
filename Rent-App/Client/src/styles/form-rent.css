@@ -139,6 +139,11 @@ div[style*="display: none"] {
   text-wrap: nowrap;
 }
 
+.refused-access {
+  text-align: center;
+  padding: 1.5rem;
+}
+
 @media screen and (max-width: 1160px) {
   .contact-container {
     min-height: 80vh;
