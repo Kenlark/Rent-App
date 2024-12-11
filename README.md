@@ -226,26 +226,36 @@ Create a .env file in the Server folder with the following parameters:
 
 # Server
 
+```bash
 PORT=5000
+```
 
 # Database
 
+```bash
 MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/<db_name>
+```
 
 # JWT
 
+```bash
 JWT_SECRET=your_secret_key
 JWT_LIFETIME=7d
+```
 
 # Cloudinary
 
+```bash
 CLOUD_NAME=your_cloud_name
 CLOUD_API_KEY=your_api_key
 CLOUD_API_SECRET=your_api_secret
+```
 
 # Resend
 
+```bash
 API_KEY_RESEND=your_resend_api_key
+```
 
 ## 🖥️ Usage
 
