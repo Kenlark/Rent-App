@@ -213,7 +213,7 @@ npm install
 
 # Back-end
 
-cd ../Server
+cd Rent-App/Server
 npm install
 
 ## ⚙️ Environment Configuration
