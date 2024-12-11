@@ -1,0 +1,875 @@
+{
+  "modelName": "Rent-App",
+  "collections": [
+    {
+      "GUID": "dd28d9b5-449b-4808-927e-9f0ba0115f4e",
+      "collectionName": "Cars",
+      "type": "object",
+      "properties": [
+        {
+          "name": "_id",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "objectId",
+          "GUID": "7e805a7f-a50e-4864-ace5-3d118a8fee40",
+          "required": true,
+          "childRelationships": [
+            "471e5799-606f-4bea-828b-356c2b82bb25"
+          ],
+          "primaryKey": true,
+          "error": {}
+        },
+        {
+          "name": "brand",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "string",
+          "GUID": "99c590e9-5ce6-4153-86a0-180cef213bc7",
+          "required": true,
+          "maxLength": 40,
+          "error": {}
+        },
+        {
+          "name": "model",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "string",
+          "GUID": "9d515489-0efc-4428-b310-f61d6fe0dfea",
+          "required": true,
+          "maxLength": 60,
+          "error": {}
+        },
+        {
+          "name": "year",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "numeric",
+          "GUID": "c7aff027-e522-4709-b5e7-41b0c76e2380",
+          "required": true,
+          "error": {}
+        },
+        {
+          "name": "transmission",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "string",
+          "GUID": "bfe79268-740a-4666-a805-4fcd837d6bc9",
+          "required": true,
+          "maxLength": 20,
+          "error": {}
+        },
+        {
+          "name": "fuelType",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "string",
+          "GUID": "68496268-0f15-47bd-bd8f-246a36a60c44",
+          "required": true,
+          "error": {}
+        },
+        {
+          "name": "seats",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "numeric",
+          "error": {},
+          "required": true,
+          "GUID": "fbc2239f-8f83-409b-a016-bca28d6aef86"
+        },
+        {
+          "name": "horsePower",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "numeric",
+          "error": {},
+          "required": true,
+          "GUID": "fd95dbd1-5b9f-4017-80c2-ecafd0a4c80f"
+        },
+        {
+          "name": "pricePerDay",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "numeric",
+          "GUID": "533ea4d5-7e14-4b1f-b22a-2eb88ecd56c0",
+          "required": true,
+          "error": {}
+        },
+        {
+          "name": "images",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "array",
+          "properties": [
+            {
+              "hackoladeMeta": {},
+              "isActivated": true,
+              "type": "string",
+              "GUID": "a1ed77ab-07e5-4e29-bbcd-98feea697d36",
+              "arrayItem": true,
+              "foreignCollection": "04c5cb67-1b57-49c6-b087-08a6c856a30f",
+              "error": {},
+              "foreignField": [
+                "04c5cb67-1b57-49c6-b087-08a6c856a30f",
+                "0ea4ff10-a493-4cba-b9c8-eb552d1ccf09"
+              ],
+              "relationshipType": "Foreign Key",
+              "parentRelationship": "dee58598-534a-4b64-b8ad-fa80957693a0"
+            }
+          ],
+          "additionalItems": true,
+          "GUID": "6d90b006-9d12-48e1-8a49-1c2149e67435",
+          "required": true,
+          "error": {}
+        },
+        {
+          "name": "createdBy",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "date",
+          "primaryKey": false,
+          "required": true,
+          "GUID": "a6312eca-c153-4d15-9512-bf60a871ec4b",
+          "now": true,
+          "error": {}
+        },
+        {
+          "name": "updatedAt",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "date",
+          "primaryKey": false,
+          "GUID": "6a01ad72-ce2d-4f94-98a0-78e6cc3dfea2",
+          "required": true,
+          "now": true,
+          "error": {}
+        }
+      ],
+      "definitions": {
+        "type": "definitions",
+        "properties": [],
+        "GUID": "454e176b-0572-49c9-8e98-695bb01c5198"
+      },
+      "isActivated": true,
+      "additionalProperties": false,
+      "validationLevel": "Off",
+      "validationAction": "Warn",
+      "storageEngineName": "WiredTiger",
+      "collectionUsers": [],
+      "indexes": [],
+      "collation": {},
+      "sharding": {
+        "unique": true,
+        "collation": "null"
+      },
+      "bucketId": "617bebba-25ae-4ca1-82d3-c8183bfd461a"
+    },
+    {
+      "GUID": "04c5cb67-1b57-49c6-b087-08a6c856a30f",
+      "collectionName": "ImagesCarsSchema",
+      "type": "object",
+      "properties": [
+        {
+          "name": "url",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "string",
+          "GUID": "0ea4ff10-a493-4cba-b9c8-eb552d1ccf09",
+          "required": true,
+          "error": {},
+          "foreignCollection": "dd28d9b5-449b-4808-927e-9f0ba0115f4e",
+          "childRelationships": [
+            "dee58598-534a-4b64-b8ad-fa80957693a0"
+          ]
+        }
+      ],
+      "definitions": {
+        "type": "definitions",
+        "properties": [],
+        "GUID": "39aa0005-dead-4ef9-8df6-947c21917686"
+      },
+      "isActivated": true,
+      "additionalProperties": false,
+      "validationLevel": "Off",
+      "validationAction": "Warn",
+      "storageEngineName": "WiredTiger",
+      "collectionUsers": [],
+      "indexes": [],
+      "collation": {},
+      "sharding": {
+        "unique": true,
+        "collation": "null"
+      },
+      "bucketId": "617bebba-25ae-4ca1-82d3-c8183bfd461a"
+    },
+    {
+      "GUID": "73917472-359f-44bb-9a5b-7a47aaee4a98",
+      "collectionName": "RentSchema",
+      "type": "object",
+      "properties": [
+        {
+          "name": "startDate",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "date",
+          "primaryKey": false,
+          "GUID": "a93be29c-2183-4631-b1f3-ce5b036788a6",
+          "required": true,
+          "error": {}
+        },
+        {
+          "name": "endDate",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "date",
+          "primaryKey": false,
+          "error": {},
+          "required": true,
+          "GUID": "a80d897d-ae20-4355-b1f1-76ed6388ea55"
+        },
+        {
+          "name": "pricePerHour",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "numeric",
+          "error": {
+            "name": false
+          },
+          "GUID": "3c59771d-7754-40ac-bed4-76489600fd65"
+        },
+        {
+          "name": "pricePerDay",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "numeric",
+          "GUID": "b0ae66ce-12b0-4ba6-a094-754c0df7e682",
+          "required": true,
+          "error": {}
+        },
+        {
+          "name": "status",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "string",
+          "GUID": "0d63194c-e249-494d-ab9b-2695f86eb47b",
+          "required": true,
+          "error": {
+            "enum": false,
+            "enums": [
+              false,
+              false
+            ]
+          },
+          "enum": [
+            "AVAILABLE",
+            "UNAVAILABLE"
+          ]
+        },
+        {
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "objectId",
+          "GUID": "a05dc79e-bf47-464f-8997-e696881f2345",
+          "name": "idCar",
+          "required": true,
+          "error": {},
+          "foreignCollection": "dd28d9b5-449b-4808-927e-9f0ba0115f4e",
+          "foreignField": [
+            "dd28d9b5-449b-4808-927e-9f0ba0115f4e",
+            "7e805a7f-a50e-4864-ace5-3d118a8fee40"
+          ],
+          "relationshipType": "Foreign Key",
+          "parentRelationship": "471e5799-606f-4bea-828b-356c2b82bb25"
+        },
+        {
+          "name": "userID",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "objectId",
+          "GUID": "b62558f6-f06c-45ff-b0d8-c5ca7c34a11c",
+          "required": true,
+          "error": {},
+          "foreignCollection": "39554ca1-4731-4a50-9b8f-5801396b53fd",
+          "foreignField": [
+            "39554ca1-4731-4a50-9b8f-5801396b53fd",
+            "32a8e079-dea4-4785-8541-779dff66e97e"
+          ],
+          "relationshipType": "Foreign Key",
+          "parentRelationship": "038d4e17-61ea-4d97-82e3-6d8093b3ccfc"
+        },
+        {
+          "name": "createdAt",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "date",
+          "primaryKey": false,
+          "GUID": "33bb2e0d-1473-460a-8d8c-82e8be55ae8b",
+          "required": true,
+          "now": true,
+          "error": {}
+        },
+        {
+          "name": "updatesAt",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "date",
+          "primaryKey": false,
+          "GUID": "dcdbdfc0-5241-4231-8fdc-55427b5115ec",
+          "required": true,
+          "now": true,
+          "error": {}
+        },
+        {
+          "name": "_id",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "objectId",
+          "GUID": "ebe889cb-4e10-400a-956b-f08225be1ed7",
+          "required": true,
+          "primaryKey": true,
+          "error": {}
+        }
+      ],
+      "definitions": {
+        "type": "definitions",
+        "properties": [],
+        "GUID": "362ca5b1-6827-4e1e-93f8-3df8a9dca43e"
+      },
+      "isActivated": true,
+      "additionalProperties": false,
+      "validationLevel": "Off",
+      "validationAction": "Warn",
+      "storageEngineName": "WiredTiger",
+      "collectionUsers": [],
+      "indexes": [],
+      "collation": {},
+      "sharding": {
+        "unique": true,
+        "collation": "null"
+      },
+      "bucketId": "617bebba-25ae-4ca1-82d3-c8183bfd461a"
+    },
+    {
+      "GUID": "39554ca1-4731-4a50-9b8f-5801396b53fd",
+      "collectionName": "UserSchema",
+      "type": "object",
+      "properties": [
+        {
+          "name": "firstName",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "string",
+          "GUID": "577d3f2b-31ad-4840-85b7-981ebed04d25",
+          "required": true,
+          "minLength": 3,
+          "maxLength": 50,
+          "error": {}
+        },
+        {
+          "name": "lastName",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "string",
+          "GUID": "fcce43fb-1532-4399-b84a-cec273af794b",
+          "maxLength": 50,
+          "minLength": 3,
+          "required": true,
+          "error": {}
+        },
+        {
+          "name": "email",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "string",
+          "GUID": "e7869bbc-7209-4ea3-9c07-58e951a1fe41",
+          "required": true,
+          "primaryKey": false,
+          "error": {}
+        },
+        {
+          "name": "_id",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "objectId",
+          "GUID": "32a8e079-dea4-4785-8541-779dff66e97e",
+          "required": true,
+          "primaryKey": true,
+          "error": {},
+          "childRelationships": [
+            "038d4e17-61ea-4d97-82e3-6d8093b3ccfc"
+          ]
+        },
+        {
+          "name": "password",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "string",
+          "GUID": "4dbdbb48-a37d-43de-80f8-07347c7d83c7",
+          "required": true,
+          "minLength": 6,
+          "error": {}
+        },
+        {
+          "name": "role",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "string",
+          "GUID": "ba2d3dbe-ba1d-4e7a-91a1-da240709d513",
+          "minLength": 3,
+          "required": true,
+          "default": "user",
+          "error": {}
+        },
+        {
+          "name": "birthDate",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "date",
+          "primaryKey": false,
+          "GUID": "6b7eaf7f-8290-42d3-a26d-46d7a7e0dbea",
+          "required": true,
+          "error": {}
+        },
+        {
+          "name": "address",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "string",
+          "GUID": "b3dc4546-b74a-42a0-979b-c3878c3de6c8",
+          "required": true,
+          "error": {}
+        },
+        {
+          "name": "postalCode",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "string",
+          "GUID": "e10cd4c2-f462-44d8-9f8e-ad3d82be0afb",
+          "required": true,
+          "error": {}
+        },
+        {
+          "name": "city",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "string",
+          "GUID": "000b50d6-9376-4a0c-baad-b0c687a4cff7",
+          "required": true,
+          "error": {}
+        },
+        {
+          "name": "phoneNumber",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "string",
+          "GUID": "667ed648-4921-453c-8dbb-80a6d75be397",
+          "required": true,
+          "error": {}
+        },
+        {
+          "name": "resetPasswordToken",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "string",
+          "GUID": "fdb47eae-1824-44b5-94cf-38177c8ced20",
+          "default": null,
+          "required": true,
+          "error": {}
+        },
+        {
+          "name": "createdAt",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "date",
+          "primaryKey": false,
+          "GUID": "13bcbe42-1c28-4d5d-9753-17a898976e44",
+          "required": true,
+          "now": true,
+          "error": {}
+        },
+        {
+          "name": "updatedAt",
+          "hackoladeMeta": {},
+          "isActivated": true,
+          "type": "date",
+          "primaryKey": false,
+          "GUID": "693638b3-5930-4503-b1e4-536fb7fe2586",
+          "required": true,
+          "now": true,
+          "error": {}
+        }
+      ],
+      "definitions": {
+        "type": "definitions",
+        "properties": [],
+        "GUID": "02f1ecd8-0d20-426c-b1cd-8929d696c6e4"
+      },
+      "isActivated": true,
+      "additionalProperties": false,
+      "validationLevel": "Off",
+      "validationAction": "Warn",
+      "storageEngineName": "WiredTiger",
+      "collectionUsers": [],
+      "indexes": [],
+      "collation": {},
+      "sharding": {
+        "unique": true,
+        "collation": "null"
+      },
+      "bucketId": "617bebba-25ae-4ca1-82d3-c8183bfd461a"
+    }
+  ],
+  "buckets": [
+    {
+      "name": "Rent-App",
+      "type": "bucket",
+      "collectionIds": [
+        "dd28d9b5-449b-4808-927e-9f0ba0115f4e",
+        "04c5cb67-1b57-49c6-b087-08a6c856a30f",
+        "73917472-359f-44bb-9a5b-7a47aaee4a98",
+        "39554ca1-4731-4a50-9b8f-5801396b53fd"
+      ],
+      "backgroundColor": {
+        "r": 216,
+        "g": 0,
+        "b": 115,
+        "a": 1
+      },
+      "show": true,
+      "isActivated": true,
+      "GUID": "617bebba-25ae-4ca1-82d3-c8183bfd461a"
+    }
+  ],
+  "views": [],
+  "relationships": [
+    {
+      "name": "fk_ImagesCarsSchema.url_to_Cars.images.[0]",
+      "relationshipType": "Foreign Key",
+      "parentField": [
+        [
+          "04c5cb67-1b57-49c6-b087-08a6c856a30f",
+          "0ea4ff10-a493-4cba-b9c8-eb552d1ccf09"
+        ]
+      ],
+      "parentCardinality": "1",
+      "childField": [
+        [
+          "dd28d9b5-449b-4808-927e-9f0ba0115f4e",
+          "6d90b006-9d12-48e1-8a49-1c2149e67435",
+          "a1ed77ab-07e5-4e29-bbcd-98feea697d36"
+        ]
+      ],
+      "isActivated": true,
+      "childCardinality": "1",
+      "GUID": "dee58598-534a-4b64-b8ad-fa80957693a0",
+      "parentCollection": "04c5cb67-1b57-49c6-b087-08a6c856a30f",
+      "childCollection": "dd28d9b5-449b-4808-927e-9f0ba0115f4e",
+      "hackoladeStyles": {
+        "GUID": "b5fadce2-e6d0-4391-96a4-f0d3c3d4d313",
+        "autoPositioning": true,
+        "type": "Orthogonal",
+        "thickness": 2,
+        "color": "#79c4ff",
+        "dataType": "",
+        "shape": [
+          {
+            "x": 1603,
+            "y": 1138.6666666666667
+          },
+          {
+            "x": 1643,
+            "y": 1138.6666666666667
+          },
+          {
+            "x": 1643,
+            "y": 1078.5
+          },
+          {
+            "x": 1683,
+            "y": 1078.5
+          }
+        ],
+        "sides": [
+          "right",
+          "left"
+        ]
+      }
+    },
+    {
+      "name": "fk_Cars._id_to_RentSchema.idCar",
+      "relationshipType": "Foreign Key",
+      "parentField": [
+        [
+          "dd28d9b5-449b-4808-927e-9f0ba0115f4e",
+          "7e805a7f-a50e-4864-ace5-3d118a8fee40"
+        ]
+      ],
+      "parentCardinality": "1",
+      "childField": [
+        [
+          "73917472-359f-44bb-9a5b-7a47aaee4a98",
+          "a05dc79e-bf47-464f-8997-e696881f2345"
+        ]
+      ],
+      "isActivated": true,
+      "childCardinality": "1",
+      "GUID": "471e5799-606f-4bea-828b-356c2b82bb25",
+      "parentCollection": "dd28d9b5-449b-4808-927e-9f0ba0115f4e",
+      "childCollection": "73917472-359f-44bb-9a5b-7a47aaee4a98",
+      "hackoladeStyles": {
+        "GUID": "ba9a0b1f-8f5c-41db-a4d7-2cd16ee0fc6f",
+        "autoPositioning": true,
+        "type": "Orthogonal",
+        "thickness": 2,
+        "color": "#79c4ff",
+        "dataType": "",
+        "shape": [
+          {
+            "x": 1598,
+            "y": 1424
+          },
+          {
+            "x": 1628,
+            "y": 1424
+          },
+          {
+            "x": 1628,
+            "y": 1184
+          },
+          {
+            "x": 1603,
+            "y": 1184
+          }
+        ],
+        "sides": [
+          "right",
+          "right"
+        ]
+      }
+    },
+    {
+      "name": "fk_UserSchema._id_to_RentSchema.userID",
+      "relationshipType": "Foreign Key",
+      "parentField": [
+        [
+          "39554ca1-4731-4a50-9b8f-5801396b53fd",
+          "32a8e079-dea4-4785-8541-779dff66e97e"
+        ]
+      ],
+      "parentCardinality": "1",
+      "childField": [
+        [
+          "73917472-359f-44bb-9a5b-7a47aaee4a98",
+          "b62558f6-f06c-45ff-b0d8-c5ca7c34a11c"
+        ]
+      ],
+      "isActivated": true,
+      "childCardinality": "1",
+      "GUID": "038d4e17-61ea-4d97-82e3-6d8093b3ccfc",
+      "parentCollection": "39554ca1-4731-4a50-9b8f-5801396b53fd",
+      "childCollection": "73917472-359f-44bb-9a5b-7a47aaee4a98",
+      "hackoladeStyles": {
+        "GUID": "9ac8a54b-9684-4059-83ed-e2524db60fd1",
+        "autoPositioning": true,
+        "type": "Orthogonal",
+        "thickness": 2,
+        "color": "#79c4ff",
+        "dataType": "",
+        "shape": [
+          {
+            "x": 1598,
+            "y": 1495
+          },
+          {
+            "x": 1700.5,
+            "y": 1495
+          },
+          {
+            "x": 1700.5,
+            "y": 1338.5
+          },
+          {
+            "x": 1803,
+            "y": 1338.5
+          }
+        ],
+        "sides": [
+          "right",
+          "left"
+        ]
+      }
+    }
+  ],
+  "users": [],
+  "diagramViews": [],
+  "idToNameHashTable": {
+    "dd28d9b5-449b-4808-927e-9f0ba0115f4e": "Cars",
+    "99c590e9-5ce6-4153-86a0-180cef213bc7": "brand",
+    "9d515489-0efc-4428-b310-f61d6fe0dfea": "model",
+    "c7aff027-e522-4709-b5e7-41b0c76e2380": "year",
+    "bfe79268-740a-4666-a805-4fcd837d6bc9": "transmission",
+    "68496268-0f15-47bd-bd8f-246a36a60c44": "fuelType",
+    "fbc2239f-8f83-409b-a016-bca28d6aef86": "seats",
+    "fd95dbd1-5b9f-4017-80c2-ecafd0a4c80f": "horsePower",
+    "533ea4d5-7e14-4b1f-b22a-2eb88ecd56c0": "pricePerDay",
+    "7e805a7f-a50e-4864-ace5-3d118a8fee40": "_id",
+    "617bebba-25ae-4ca1-82d3-c8183bfd461a": "Rent-App",
+    "04c5cb67-1b57-49c6-b087-08a6c856a30f": "ImagesCarsSchema",
+    "0ea4ff10-a493-4cba-b9c8-eb552d1ccf09": "url",
+    "dee58598-534a-4b64-b8ad-fa80957693a0": "fk_ImagesCarsSchema.url_to_Cars.images.[0]",
+    "6d90b006-9d12-48e1-8a49-1c2149e67435": "images",
+    "73917472-359f-44bb-9a5b-7a47aaee4a98": "RentSchema",
+    "a93be29c-2183-4631-b1f3-ce5b036788a6": "startDate",
+    "a80d897d-ae20-4355-b1f1-76ed6388ea55": "endDate",
+    "3c59771d-7754-40ac-bed4-76489600fd65": "pricePerHour",
+    "b0ae66ce-12b0-4ba6-a094-754c0df7e682": "pricePerDay",
+    "0d63194c-e249-494d-ab9b-2695f86eb47b": "status",
+    "a05dc79e-bf47-464f-8997-e696881f2345": "idCar",
+    "471e5799-606f-4bea-828b-356c2b82bb25": "fk_Cars._id_to_RentSchema.idCar",
+    "b62558f6-f06c-45ff-b0d8-c5ca7c34a11c": "userID",
+    "33bb2e0d-1473-460a-8d8c-82e8be55ae8b": "createdAt",
+    "dcdbdfc0-5241-4231-8fdc-55427b5115ec": "updatesAt",
+    "39554ca1-4731-4a50-9b8f-5801396b53fd": "UserSchema",
+    "577d3f2b-31ad-4840-85b7-981ebed04d25": "firstName",
+    "fcce43fb-1532-4399-b84a-cec273af794b": "lastName",
+    "e7869bbc-7209-4ea3-9c07-58e951a1fe41": "email",
+    "ebe889cb-4e10-400a-956b-f08225be1ed7": "_id",
+    "32a8e079-dea4-4785-8541-779dff66e97e": "_id",
+    "4dbdbb48-a37d-43de-80f8-07347c7d83c7": "password",
+    "ba2d3dbe-ba1d-4e7a-91a1-da240709d513": "role",
+    "6b7eaf7f-8290-42d3-a26d-46d7a7e0dbea": "birthDate",
+    "b3dc4546-b74a-42a0-979b-c3878c3de6c8": "address",
+    "e10cd4c2-f462-44d8-9f8e-ad3d82be0afb": "postalCode",
+    "000b50d6-9376-4a0c-baad-b0c687a4cff7": "city",
+    "667ed648-4921-453c-8dbb-80a6d75be397": "phoneNumber",
+    "fdb47eae-1824-44b5-94cf-38177c8ced20": "resetPasswordToken",
+    "13bcbe42-1c28-4d5d-9753-17a898976e44": "createdAt",
+    "693638b3-5930-4503-b1e4-536fb7fe2586": "updatedAt",
+    "6a01ad72-ce2d-4f94-98a0-78e6cc3dfea2": "updatedAt",
+    "a6312eca-c153-4d15-9512-bf60a871ec4b": "createdBy",
+    "038d4e17-61ea-4d97-82e3-6d8093b3ccfc": "fk_UserSchema._id_to_RentSchema.userID",
+    "ba3ba530-12d9-4281-b7f6-34e8d44e1f1c": "New view"
+  },
+  "definitions": {
+    "type": "definitions",
+    "properties": [],
+    "GUID": "184dbebd-7c02-4cc5-9972-92a7f8dcad00"
+  },
+  "polyglotDefinitions": {
+    "type": "polyglotDefinitions",
+    "properties": [],
+    "GUID": "40420ac3-0496-420d-a3e1-8daeb03c0779"
+  },
+  "externalDefinitions": {
+    "type": "externalDefinitions",
+    "properties": [],
+    "GUID": "716afd9a-0d20-4580-8f7e-b1e0a9e3f5c8"
+  },
+  "sources": [],
+  "decorativeSymbols": [],
+  "dbVersion": "v7.x",
+  "dbVendor": "MongoDB",
+  "appTarget": "MONGODB",
+  "creationTS": "2024-12-11T10:33:23.861Z",
+  "GUID": "1543e5bc-0da4-4135-98a9-53baa23fd1e3",
+  "isLineageEnabled": false,
+  "hackoladeMeta": {
+    "validationErrors": {
+      "modelName": false
+    }
+  },
+  "lastModifTS": "2024-12-11T11:21:14.443Z",
+  "persistenceSchemaVersion": "7",
+  "isCreatedByPlugin": true,
+  "pluginInformation": {
+    "pluginEngineVersion": "1.0.0"
+  },
+  "applicationInformation": {
+    "version": "7.9.1"
+  },
+  "settings": {
+    "centralPane": {
+      "dbLevel": {
+        "erd": [
+          {
+            "GUID": "dd28d9b5-449b-4808-927e-9f0ba0115f4e",
+            "x": 1374,
+            "y": 1048,
+            "width": 229,
+            "height": 272,
+            "color": {}
+          },
+          {
+            "GUID": "04c5cb67-1b57-49c6-b087-08a6c856a30f",
+            "x": 1683,
+            "y": 1053,
+            "width": 231,
+            "height": 51,
+            "color": {}
+          },
+          {
+            "GUID": "73917472-359f-44bb-9a5b-7a47aaee4a98",
+            "x": 1372,
+            "y": 1353,
+            "width": 226,
+            "height": 213,
+            "color": {}
+          },
+          {
+            "GUID": "39554ca1-4731-4a50-9b8f-5801396b53fd",
+            "x": 1803,
+            "y": 1196,
+            "width": 269,
+            "height": 285,
+            "color": {}
+          }
+        ],
+        "erdDefinitions": {
+          "erd": [],
+          "rootPath": [],
+          "entities": [],
+          "decorativeSymbols": []
+        },
+        "buckets": [
+          {
+            "x": 1332,
+            "y": 1008,
+            "GUID": "617bebba-25ae-4ca1-82d3-c8183bfd461a"
+          }
+        ],
+        "collapsedNodes": [],
+        "activeRelationship": "",
+        "activeRelationshipFields": {
+          "childField": [],
+          "parentField": []
+        },
+        "selectedCollections": [],
+        "displayColorPicker": false,
+        "graphView": {
+          "erd": [],
+          "buckets": [],
+          "decorativeSymbols": [],
+          "forceLayout": true,
+          "defaultLinkLength": 300
+        },
+        "diagramViews": [],
+        "decorativeSymbols": [],
+        "nestedCollectionsLayout": "horizontal",
+        "options": [
+          {
+            "autoWidth": false,
+            "autoHeight": false,
+            "GUID": "dd28d9b5-449b-4808-927e-9f0ba0115f4e"
+          }
+        ],
+        "relationshipUpdateDisabled": false,
+        "displayOptions": {}
+      },
+      "collectionLevel": {},
+      "changed": false
+    },
+    "dtDiagram": {
+      "collapsedNodes": [],
+      "shouldDistributeCollections": false
+    }
+  }
+}

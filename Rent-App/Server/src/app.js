@@ -5,6 +5,7 @@ import { v2 as cloudinary } from "cloudinary";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import mongoSanitize from "express-mongo-sanitize";
+import apiRateLimiter from "./middlewares/rate-limit.middleware.js";
 
 const app = express();
 
@@ -18,6 +19,8 @@ import carRouter from "./routes/car.route.js";
 import emailsRouter from "./routes/email.route.js";
 import resetPassword from "./routes/reset.password.route.js";
 import rentStatusRoute from "./routes/rent.status.route.js";
+
+app.use(apiRateLimiter);
 
 app.use(
   mongoSanitize({
