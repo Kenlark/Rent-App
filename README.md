@@ -208,13 +208,17 @@ This project is an interactive vehicle rental website. It allows users to browse
 
 # Front-end
 
+```bash
 cd Rent-App/Client
 npm install
+```
 
 # Back-end
 
+```bash
 cd Rent-App/Server
 npm install
+```
 
 ## ⚙️ Environment Configuration
 
