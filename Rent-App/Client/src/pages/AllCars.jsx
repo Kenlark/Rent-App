@@ -48,7 +48,7 @@ function AllCars() {
   });
   const [filters, setFilters] = useState({
     priceRange: [15, 500],
-    yearRange: [1990, 2024],
+    yearRange: [1990, 2025],
     transmission: "",
     fuelType: "",
     seats: "",
@@ -58,7 +58,7 @@ function AllCars() {
 
   const initialFilters = {
     priceRange: [15, 500],
-    yearRange: [1990, 2024],
+    yearRange: [1990, 2025],
     transmission: "",
     fuelType: "",
     seats: "",
