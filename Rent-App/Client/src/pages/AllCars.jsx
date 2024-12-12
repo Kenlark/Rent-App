@@ -129,35 +129,36 @@ function AllCars() {
     setFilters((prevFilters) => ({ ...prevFilters, [name]: value }));
   };
 
-  const filteredCars = cars.filter((car) => {
-    const carRent = rent.find((r) => r.idCar === car._id);
-    const rentStatus = carRent ? carRent.status : "Disponible";
+  const filteredCars =
+    cars?.filter((car) => {
+      const carRent = rent?.find((r) => r.idCar === car._id);
+      const rentStatus = carRent ? carRent.status : "Disponible";
 
-    const seatsFilter =
-      filters.seats === "" ||
-      (filters.seats === "Autre" && ![2, 4, 5].includes(car.seats)) ||
-      car.seats === parseInt(filters.seats);
+      const seatsFilter =
+        filters.seats === "" ||
+        (filters.seats === "Autre" && ![2, 4, 5].includes(car.seats)) ||
+        car.seats === parseInt(filters.seats);
 
-    return (
-      (filters.transmission === "" ||
-        car.transmission.toLowerCase() ===
-          filters.transmission.toLowerCase()) &&
-      (filters.fuelType === "" ||
-        car.fuelType.toLowerCase() === filters.fuelType.toLowerCase()) &&
-      seatsFilter &&
-      (filters.availability === "" ||
-        (filters.availability === "Disponible" &&
-          rentStatus === "Disponible") ||
-        (filters.availability === "Indisponible" &&
-          rentStatus === "Indisponible")) &&
-      car.pricePerDay >= filters.priceRange[0] &&
-      car.pricePerDay <= filters.priceRange[1] &&
-      car.year >= filters.yearRange[0] &&
-      car.year <= filters.yearRange[1] &&
-      car.horsePower >= filters.horsePower[0] &&
-      car.horsePower <= filters.horsePower[1]
-    );
-  });
+      return (
+        (filters.transmission === "" ||
+          car.transmission.toLowerCase() ===
+            filters.transmission.toLowerCase()) &&
+        (filters.fuelType === "" ||
+          car.fuelType.toLowerCase() === filters.fuelType.toLowerCase()) &&
+        seatsFilter &&
+        (filters.availability === "" ||
+          (filters.availability === "Disponible" &&
+            rentStatus === "Disponible") ||
+          (filters.availability === "Indisponible" &&
+            rentStatus === "Indisponible")) &&
+        car.pricePerDay >= filters.priceRange[0] &&
+        car.pricePerDay <= filters.priceRange[1] &&
+        car.year >= filters.yearRange[0] &&
+        car.year <= filters.yearRange[1] &&
+        car.horsePower >= filters.horsePower[0] &&
+        car.horsePower <= filters.horsePower[1]
+      );
+    }) || [];
 
   const handleEditClick = (car) => {
     const carRent = rent.find((rent) => rent.idCar === car._id);
