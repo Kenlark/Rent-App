@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import DatePicker from "react-datepicker";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { faqData } from "../data.js";
 
 import Glass from "../assets/images/loupe.png";
@@ -49,6 +49,7 @@ const Home = () => {
   const [models, setModels] = useState([]);
   const [selectedBrand, setSelectedBrand] = useState("");
   const [selectedModel, setSelectedModel] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Simuler la récupération des données depuis une API
@@ -330,6 +331,12 @@ const Home = () => {
                 <Link to={`/cars/${car._id}`}>
                   <button className="details-button">Voir les détails</button>
                 </Link>
+                <button
+                  className="edit-button"
+                  onClick={() => navigate("/rent")}
+                >
+                  Réserver
+                </button>
               </div>
             </div>
           </div>
