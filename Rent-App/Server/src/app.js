@@ -5,7 +5,13 @@ import { v2 as cloudinary } from "cloudinary";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import mongoSanitize from "express-mongo-sanitize";
+import helmet from "helmet";
+import { StatusCodes } from "http-status-codes";
 import apiRateLimiter from "./middlewares/rate-limit.middleware.js";
+import YAML from "yamljs";
+import swaggerUI from "swagger-ui-express";
+
+const swaggerDocument = YAML.load("./swagger.yaml");
 
 const app = express();
 
@@ -22,6 +28,8 @@ import rentStatusRoute from "./routes/rent.status.route.js";
 
 app.use(apiRateLimiter);
 
+app.use(helmet());
+
 app.use(
   mongoSanitize({
     replaceWith: "_", //caractères malveillant remplacés par "_"
@@ -30,10 +38,26 @@ app.use(
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
-    credentials: true, // Permet d'envoyer des cookies entre front-end et back-end
+    origin: ["http://localhost:5173", "https://rentappdwwm.netlify.app"],
+    credentials: true,
   })
 );
+
+app.use(
+  "/api-docs",
+  swaggerUI.serve,
+  swaggerUI.setup(swaggerDocument, {
+    swaggerOptions: {
+      withCredentials: true, // Permet l'envoi des cookies
+    },
+  })
+);
+
+app.get("/", (_req, res) => {
+  res
+    .status(StatusCodes.OK)
+    .send("<h1>RENT APP</h1><a href='/api-docs'>Documentation</a>");
+});
 
 app.use(cookieParser());
 

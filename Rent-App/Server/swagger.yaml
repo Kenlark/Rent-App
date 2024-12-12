@@ -1,0 +1,394 @@
+openapi: 3.0.0
+info:
+  title: API de location de voitures
+  version: 1.0.0
+  description: Documentation de l'API pour la gestion des voitures, des utilisateurs, des locations, etc.
+servers:
+  - url: https://back-end-rent-app.onrender.com/api/v1
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: token
+security:
+  - cookieAuth: []
+tags:
+  - name: Auth
+  - name: Cars
+  - name: Rent
+  - name: Rent Status
+  - name: Email
+paths:
+  /cars:
+    post:
+      tags:
+        - Cars
+      summary: Création d'un véhicule (admin uniquement)
+      description: Cette route permet de créer un véhicule
+      responses:
+        200:
+          description: Voiture créée
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Confirmation de la suppression
+              example:
+                message: "Voiture créée avec succès"
+        404:
+          description: Voiture non trouvée
+    get:
+      tags:
+        - Cars
+      summary: Récupérer toutes les voitures
+      security: []
+      description: Cette route renvoie toutes les voitures disponibles.
+      responses:
+        200:
+          description: Liste des voitures
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: ID unique de la voiture
+                    model:
+                      type: string
+                      description: Modèle de la voiture
+                    price:
+                      type: number
+                      description: Prix par jour
+              example:
+                - _id: "12345"
+                  brand: Renault
+                  model: "Clio V"
+                  year: 2018
+                  transmission: Automatique
+                  fuelType: Essence
+                  seats: 5
+                  horsePower: 95
+                  createdBy: 6719f30bc6bdb31282755517
+                  images:
+                    - url: https://res.cloudinary.com/dffvguhyj/image/upload/v1733904035/Car-Images/qvcswlamvdqc9mz3llqmb.jpg
+                      _id: 675346a3e783af20dfd8af85
+                  createdAt: 2024-12-11T08:00:35.800Z
+                  updatedAt: 2024-12-11T08:00:45.407Z
+                  __v: 0
+                  pricePerDay: 55
+        404:
+          description: Erreur lors de la récupération des voitures
+  /cars/{id}:
+    get:
+      tags:
+        - Cars
+      summary: Récupérer une voiture spécifique
+      security: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la voiture à récupérer
+          schema:
+            type: string
+      responses:
+        200:
+          description: Détails de la voiture
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: ID unique de la voiture
+                  model:
+                    type: string
+                    description: Modèle de la voiture
+                  price:
+                    type: number
+                    description: Prix par jour
+              example:
+                - _id: "12345"
+                  brand: Renault
+                  model: "Clio V"
+                  year: 2018
+                  transmission: Automatique
+                  fuelType: Essence
+                  seats: 5
+                  horsePower: 95
+                  createdBy: 6719f30bc6bdb31282755517
+                  images:
+                    - url: https://res.cloudinary.com/dffvguhyj/image/upload/v1733904035/Car-Images/qvcswlamvdqc9mz3llqmb.jpg
+                      _id: 675346a3e783af20dfd8af85
+                  createdAt: 2024-12-11T08:00:35.800Z
+                  updatedAt: 2024-12-11T08:00:45.407Z
+                  __v: 0
+                  pricePerDay: 55
+        404:
+          description: Voiture non trouvée
+    delete:
+      tags:
+        - Cars
+      summary: Supprimer une voiture spécifique (admin uniquement)
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la voiture à supprimer
+          schema:
+            type: string
+      responses:
+        200:
+          description: Voiture supprimée
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Confirmation de la suppression
+              example:
+                message: "Voiture supprimée avec succès"
+        404:
+          description: Voiture non trouvée
+    put:
+      tags:
+        - Cars
+      summary: Modifier un véhicule (admin uniquement)
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la voiture à modifier
+          schema:
+            type: string
+      responses:
+        200:
+          description: Voiture modifiée
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Confirmation de la modification
+                example:
+                  message: "Voiture modifiée avec succès"
+        404:
+          description: Voiture non trouvée
+  /rent:
+    get:
+      tags:
+        - Rent
+      summary: Récupérer toutes les locations
+      security: []
+      responses:
+        200:
+          description: Liste des locations
+    post:
+      tags:
+        - Rent
+      summary: Créer une location (admin uniquement)
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  description: ID de l'utilisateur
+                carId:
+                  type: string
+                  description: ID de la voiture
+                startDate:
+                  type: string
+                  format: date
+                  description: Date de début
+                endDate:
+                  type: string
+                  format: date
+                  description: Date de fin
+      responses:
+        201:
+          description: Location créée avec succès
+  /rent/{id}:
+    put:
+      tags:
+        - Rent
+      summary: Modifier une location (admin uniquement)
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la location à modifier
+          schema:
+            type: string
+      responses:
+        200:
+          description: Location modifiée
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Confirmation de la modification
+              example:
+                - _id: "12345"
+                  startDate: 2024-12-05T00:00:00.000Z
+                  endDate: 2024-12-17T00:00:00.000Z
+                  pricePerDay: 100
+                  status: Disponible
+                  idCar: 671f9b0614k3f9a4de3535a8
+                  userID: 6729f37bc6bhb31882545519
+                  createdAt: 2024-12-11T08:00:35.800Z
+                  updatedAt: 2024-12-11T08:00:45.407Z
+                  __v: 0
+        404:
+          description: Erreur lors de la mise à jour de la location
+    delete:
+      tags:
+        - Rent
+      summary: Supprimer une location (admin uniquement)
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la location à supprimée
+          schema:
+            type: string
+      responses:
+        200:
+          description: Location supprimée avec succès
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Confirmation de la supppression
+                example:
+                  message: "Location supprimée avec succès"
+        404:
+          description: Erreur lors de la suppression de la location
+  /rent-status:
+    get:
+      tags:
+        - Rent Status
+      summary: Récupérer le statut des locations
+      security: []
+      description: Cette route renvoie tous les statuts disponibles
+      responses:
+        200:
+          description: Liste des statuts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      description: Statut de la location (ex. "Disponible", "Indisponible")
+              example:
+                - AVAILABLE: "Disponible"
+                  UNAVAILABLE: "Indisponible"
+  /users/register:
+    post:
+      tags:
+        - Auth
+      summary: Register User
+      security: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                firstName: Jean
+                lastName: Dupont
+                email: jeandupont2@gmail.com
+                password: secret
+                birthdate: 2000-10-09
+                address: 1 rue de
+                postalCode: "59300"
+                city: Valenciennes
+                phoneNumber: "0634897156"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /users/login:
+    post:
+      tags:
+        - Auth
+      summary: Login User
+      security: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: jeandupont2@gmail.com
+                password: secret
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json: {}
+  /emails:
+    post:
+      tags:
+        - Email
+      summary: Envoyer un email
+      security: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                from:
+                  type: string
+                  format: email
+                  description: expéditeur
+                to:
+                  type: string
+                  format: email
+                  description: Destinataire
+                subject:
+                  type: string
+                  description: Objet de l'email
+                html:
+                  type: string
+                  description: Contenu de l'email
+      responses:
+        200:
+          description: Email envoyé avec succès
