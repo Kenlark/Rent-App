@@ -4,8 +4,9 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 import { useAuth } from "../authContext.jsx";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const carDataURL = "http://localhost:5000/api/v1/cars";
+const carDataURL = `${API_BASE_URL}/api/v1/cars`;
 
 export const loader = async () => {
   try {
@@ -101,7 +102,7 @@ const FormRent = () => {
 
     try {
       setIsSending(true);
-      const response = await axios.post("http://localhost:5000/api/v1/emails", {
+      const response = await axios.post(`${API_BASE_URL}/api/v1/emails`, {
         from: formData.user_email,
         to: "kenzokerachi@hotmail.fr",
         subject: `Réservation pour ${formData.car_model}`,

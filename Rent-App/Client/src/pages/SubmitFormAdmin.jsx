@@ -5,6 +5,7 @@ import fr from "date-fns/locale/fr";
 registerLocale("fr", fr);
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const SubmitFormAdmin = () => {
   const navigate = useNavigate();
@@ -39,10 +40,9 @@ const SubmitFormAdmin = () => {
   useEffect(() => {
     const fetchRentStatus = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:5000/api/v1/rent-status",
-          { withCredentials: true }
-        );
+        const response = await axios.get(`${API_BASE_URL}/api/v1/rent-status`, {
+          withCredentials: true,
+        });
         setRentStatusOptions(response.data);
       } catch (error) {
         console.log(error);
@@ -55,10 +55,9 @@ const SubmitFormAdmin = () => {
   useEffect(() => {
     const checkAdmin = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:5000/api/v1/users/me",
-          { withCredentials: true }
-        );
+        const response = await axios.get(`${API_BASE_URL}/api/v1/users/me`, {
+          withCredentials: true,
+        });
         if (response.data.role === "admin") {
           setIsAdmin(true);
           setUserID(response.data.userId);
@@ -72,7 +71,7 @@ const SubmitFormAdmin = () => {
 
     const fetchCars = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/v1/cars");
+        const response = await axios.get(`${API_BASE_URL}/api/v1/cars`);
         setCars(response.data.allCars);
       } catch (error) {
         toast.error("Erreur lors de la récupération des voitures.");
@@ -157,7 +156,7 @@ const SubmitFormAdmin = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/v1/cars",
+        `${API_BASE_URL}/api/v1/cars`,
         formData,
         {
           withCredentials: true,
@@ -189,7 +188,7 @@ const SubmitFormAdmin = () => {
       };
 
       const response = await axios.post(
-        "http://localhost:5000/api/v1/rent",
+        `${API_BASE_URL}/api/v1/rent`,
         rentData,
         { withCredentials: true }
       );
@@ -378,7 +377,7 @@ const SubmitFormAdmin = () => {
                 ))}
               </select>
               <button type="submit" className="submit-button-admin">
-                Soumettre Location
+                Soumettre Location.
               </button>
             </form>
           )}

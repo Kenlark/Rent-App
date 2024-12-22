@@ -20,7 +20,7 @@ const sendEmail = async (req, res) => {
       html,
     });
 
-    return res.status(StatusCodes.OK).json({ msg: "Email envoyé avec succès" });
+    return res.status(StatusCodes.OK).json({ data });
   } catch (error) {
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)

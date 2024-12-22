@@ -132,3 +132,151 @@
 .slick-prev {
   left: -8%;
 }
+
+.edit-button-singlecar {
+  margin-block-start: 2rem;
+  border: transparent;
+  background-color: #5774ff;
+  color: var(--white);
+  border-radius: var(--borderRadius);
+  padding: 0.6rem 0.5rem;
+  font-size: 12px;
+  cursor: pointer;
+  width: 50%;
+}
+
+.slick-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.img-single-car {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  height: auto;
+}
+
+/* Cacher uniquement les divs vides générées par Slick */
+.slick-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and (max-width: 1160px) {
+  .single-car-card {
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .car-image-singlecar {
+    width: 90%;
+    height: 400px;
+    object-fit: cover;
+  }
+
+  .carousel {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .carousel img {
+    width: 90%;
+    height: 300px;
+    object-fit: cover;
+  }
+
+  .edit-button-singlecar {
+    margin-block-start: 0;
+  }
+
+  .single-car-container {
+    padding-block-end: 5rem;
+  }
+
+  .slick-slide > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .slick-slide > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .single-car-container {
+    height: auto;
+    padding: 2rem 1rem;
+  }
+
+  .single-car-card {
+    gap: 1.5rem;
+  }
+
+  .car-image-singlecar {
+    width: 100%;
+    height: auto;
+  }
+
+  .carousel img {
+    width: 100%;
+    height: 300px;
+  }
+
+  .car-details-singlecar h2 {
+    font-size: 1.5rem;
+  }
+
+  .car-details-singlecar p {
+    font-size: 1rem;
+  }
+
+  .edit-button-singlecar {
+    width: 100%;
+    padding: 0.8rem;
+  }
+
+  .btn-padding {
+    text-align: center;
+  }
+
+  .btn-redirect-container {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+  }
+}
+
+@media screen and (max-width: 510px) {
+  .carousel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .car-image-singlecar {
+    width: 60%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .img-single-car {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    height: auto;
+  }
+
+  .carousel img {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+}

@@ -12,6 +12,7 @@ router.post("/login", validate(LoginUserSchema), userController.login);
 router.get("/me", authenticateUser, userController.getMe);
 
 router.get("/", userController.getAll);
+
 router.post("/logout", userController.logout);
 
 router.post("/check-email", userController.checkEmail);

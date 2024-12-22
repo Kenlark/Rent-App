@@ -4,6 +4,7 @@ import Slider from "react-slick";
 import axios from "axios";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 import gearIcon from "../assets/images/gear-solid.svg";
 import carSeatIcon from "../assets/images/car-seat-_2_.png";
@@ -12,7 +13,7 @@ import horsePowerIcon from "../assets/images/motor-svgrepo-com.png";
 
 export const loader = async ({ params }) => {
   const { id } = params;
-  const carUrl = `http://localhost:5000/api/v1/cars/${id}`;
+  const carUrl = `${API_BASE_URL}/api/v1/cars/${id}`;
 
   try {
     const response = await axios.get(carUrl);
@@ -39,6 +40,14 @@ const SingleCar = () => {
     slidesToScroll: 1,
     autoplay: false,
     arrows: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          arrows: false,
+        },
+      },
+    ],
   };
 
   return (
@@ -106,6 +115,12 @@ const SingleCar = () => {
               Puissance : {car.horsePower} CV
             </p>
             <p>Prix par jour : {car.pricePerDay} €/jour</p>
+            <button
+              className="edit-button-singlecar"
+              onClick={() => navigate("/rent")}
+            >
+              Réserver
+            </button>
           </div>
         </div>
       </section>

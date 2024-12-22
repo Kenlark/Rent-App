@@ -149,6 +149,14 @@ input::placeholder {
   opacity: 0.7;
 }
 
+.label-captcha-contact {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
 @media (max-width: 830px) {
   .text-area-message {
     max-height: 100px;

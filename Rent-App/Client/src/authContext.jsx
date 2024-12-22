@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const AuthContext = createContext();
 
@@ -11,10 +12,9 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkUserStatus = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:5000/api/v1/users/me",
-          { withCredentials: true }
-        );
+        const response = await axios.get(`${API_BASE_URL}/api/v1/users/me`, {
+          withCredentials: true,
+        });
 
         if (response.data.userID) {
           // Utilisateur connecté
@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
   const logoutUser = async () => {
     try {
       await axios.post(
-        "http://localhost:5000/api/v1/users/logout",
+        `${API_BASE_URL}/api/v1/users/logout`,
         {},
         {
           withCredentials: true,

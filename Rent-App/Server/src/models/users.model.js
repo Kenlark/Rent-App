@@ -20,6 +20,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: [true, "Veuillez fournir un email"],
       unique: true,
+      lowercase: true,
       match: [
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
         "Veuillez fournir un email valide",
@@ -33,12 +34,23 @@ const UserSchema = new mongoose.Schema(
     role: {
       type: String,
       required: [true, "Veuillez fournir un rôle"],
+      enum: ["user", "admin"],
       default: "user",
       minLength: 3,
     },
     birthDate: {
       type: Date,
       required: [true, "Veuillez fournir une date de naissance"],
+      validate: {
+        validator: function (value) {
+          // value correspond à la valeur acutelle saisie dans le chmap birthDate
+          const minAge = 18;
+          const birthDate = new Date(value);
+          const age = new Date().getFullYear() - birthDate.getFullYear();
+          return age >= minAge;
+        },
+        message: "L'âge minimum est de 18 ans.",
+      },
     },
     address: {
       type: String,
@@ -46,7 +58,9 @@ const UserSchema = new mongoose.Schema(
     },
     postalCode: {
       type: String,
+      maxLength: 5,
       required: [true, "Veuillez fournir un code postal"],
+      match: [/^\d{5}$/, "Code postal invalide"],
     },
     city: {
       type: String,
@@ -55,6 +69,7 @@ const UserSchema = new mongoose.Schema(
     phoneNumber: {
       type: String,
       required: [true, "Veuillez fournir un numéro de téléphone"],
+      match: [/^\+?\d{10,15}$/, "Numéro de téléphone invalide"],
     },
     resetPasswordToken: {
       type: String,

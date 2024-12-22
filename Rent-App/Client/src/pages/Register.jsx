@@ -5,6 +5,7 @@ import DatePicker from "react-datepicker";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../authContext.jsx";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 import logoGoogle from "../assets/images/icons8-google.svg";
 import logoApple from "../assets/images/icons8-apple.svg";
@@ -34,7 +35,7 @@ const Register = () => {
     try {
       // 1. Enregistrer l'utilisateur
       const response = await axios.post(
-        "http://localhost:5000/api/v1/users/register",
+        `${API_BASE_URL}/api/v1/users/register`,
         {
           email,
           password,
@@ -58,7 +59,7 @@ const Register = () => {
           loginUser(response.data);
         } else {
           const userResponse = await axios.get(
-            "http://localhost:5000/api/v1/users/me",
+            `${API_BASE_URL}/api/v1/users/me`,
             { withCredentials: true }
           );
           loginUser(userResponse.data);
@@ -81,7 +82,7 @@ const Register = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/v1/users/check-email",
+        `${API_BASE_URL}/api/v1/users/check-email`,
         { email },
         { withCredentials: true }
       );

@@ -5,25 +5,22 @@ const authenticateUser = async (req, res, next) => {
   const token = req.cookies.token;
 
   if (!token) {
-    req.isLoggedIn = false; // Utilisateur non connecté
-    req.user = null; // Pas d'utilisateur
-    return next(); // Continuez la requête
+    console.log("Token manquant dans les cookies.");
+    return res
+      .status(StatusCodes.UNAUTHORIZED)
+      .json({ message: "Non autorisé. Token manquant." });
   }
 
   try {
-    const decoded = verifyJWT(token); // Vérifiez le JWT
-
-    req.user = {
-      userID: decoded.userID,
-      role: decoded.role,
-    };
-    req.isLoggedIn = true; // Utilisateur connecté
+    const decoded = verifyJWT(token);
+    console.log("Token décodé :", decoded);
+    req.user = { userID: decoded.userID, role: decoded.role };
     next();
   } catch (error) {
-    console.error("Erreur lors de la vérification du token :", error);
-    req.isLoggedIn = false;
-    req.user = null;
-    return next(); // Continuez la requête même en cas d'erreur
+    console.log("Erreur lors de la vérification du token :", error.message);
+    return res
+      .status(StatusCodes.UNAUTHORIZED)
+      .json({ message: "Non autorisé. Token invalide." });
   }
 };
 

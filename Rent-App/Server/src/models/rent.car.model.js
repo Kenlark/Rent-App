@@ -12,15 +12,6 @@ const RentSchema = new mongoose.Schema(
       type: Date,
       required: [true, "Veuillez entrer une date de fin de location"],
     },
-    pricePerHour: {
-      type: Number,
-      validate: {
-        validator: function (value) {
-          return Number.isInteger(value);
-        },
-        message: "La donnée entrée n'est pas un nombre entier",
-      },
-    },
     pricePerDay: {
       type: Number,
       required: [true, "Le prix par jour est obligatoire"],

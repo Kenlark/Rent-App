@@ -4,6 +4,7 @@ import { useAuth } from "../authContext.jsx";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 import house from "../assets/images/iconmonstr-home-6.svg";
 import car from "../assets/images/car-solid.svg";
@@ -23,34 +24,29 @@ function Navbar() {
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:5000/api/v1/users/me",
-          {
-            withCredentials: true,
-          }
-        );
-
+        const response = await axios.get(`${API_BASE_URL}/api/v1/users/me`, {
+          withCredentials: true,
+        });
         if (response.data) {
           setIsLoggedIn(true);
           setUser(response.data);
+          setIsAdmin(response.data.role === "admin");
         }
       } catch (error) {
         setIsLoggedIn(false);
         setUser(null);
+        setIsAdmin(false);
       }
     };
-
     checkAuthStatus();
-  }, []);
+  }, [isLoggedIn]);
 
   const handleLogout = async () => {
     try {
       // Appel API de déconnexion
-      await axios.post(
-        "http://localhost:5000/api/v1/users/logout",
-        {},
-        { withCredentials: true }
-      );
+      await axios.post(`${API_BASE_URL}/api/v1/users/logout`, null, {
+        withCredentials: true,
+      });
 
       // Réinitialisation immédiate des états
       setIsLoggedIn(false);
@@ -92,31 +88,6 @@ function Navbar() {
   useEffect(() => {
     if (!isLoggedIn) {
       setIsOpen(false);
-    }
-  }, [isLoggedIn]);
-
-  useEffect(() => {
-    const checkAdmin = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:5000/api/v1/users/me",
-          {
-            withCredentials: true,
-          }
-        );
-        if (response.data.role === "admin") {
-          setIsAdmin(true);
-        }
-      } catch (error) {
-        console.error("Erreur lors de la vérification du rôle:", error);
-        setIsAdmin(false);
-      }
-    };
-
-    if (isLoggedIn) {
-      checkAdmin();
-    } else {
-      setIsAdmin(false);
     }
   }, [isLoggedIn]);
 
@@ -175,7 +146,17 @@ function Navbar() {
                     Nos Véhicules
                   </NavLink>
                 </li>
-                {!isLoggedIn && (
+                {isLoggedIn ? (
+                  <li>
+                    <button
+                      className="inactive-btn logout-btn"
+                      onClick={handleLogout}
+                    >
+                      Se déconnecter
+                    </button>
+                  </li>
+                ) : null}
+                {!isLoggedIn ? (
                   <>
                     <li className="mobile-login">
                       <NavLink
@@ -194,7 +175,7 @@ function Navbar() {
                       </NavLink>
                     </li>
                   </>
-                )}
+                ) : null}
               </ul>
             </nav>
           </div>
@@ -236,7 +217,7 @@ function Navbar() {
                           <span className="underline-logout">
                             <button
                               onClick={handleLogout}
-                              className="logout-btn"
+                              className="logout-btn-avatar"
                             >
                               Se déconnecter
                             </button>

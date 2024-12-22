@@ -399,8 +399,9 @@
 
 .link-details {
   display: flex;
-  justify-content: space-between;
-  gap: 4rem;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
 }
 
 @media (max-width: 1540px) {
