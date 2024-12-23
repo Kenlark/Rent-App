@@ -472,7 +472,7 @@ ul {
   }
 
   .create-form-absolute {
-    display: none;
+    margin-inline-end: 3.5rem;
   }
 
   .mobile-menu-btn {
